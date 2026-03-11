@@ -72,9 +72,9 @@ export function OutlineButton({ children, onClick }: { children: React.ReactNode
 
 export function StatBadge({ value, label }: { value: string; label: string }) {
   return (
-    <div className="gradient-card rounded-2xl px-6 py-4 text-center glow-card">
-      <div className="gradient-text font-display text-4xl font-bold">{value}</div>
-      <div className="text-muted-foreground text-xs mt-1 font-body">{label}</div>
+    <div className="gradient-card rounded-2xl px-2 sm:px-4 md:px-6 py-3 md:py-4 text-center glow-card">
+      <div className="gradient-text font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">{value}</div>
+      <div className="text-muted-foreground text-[10px] sm:text-xs mt-1 font-body leading-tight">{label}</div>
     </div>
   );
 }
