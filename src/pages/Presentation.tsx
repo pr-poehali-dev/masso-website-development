@@ -168,7 +168,7 @@ const slides: Slide[] = [
       <SlideWrapper>
         <Tag>Система</Tag>
         <H2>Профессиональный протокол работы</H2>
-        <div className="grid grid-cols-5 gap-2 md:gap-3 w-full">
+        <div className="flex flex-col md:grid md:grid-cols-5 gap-2 md:gap-3 w-full">
           {[
             { n: "1", t: "Диагностика клиента" },
             { n: "2", t: "Сбор анамнеза" },
@@ -176,9 +176,9 @@ const slides: Slide[] = [
             { n: "4", t: "Программа восстановления" },
             { n: "5", t: "Работа по протоколу" },
           ].map((s) => (
-            <div key={s.n} className="bg-white/8 border border-white/15 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center gap-1 md:gap-2">
-              <div className="text-xl md:text-3xl font-black text-cyan-400">{s.n}</div>
-              <div className="text-white/80 text-[10px] md:text-sm text-center leading-snug">{s.t}</div>
+            <div key={s.n} className="bg-white/8 border border-white/15 rounded-xl p-3 md:p-4 flex md:flex-col items-center gap-3 md:gap-2 text-left md:text-center">
+              <div className="text-2xl md:text-3xl font-black text-cyan-400 shrink-0 w-8 md:w-auto">{s.n}</div>
+              <div className="text-white/80 text-sm md:text-sm leading-snug">{s.t}</div>
             </div>
           ))}
         </div>
