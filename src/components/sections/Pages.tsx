@@ -29,7 +29,14 @@ function ConsultForm() {
           <Icon name="Check" size={28} style={{ color: "hsl(220, 30%, 6%)" }} />
         </div>
         <h3 className="font-display text-2xl font-semibold text-foreground mb-2">Заявка отправлена!</h3>
-        <p className="text-muted-foreground text-sm">Мы свяжемся с вами в течение 24 часов</p>
+        <p className="text-muted-foreground text-sm mb-6">Мы свяжемся с вами в течение 24 часов</p>
+        <a
+          href="/presentation"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-xl transition-all"
+        >
+          <Icon name="Play" size={18} />
+          Посмотреть презентацию
+        </a>
       </div>
     );
   }
