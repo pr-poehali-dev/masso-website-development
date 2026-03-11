@@ -1,234 +1,555 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/icon";
 
-type IconName = string;
-
 interface Slide {
   id: number;
-  title: string;
-  subtitle?: string;
   content: React.ReactNode;
-  bg?: string;
+}
+
+function SlideWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-6 text-center">
+      {children}
+    </div>
+  );
+}
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-block text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-400/40 rounded-full px-4 py-1">
+      {children}
+    </span>
+  );
+}
+
+function BigNumber({ value, label }: { value: string; label?: string }) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="text-5xl md:text-7xl font-black text-cyan-400 leading-none">{value}</div>
+      {label && <div className="text-white/60 text-sm mt-2">{label}</div>}
+    </div>
+  );
+}
+
+function CheckList({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-col gap-3 text-left w-full max-w-md mx-auto">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-3 text-white/90 text-base">
+          <Icon name="Check" size={18} className="text-cyan-400 mt-0.5 shrink-0" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-col gap-3 text-left w-full max-w-md mx-auto">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-3 text-white/80 text-base">
+          <span className="text-cyan-400 mt-1 shrink-0">•</span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Card({ children, highlight = false }: { children: React.ReactNode; highlight?: boolean }) {
+  return (
+    <div
+      className={`rounded-2xl p-5 md:p-6 border w-full ${
+        highlight
+          ? "bg-cyan-500/15 border-cyan-400/50"
+          : "bg-white/8 border-white/15"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
+function ConsultButton() {
+  return (
+    <a
+      href="/"
+      className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold px-8 py-4 rounded-xl transition-all text-base shadow-lg shadow-cyan-500/20"
+    >
+      <Icon name="MessageCircle" size={18} />
+      Получить консультацию
+    </a>
+  );
 }
 
 const slides: Slide[] = [
+  // 1 — Титул
   {
     id: 1,
-    title: "МассоПРО",
-    subtitle: "Профессиональный массаж для салонов и студий",
-    bg: "slide-hero",
     content: (
-      <div className="flex flex-col items-center gap-6 text-center">
-        <p className="text-xl md:text-2xl text-white/80 max-w-2xl">
-          Внедряем новые услуги, обучаем мастеров, повышаем статус и прибыльность вашего салона
+      <SlideWrapper>
+        <Tag>Слайд 1 из 22</Tag>
+        <h1 className="text-5xl md:text-7xl font-black text-white leading-tight">
+          Массо<span className="text-cyan-400">Про</span>
+        </h1>
+        <p className="text-xl md:text-2xl text-white/70 max-w-xl">
+          Профессиональная система массажных услуг для салонов
         </p>
-        <div className="flex gap-6 mt-4 flex-wrap justify-center">
-          {[
-            { value: "25%", label: "рост среднего чека" },
-            { value: "4 шага", label: "до старта" },
-            { value: "100%", label: "под ключ" },
-          ].map((s) => (
-            <div key={s.value} className="bg-white/10 backdrop-blur rounded-2xl px-8 py-4 text-center border border-white/20">
-              <div className="text-3xl md:text-4xl font-bold text-cyan-400">{s.value}</div>
-              <div className="text-sm text-white/70 mt-1">{s.label}</div>
+        <div className="flex flex-col sm:flex-row gap-3 text-white/80 text-base">
+          {["Внедрение", "Обучение мастеров", "Рост прибыли"].map((t) => (
+            <div key={t} className="flex items-center gap-2 bg-white/8 border border-white/15 rounded-xl px-5 py-3">
+              <Icon name="Check" size={16} className="text-cyan-400" />
+              {t}
             </div>
           ))}
         </div>
-      </div>
+        <ConsultButton />
+      </SlideWrapper>
     ),
   },
+  // 2 — Проблема
   {
     id: 2,
-    title: "Проблема рынка",
-    subtitle: "Массаж в салонах — без единого стандарта",
     content: (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-        {[
-          { icon: "AlertTriangle", text: "Разные техники массажа у каждого мастера — клиент не знает, что получит" },
-          { icon: "ShieldOff", text: "Мастера работают по собственным методикам без единых протоколов качества" },
-          { icon: "TrendingDown", text: "Клиенты не доверяют массажу в салоне — прибыль от услуги занижена" },
-        ].map((item, i) => (
-          <div key={i} className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20 flex flex-col gap-3">
-            <Icon name={item.icon} size={32} className="text-red-400" />
-            <p className="text-white/90 text-base leading-relaxed">{item.text}</p>
-          </div>
-        ))}
-      </div>
+      <SlideWrapper>
+        <Tag>Проблема</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Почему массаж плохо продаётся в салонах</h2>
+        <BulletList
+          items={[
+            "мастера работают по разным техникам",
+            "нет диагностики клиента",
+            "нет системной работы",
+            "нет протоколов процедур",
+            "клиент не понимает результат",
+          ]}
+        />
+        <div className="bg-red-500/15 border border-red-400/40 rounded-2xl px-8 py-5 mt-2">
+          <p className="text-white text-lg md:text-xl font-semibold">
+            Итог: клиент приходит <span className="text-red-400">один раз</span> и не возвращается.
+          </p>
+        </div>
+      </SlideWrapper>
     ),
   },
+  // 3 — Решение
   {
     id: 3,
-    title: "Наше решение",
-    subtitle: "Полная экосистема для вашего салона",
     content: (
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-        {[
-          { icon: "Users", title: "Офлайн-обучение", desc: "Практические занятия в вашем салоне" },
-          { icon: "Monitor", title: "Онлайн-курсы", desc: "База видеоуроков для мастеров" },
-          { icon: "MessageCircle", title: "Вебинары и чат", desc: "Экспертная поддержка онлайн" },
-          { icon: "FileText", title: "Готовые протоколы", desc: "Пошаговые инструкции процедур" },
-          { icon: "Award", title: "Сертификация", desc: "Официальный знак качества МассоПРО" },
-          { icon: "MapPin", title: "Каталог студий", desc: "Новые клиенты сами вас найдут" },
-        ].map((item, i) => (
-          <div key={i} className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 flex flex-col gap-2">
-            <Icon name={item.icon} size={24} className="text-cyan-400" />
-            <div className="font-semibold text-white text-sm md:text-base">{item.title}</div>
-            <div className="text-white/60 text-xs md:text-sm">{item.desc}</div>
-          </div>
-        ))}
-      </div>
+      <SlideWrapper>
+        <Tag>Решение</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">МассоПро внедряет системный массажный сервис</h2>
+        <p className="text-white/60 text-lg">Салон получает:</p>
+        <CheckList
+          items={[
+            "профессиональные техники",
+            "стандарты работы",
+            "обучение мастеров",
+            "диагностику клиентов",
+            "протоколы процедур",
+            "систему повторных посещений",
+          ]}
+        />
+      </SlideWrapper>
     ),
   },
+  // 4 — Как работает
   {
     id: 4,
-    title: "4 шага до старта",
-    subtitle: "Простой путь к профессиональному массажу",
     content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-        {[
-          { step: "01", title: "Диагностика салона", desc: "Анализируем текущие услуги, состав команды и потенциал для развития" },
-          { step: "02", title: "Подбор и внедрение", desc: "Выбираем оптимальные процедуры, адаптируем под ваш формат и уровень клиентов" },
-          { step: "03", title: "Обучение мастеров", desc: "Офлайн-обучение, онлайн-курсы, вебинары и постоянная поддержка в чате" },
-          { step: "04", title: "Сертификация и каталог", desc: "Получаете знак качества и размещение в каталоге сертифицированных студий" },
-        ].map((item) => (
-          <div key={item.step} className="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/20 flex gap-4">
-            <div className="text-4xl font-black text-cyan-400/40 leading-none">{item.step}</div>
-            <div>
-              <div className="font-bold text-white text-base md:text-lg mb-1">{item.title}</div>
-              <div className="text-white/70 text-sm leading-relaxed">{item.desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 5,
-    title: "Что получает ваш салон",
-    subtitle: "Реальные результаты для бизнеса",
-    content: (
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-        {[
-          { icon: "PlusCircle", title: "Новые услуги", desc: "Расширяете меню без хаоса и ошибок" },
-          { icon: "CheckSquare", title: "Единые стандарты", desc: "Клиенты всегда знают, что получат" },
-          { icon: "BookOpen", title: "Лёгкое обучение", desc: "От теории до практики в вашем салоне" },
-          { icon: "Users", title: "Сообщество мастеров", desc: "Закрытый клуб профессионалов" },
-          { icon: "Shield", title: "Доверие клиентов", desc: "Знак сертификации МассоПРО" },
-          { icon: "TrendingUp", title: "+25% к чеку", desc: "Среднее увеличение выручки партнёров" },
-        ].map((item, i) => (
-          <div key={i} className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20 flex flex-col gap-2">
-            <Icon name={item.icon} size={24} className="text-cyan-400" />
-            <div className="font-semibold text-white text-sm md:text-base">{item.title}</div>
-            <div className="text-white/60 text-xs md:text-sm">{item.desc}</div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 6,
-    title: "Пакеты сотрудничества",
-    subtitle: "Выберите подходящий формат",
-    content: (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-        {[
-          {
-            name: "Старт",
-            popular: false,
-            features: ["Офлайн-обучение мастеров", "Доступ к онлайн-курсам", "Базовые протоколы", "Поддержка 1 месяц"],
-          },
-          {
-            name: "Рекомендуем",
-            popular: true,
-            features: ["Всё из Старта", "Готовые протоколы", "Участие в вебинарах", "Закрытый чат", "Поддержка 3 месяца"],
-          },
-          {
-            name: "Максимум",
-            popular: false,
-            features: ["Всё из Рекомендуем", "Официальная сертификация", "Знак качества МассоПРО", "Каталог студий", "Поддержка 6 месяцев"],
-          },
-        ].map((pkg) => (
-          <div
-            key={pkg.name}
-            className={`rounded-2xl p-5 border flex flex-col gap-3 ${
-              pkg.popular
-                ? "bg-cyan-500/20 border-cyan-400/60 ring-2 ring-cyan-400/40"
-                : "bg-white/10 border-white/20"
-            }`}
-          >
-            {pkg.popular && (
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Популярный</span>
-            )}
-            <div className="text-xl font-bold text-white">{pkg.name}</div>
-            <ul className="flex flex-col gap-2">
-              {pkg.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-white/80">
-                  <Icon name="Check" size={14} className="text-cyan-400 mt-0.5 shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 7,
-    title: "Результат наших партнёров",
-    subtitle: "Реальный кейс",
-    content: (
-      <div className="flex flex-col items-center gap-8 max-w-3xl mx-auto text-center">
-        <div className="text-6xl md:text-8xl font-black text-cyan-400">+25%</div>
-        <p className="text-xl md:text-2xl text-white/90 italic leading-relaxed">
-          «После внедрения МассоПРО средний чек салона вырос на 25%, а возвратность клиентов увеличилась вдвое»
-        </p>
-        <div className="text-white/60 text-sm">— Партнёр МассоПРО, Салон красоты, Москва</div>
-        <div className="flex gap-8 flex-wrap justify-center">
+      <SlideWrapper>
+        <Tag>Система</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Профессиональный протокол работы</h2>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-3 w-full">
           {[
-            { value: "×2", label: "возвратность клиентов" },
-            { value: "50+", label: "обученных мастеров" },
-            { value: "100%", label: "удовлетворённость" },
+            { n: "1", t: "Диагностика клиента" },
+            { n: "2", t: "Сбор анамнеза" },
+            { n: "3", t: "Определение проблемы" },
+            { n: "4", t: "Программа восстановления" },
+            { n: "5", t: "Работа по протоколу" },
           ].map((s) => (
-            <div key={s.value} className="bg-white/10 backdrop-blur rounded-xl px-6 py-3 border border-white/20 text-center">
-              <div className="text-2xl font-bold text-cyan-400">{s.value}</div>
-              <div className="text-xs text-white/60 mt-1">{s.label}</div>
+            <div key={s.n} className="bg-white/8 border border-white/15 rounded-2xl p-4 flex flex-col items-center gap-2">
+              <div className="text-3xl font-black text-cyan-400">{s.n}</div>
+              <div className="text-white/80 text-sm text-center leading-snug">{s.t}</div>
             </div>
           ))}
         </div>
-      </div>
+      </SlideWrapper>
     ),
   },
+  // 5 — Почему возвращаются
+  {
+    id: 5,
+    content: (
+      <SlideWrapper>
+        <Tag>Возврат клиентов</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Почему клиенты возвращаются</h2>
+        <p className="text-white/60 text-lg">После первого сеанса клиент:</p>
+        <BulletList
+          items={[
+            "чувствует реальный результат",
+            "понимает причину проблемы",
+            "получает программу восстановления",
+          ]}
+        />
+        <p className="text-white/70 text-lg">Поэтому проходит <span className="text-white font-semibold">курс процедур</span>. Средний курс:</p>
+        <BigNumber value="5–8" label="процедур" />
+      </SlideWrapper>
+    ),
+  },
+  // 6 — Финмодель
+  {
+    id: 6,
+    content: (
+      <SlideWrapper>
+        <Tag>Финансы</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Финансовая модель салона</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <Card>
+            <div className="text-white/60 text-sm mb-2">Средний чек процедуры</div>
+            <div className="text-4xl font-black text-cyan-400">8 000 ₽</div>
+          </Card>
+          <Card>
+            <div className="text-white/60 text-sm mb-2">Минимальный курс</div>
+            <div className="text-4xl font-black text-cyan-400">5 процедур</div>
+          </Card>
+          <Card highlight>
+            <div className="text-white/60 text-sm mb-2">Доход с одного клиента</div>
+            <div className="text-4xl font-black text-cyan-400">40 000 ₽</div>
+            <div className="text-white/40 text-xs mt-1">8 000 × 5</div>
+          </Card>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 7 — Доход мастера
+  {
+    id: 7,
+    content: (
+      <SlideWrapper>
+        <Tag>Расчёт</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Доход одного массажиста</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <Card>
+            <div className="text-white/60 text-sm mb-2">Всего 2 клиента в день</div>
+            <div className="text-4xl font-black text-cyan-400">16 000 ₽</div>
+            <div className="text-white/40 text-xs mt-1">в день</div>
+          </Card>
+          <Card>
+            <div className="text-white/60 text-sm mb-2">20 рабочих дней</div>
+            <div className="text-4xl font-black text-cyan-400">× 20</div>
+          </Card>
+          <Card highlight>
+            <div className="text-white/60 text-sm mb-2">Оборот в месяц</div>
+            <div className="text-4xl font-black text-cyan-400">320 000 ₽</div>
+          </Card>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 8 — Доход салона (1 мастер)
   {
     id: 8,
-    title: "Начнём сотрудничество?",
-    subtitle: "Ваш салон уже ждёт нас",
     content: (
-      <div className="flex flex-col items-center gap-6 text-center max-w-2xl mx-auto">
-        <p className="text-xl text-white/80 leading-relaxed">
-          Мы уже готовы провести диагностику вашего салона и подобрать оптимальный формат сотрудничества. Ответим в течение 24 часов.
+      <SlideWrapper>
+        <Tag>Доход салона</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Если салон получает 50%</h2>
+        <BigNumber value="160 000 ₽" label="в месяц с одного мастера" />
+      </SlideWrapper>
+    ),
+  },
+  // 9 — 3 мастера
+  {
+    id: 9,
+    content: (
+      <SlideWrapper>
+        <Tag>Масштаб</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">3 мастера в салоне</h2>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-white/60 text-xl">160 000 × 3 =</p>
+          <BigNumber value="480 000 ₽" label="в месяц" />
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 10 — 3 клиента в день
+  {
+    id: 10,
+    content: (
+      <SlideWrapper>
+        <Tag>Реальный потенциал</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Если мастер принимает 3 клиента в день</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <Card>
+            <div className="text-white/60 text-sm mb-2">Оборот массажиста</div>
+            <div className="text-3xl font-black text-cyan-400">480 000 ₽</div>
+            <div className="text-white/40 text-xs mt-1">3 × 8 000 × 20 дней</div>
+          </Card>
+          <Card highlight>
+            <div className="text-white/60 text-sm mb-2">Доход салона (50%)</div>
+            <div className="text-3xl font-black text-cyan-400">240 000 ₽</div>
+            <div className="text-white/40 text-xs mt-1">с одного мастера</div>
+          </Card>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 11 — 3 мастера × 3 клиента
+  {
+    id: 11,
+    content: (
+      <SlideWrapper>
+        <Tag>Максимум</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Если мастеров 3</h2>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-white/60 text-xl">240 000 × 3 =</p>
+          <BigNumber value="720 000 ₽" label="в месяц" />
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 12 — Окупаемость
+  {
+    id: 12,
+    content: (
+      <SlideWrapper>
+        <Tag>Окупаемость</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Окупаемость внедрения</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <Card>
+            <div className="text-cyan-400 font-bold text-sm uppercase tracking-wider mb-3">Базовый тариф</div>
+            <div className="text-4xl font-black text-white mb-2">150 000 ₽</div>
+            <div className="text-white/60 text-sm">Окупаемость: <span className="text-white font-semibold">~1 месяц</span></div>
+          </Card>
+          <Card highlight>
+            <div className="text-cyan-400 font-bold text-sm uppercase tracking-wider mb-3">Расширенный тариф</div>
+            <div className="text-4xl font-black text-white mb-2">250 000 ₽</div>
+            <div className="text-white/60 text-sm">Окупаемость: <span className="text-white font-semibold">1–2 месяца</span></div>
+          </Card>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 13 — Что входит в обучение
+  {
+    id: 13,
+    content: (
+      <SlideWrapper>
+        <Tag>Обучение</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Все тарифы включают обучение</h2>
+        <BulletList
+          items={[
+            "диагностика клиента",
+            "сбор анамнеза",
+            "правильное общение с клиентом",
+            "составление программы восстановления",
+            "работа по протоколам",
+            "большой блок противопоказаний",
+          ]}
+        />
+      </SlideWrapper>
+    ),
+  },
+  // 14 — Базовый тариф
+  {
+    id: 14,
+    content: (
+      <SlideWrapper>
+        <Tag>Тарифы</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Базовый</h2>
+        <Card>
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-5xl font-black text-cyan-400">150 000 ₽</div>
+            <div className="text-white/60">Для салонов до <span className="text-white font-semibold">3 мастеров</span></div>
+            <div className="w-full border-t border-white/10 pt-4">
+              <p className="text-white/60 text-sm mb-3">Обучение включает:</p>
+              <BulletList
+                items={[
+                  "медицинский массаж",
+                  "висцеральный массаж",
+                  "остеопатические техники",
+                  "коррекция фигуры без масла",
+                ]}
+              />
+            </div>
+          </div>
+        </Card>
+      </SlideWrapper>
+    ),
+  },
+  // 15 — Расширенный тариф
+  {
+    id: 15,
+    content: (
+      <SlideWrapper>
+        <Tag>Тарифы</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Расширенный</h2>
+        <Card highlight>
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-5xl font-black text-cyan-400">250 000 ₽</div>
+            <div className="text-white/60">Для салонов до <span className="text-white font-semibold">3 мастеров</span></div>
+            <div className="w-full border-t border-white/10 pt-4">
+              <p className="text-white/60 text-sm mb-3">Все техники базового +</p>
+              <BulletList
+                items={[
+                  "регуляция ВНС",
+                  "работа с ВНЧС",
+                  "доступ к чату специалистов",
+                  "участие в вебинарах",
+                ]}
+              />
+            </div>
+          </div>
+        </Card>
+      </SlideWrapper>
+    ),
+  },
+  // 16 — Полный тариф
+  {
+    id: 16,
+    content: (
+      <SlideWrapper>
+        <Tag>Тарифы</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Полный</h2>
+        <Card>
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-white/60">Для салонов <span className="text-white font-semibold">от 3 специалистов</span></div>
+            <div className="w-full border-t border-white/10 pt-4">
+              <p className="text-white/60 text-sm mb-3">Все техники расширенного +</p>
+              <BulletList
+                items={[
+                  "краниосакральные техники",
+                  "курс по онлайн рекламе",
+                  "доступ ко всем онлайн курсам",
+                ]}
+              />
+            </div>
+          </div>
+        </Card>
+      </SlideWrapper>
+    ),
+  },
+  // 17 — Доп. преимущества
+  {
+    id: 17,
+    content: (
+      <SlideWrapper>
+        <Tag>Бонусы</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Дополнительные преимущества</h2>
+        <p className="text-white/60 text-lg">Все участники получают:</p>
+        <CheckList
+          items={[
+            "доступ к онлайн курсам",
+            "доступ к профессиональному чату",
+            "вебинары",
+            "поддержку специалистов",
+            "внедрение услуг под конкретных мастеров",
+          ]}
+        />
+      </SlideWrapper>
+    ),
+  },
+  // 18 — Подбор услуг
+  {
+    id: 18,
+    content: (
+      <SlideWrapper>
+        <Tag>Индивидуальный подход</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Подбор услуг под мастеров</h2>
+        <p className="text-white/60 text-lg">Во время обучения анализируется:</p>
+        <BulletList items={["уровень мастера", "навыки", "сильные стороны"]} />
+        <div className="bg-cyan-500/15 border border-cyan-400/50 rounded-2xl px-8 py-5 mt-2">
+          <p className="text-white text-lg">После чего формируются</p>
+          <p className="text-2xl font-bold text-cyan-400 mt-1">уникальные услуги салона</p>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 19 — Эксперт
+  {
+    id: 19,
+    content: (
+      <SlideWrapper>
+        <Tag>Эксперт</Tag>
+        <div className="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-400/60 flex items-center justify-center">
+          <Icon name="User" size={36} className="text-cyan-400" />
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Сергей Водопьянов</h2>
+        <p className="text-white/60 text-lg">Основатель МассоПро</p>
+        <BulletList
+          items={[
+            "практикующий специалист",
+            "опыт более 17 лет",
+            "член Ассоциации мануальных терапевтов и остеопатов",
+            "рейтинг 5.0 в Яндекс Картах",
+            "автор профессиональных онлайн курсов",
+          ]}
+        />
+        <div className="bg-white/8 border border-white/15 rounded-2xl px-6 py-4 mt-2">
+          <p className="text-white/80">Каждый участник салона получает <span className="text-cyan-400 font-semibold">доступ к этим курсам</span></p>
+        </div>
+      </SlideWrapper>
+    ),
+  },
+  // 20 — Почему выбирают
+  {
+    id: 20,
+    content: (
+      <SlideWrapper>
+        <Tag>Преимущества</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">Почему выбирают МассоПро</h2>
+        <CheckList
+          items={[
+            "системный подход",
+            "сильные техники",
+            "реальные результаты",
+            "рост среднего чека",
+            "возврат клиентов на курс",
+          ]}
+        />
+      </SlideWrapper>
+    ),
+  },
+  // 21 — Главная идея
+  {
+    id: 21,
+    content: (
+      <SlideWrapper>
+        <Tag>Главная идея</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white/70 leading-tight">
+          МассоПро — это не просто обучение.
+        </h2>
+        <p className="text-3xl md:text-5xl font-black text-white leading-tight max-w-2xl">
+          Это внедрение{" "}
+          <span className="text-cyan-400">прибыльной системы</span>{" "}
+          массажных услуг в салоне.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 mt-4">
-          <a
-            href="tel:+78000000000"
-            className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold px-8 py-4 rounded-xl transition-all"
-          >
-            <Icon name="Phone" size={18} />
-            +7 (800) 000-00-00
-          </a>
+      </SlideWrapper>
+    ),
+  },
+  // 22 — Финал
+  {
+    id: 22,
+    content: (
+      <SlideWrapper>
+        <Tag>Финал</Tag>
+        <h2 className="text-3xl md:text-5xl font-black text-white">
+          Получите консультацию по внедрению МассоПро
+        </h2>
+        <p className="text-white/60 text-lg max-w-xl">
+          Ответим в течение 24 часов и подберём оптимальный формат для вашего салона
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 mt-2">
+          <ConsultButton />
           <a
             href="mailto:info@massopro.ru"
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl border border-white/20 transition-all"
+            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-8 py-4 rounded-xl border border-white/20 transition-all font-semibold"
           >
             <Icon name="Mail" size={18} />
             info@massopro.ru
           </a>
         </div>
-        <div className="flex items-center gap-2 text-white/50 text-sm mt-2">
-          <Icon name="MessageCircle" size={16} />
-          Telegram: @massopro
-        </div>
-      </div>
+      </SlideWrapper>
     ),
   },
 ];
@@ -246,7 +567,7 @@ export default function Presentation() {
       setTimeout(() => {
         setCurrent(index);
         setAnimating(false);
-      }, 300);
+      }, 280);
     },
     [animating, current]
   );
@@ -263,100 +584,87 @@ export default function Presentation() {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") next();
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") prev();
-      if (e.key === "Escape") window.history.back();
+      if (e.key === "Escape") window.location.href = "/";
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [next, prev]);
 
   const slide = slides[current];
+  const progress = ((current + 1) / slides.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0f1e] via-[#0d1628] to-[#081018] flex flex-col select-none">
+    <div className="min-h-screen bg-gradient-to-br from-[#080d1a] via-[#0c1424] to-[#060e18] flex flex-col">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-b border-white/10">
+      <div className="flex items-center justify-between px-4 md:px-8 py-3 border-b border-white/8 shrink-0">
         <button
-          onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
+          onClick={() => (window.location.href = "/")}
+          className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
         >
-          <Icon name="ArrowLeft" size={16} />
-          Вернуться на сайт
+          <Icon name="ArrowLeft" size={15} />
+          На сайт
         </button>
-        <div className="text-white/40 text-sm font-medium">
-          МассоПРО — Презентация
-        </div>
-        <div className="text-white/40 text-sm">
+        <div className="text-white/30 text-sm font-medium hidden sm:block">МассоПро — Презентация</div>
+        <div className="text-white/40 text-sm tabular-nums">
           {current + 1} / {slides.length}
         </div>
       </div>
 
-      {/* Slide content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 md:px-12 py-8 overflow-hidden">
+      {/* Progress bar */}
+      <div className="h-0.5 bg-white/8 shrink-0">
         <div
-          className="w-full max-w-5xl flex flex-col items-center gap-6 transition-all duration-300"
+          className="h-full bg-cyan-400 transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      {/* Slide */}
+      <div className="flex-1 flex items-center justify-center px-4 md:px-12 py-8 overflow-hidden">
+        <div
+          className="w-full transition-all duration-280"
           style={{
             opacity: animating ? 0 : 1,
             transform: animating
-              ? `translateX(${direction === "next" ? "40px" : "-40px"})`
+              ? `translateX(${direction === "next" ? "32px" : "-32px"})`
               : "translateX(0)",
           }}
         >
-          {/* Slide number badge */}
-          <div className="text-cyan-400/60 text-xs font-mono tracking-widest uppercase">
-            Слайд {slide.id} из {slides.length}
-          </div>
-
-          {/* Title */}
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white text-center leading-tight">
-            {slide.title}
-          </h1>
-
-          {/* Subtitle */}
-          {slide.subtitle && (
-            <p className="text-base md:text-xl text-white/60 text-center max-w-2xl">
-              {slide.subtitle}
-            </p>
-          )}
-
-          {/* Content */}
-          <div className="w-full mt-2">{slide.content}</div>
+          {slide.content}
         </div>
       </div>
 
-      {/* Bottom navigation */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-t border-white/10">
-        {/* Prev */}
+      {/* Bottom nav */}
+      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-t border-white/8 shrink-0">
         <button
           onClick={prev}
           disabled={current === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/8 transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm"
         >
           <Icon name="ChevronLeft" size={18} />
-          Назад
+          <span className="hidden sm:inline">Назад</span>
         </button>
 
-        {/* Dots */}
-        <div className="flex gap-2">
+        {/* Dots — show max 10 for small screens */}
+        <div className="flex gap-1.5 items-center">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i, i > current ? "next" : "prev")}
               className={`rounded-full transition-all ${
                 i === current
-                  ? "w-6 h-2 bg-cyan-400"
+                  ? "w-5 h-2 bg-cyan-400"
                   : "w-2 h-2 bg-white/20 hover:bg-white/40"
               }`}
             />
           ))}
         </div>
 
-        {/* Next */}
         <button
           onClick={next}
           disabled={current === slides.length - 1}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/8 transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm"
         >
-          Далее
+          <span className="hidden sm:inline">Далее</span>
           <Icon name="ChevronRight" size={18} />
         </button>
       </div>
