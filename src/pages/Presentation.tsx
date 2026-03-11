@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Icon from "@/components/ui/icon";
 
 interface Slide {
@@ -8,7 +8,7 @@ interface Slide {
 
 function SlideWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-6 text-center">
+    <div className="w-full max-w-3xl mx-auto flex flex-col items-center gap-4 md:gap-6 text-center">
       {children}
     </div>
   );
@@ -16,16 +16,24 @@ function SlideWrapper({ children }: { children: React.ReactNode }) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-400/40 rounded-full px-4 py-1">
+    <span className="inline-block text-[10px] md:text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-400/40 rounded-full px-3 py-0.5 md:px-4 md:py-1">
       {children}
     </span>
+  );
+}
+
+function H2({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+      {children}
+    </h2>
   );
 }
 
 function BigNumber({ value, label }: { value: string; label?: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="text-5xl md:text-7xl font-black text-cyan-400 leading-none">{value}</div>
+      <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-cyan-400 leading-none">{value}</div>
       {label && <div className="text-white/60 text-sm mt-2">{label}</div>}
     </div>
   );
@@ -33,10 +41,10 @@ function BigNumber({ value, label }: { value: string; label?: string }) {
 
 function CheckList({ items }: { items: string[] }) {
   return (
-    <ul className="flex flex-col gap-3 text-left w-full max-w-md mx-auto">
+    <ul className="flex flex-col gap-2 md:gap-3 text-left w-full max-w-md mx-auto">
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-3 text-white/90 text-base">
-          <Icon name="Check" size={18} className="text-cyan-400 mt-0.5 shrink-0" />
+        <li key={item} className="flex items-start gap-3 text-white/90 text-sm md:text-base">
+          <Icon name="Check" size={16} className="text-cyan-400 mt-0.5 shrink-0" />
           {item}
         </li>
       ))}
@@ -46,9 +54,9 @@ function CheckList({ items }: { items: string[] }) {
 
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="flex flex-col gap-3 text-left w-full max-w-md mx-auto">
+    <ul className="flex flex-col gap-2 md:gap-3 text-left w-full max-w-md mx-auto">
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-3 text-white/80 text-base">
+        <li key={item} className="flex items-start gap-3 text-white/80 text-sm md:text-base">
           <span className="text-cyan-400 mt-1 shrink-0">•</span>
           {item}
         </li>
@@ -90,10 +98,10 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Слайд 1 из 22</Tag>
-        <h1 className="text-5xl md:text-7xl font-black text-white leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
           Массо<span className="text-cyan-400">Про</span>
         </h1>
-        <p className="text-xl md:text-2xl text-white/70 max-w-xl">
+        <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-xl">
           Профессиональная система массажных услуг для салонов
         </p>
         <div className="flex flex-col sm:flex-row gap-3 text-white/80 text-base">
@@ -114,7 +122,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Проблема</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Почему массаж плохо продаётся в салонах</h2>
+        <H2>Почему массаж плохо продаётся в салонах</H2>
         <BulletList
           items={[
             "мастера работают по разным техникам",
@@ -138,8 +146,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Решение</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">МассоПро внедряет системный массажный сервис</h2>
-        <p className="text-white/60 text-lg">Салон получает:</p>
+        <H2>МассоПро внедряет системный массажный сервис</H2>
+        <p className="text-white/60 text-sm md:text-base">Салон получает:</p>
         <CheckList
           items={[
             "профессиональные техники",
@@ -159,8 +167,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Система</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Профессиональный протокол работы</h2>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-3 w-full">
+        <H2>Профессиональный протокол работы</H2>
+        <div className="grid grid-cols-5 gap-2 md:gap-3 w-full">
           {[
             { n: "1", t: "Диагностика клиента" },
             { n: "2", t: "Сбор анамнеза" },
@@ -168,9 +176,9 @@ const slides: Slide[] = [
             { n: "4", t: "Программа восстановления" },
             { n: "5", t: "Работа по протоколу" },
           ].map((s) => (
-            <div key={s.n} className="bg-white/8 border border-white/15 rounded-2xl p-4 flex flex-col items-center gap-2">
-              <div className="text-3xl font-black text-cyan-400">{s.n}</div>
-              <div className="text-white/80 text-sm text-center leading-snug">{s.t}</div>
+            <div key={s.n} className="bg-white/8 border border-white/15 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center gap-1 md:gap-2">
+              <div className="text-xl md:text-3xl font-black text-cyan-400">{s.n}</div>
+              <div className="text-white/80 text-[10px] md:text-sm text-center leading-snug">{s.t}</div>
             </div>
           ))}
         </div>
@@ -183,8 +191,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Возврат клиентов</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Почему клиенты возвращаются</h2>
-        <p className="text-white/60 text-lg">После первого сеанса клиент:</p>
+        <H2>Почему клиенты возвращаются</H2>
+        <p className="text-white/60 text-sm md:text-base">После первого сеанса клиент:</p>
         <BulletList
           items={[
             "чувствует реальный результат",
@@ -192,7 +200,7 @@ const slides: Slide[] = [
             "получает программу восстановления",
           ]}
         />
-        <p className="text-white/70 text-lg">Поэтому проходит <span className="text-white font-semibold">курс процедур</span>. Средний курс:</p>
+        <p className="text-white/70 text-sm md:text-base">Поэтому проходит <span className="text-white font-semibold">курс процедур</span>. Средний курс:</p>
         <BigNumber value="5–8" label="процедур" />
       </SlideWrapper>
     ),
@@ -203,7 +211,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Финансы</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Финансовая модель салона</h2>
+        <H2>Финансовая модель салона</H2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           <Card>
             <div className="text-white/60 text-sm mb-2">Средний чек процедуры</div>
@@ -228,7 +236,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Расчёт</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Доход одного массажиста</h2>
+        <H2>Доход одного массажиста</H2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           <Card>
             <div className="text-white/60 text-sm mb-2">Всего 2 клиента в день</div>
@@ -253,7 +261,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Доход салона</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Если салон получает 50%</h2>
+        <H2>Если салон получает 50%</H2>
         <BigNumber value="160 000 ₽" label="в месяц с одного мастера" />
       </SlideWrapper>
     ),
@@ -264,9 +272,9 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Масштаб</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">3 мастера в салоне</h2>
+        <H2>3 мастера в салоне</H2>
         <div className="flex flex-col items-center gap-2">
-          <p className="text-white/60 text-xl">160 000 × 3 =</p>
+          <p className="text-white/60 text-sm md:text-base lg:text-lg">160 000 × 3 =</p>
           <BigNumber value="480 000 ₽" label="в месяц" />
         </div>
       </SlideWrapper>
@@ -278,7 +286,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Реальный потенциал</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Если мастер принимает 3 клиента в день</h2>
+        <H2>Если мастер принимает 3 клиента в день</H2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           <Card>
             <div className="text-white/60 text-sm mb-2">Оборот массажиста</div>
@@ -300,9 +308,9 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Максимум</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Если мастеров 3</h2>
+        <H2>Если мастеров 3</H2>
         <div className="flex flex-col items-center gap-2">
-          <p className="text-white/60 text-xl">240 000 × 3 =</p>
+          <p className="text-white/60 text-sm md:text-base lg:text-lg">240 000 × 3 =</p>
           <BigNumber value="720 000 ₽" label="в месяц" />
         </div>
       </SlideWrapper>
@@ -314,7 +322,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Окупаемость</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Окупаемость внедрения</h2>
+        <H2>Окупаемость внедрения</H2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           <Card>
             <div className="text-cyan-400 font-bold text-sm uppercase tracking-wider mb-3">Базовый тариф</div>
@@ -336,7 +344,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Обучение</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Все тарифы включают обучение</h2>
+        <H2>Все тарифы включают обучение</H2>
         <BulletList
           items={[
             "диагностика клиента",
@@ -356,7 +364,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Тарифы</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Базовый</h2>
+        <H2>Тариф Базовый</H2>
         <Card>
           <div className="flex flex-col items-center gap-4">
             <div className="text-5xl font-black text-cyan-400">150 000 ₽</div>
@@ -383,7 +391,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Тарифы</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Расширенный</h2>
+        <H2>Тариф Расширенный</H2>
         <Card highlight>
           <div className="flex flex-col items-center gap-4">
             <div className="text-5xl font-black text-cyan-400">250 000 ₽</div>
@@ -410,7 +418,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Тарифы</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Тариф Полный</h2>
+        <H2>Тариф Полный</H2>
         <Card>
           <div className="flex flex-col items-center gap-4">
             <div className="text-white/60">Для салонов <span className="text-white font-semibold">от 3 специалистов</span></div>
@@ -435,8 +443,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Бонусы</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Дополнительные преимущества</h2>
-        <p className="text-white/60 text-lg">Все участники получают:</p>
+        <H2>Дополнительные преимущества</H2>
+        <p className="text-white/60 text-sm md:text-base">Все участники получают:</p>
         <CheckList
           items={[
             "доступ к онлайн курсам",
@@ -455,12 +463,12 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Индивидуальный подход</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Подбор услуг под мастеров</h2>
-        <p className="text-white/60 text-lg">Во время обучения анализируется:</p>
+        <H2>Подбор услуг под мастеров</H2>
+        <p className="text-white/60 text-sm md:text-base">Во время обучения анализируется:</p>
         <BulletList items={["уровень мастера", "навыки", "сильные стороны"]} />
         <div className="bg-cyan-500/15 border border-cyan-400/50 rounded-2xl px-8 py-5 mt-2">
-          <p className="text-white text-lg">После чего формируются</p>
-          <p className="text-2xl font-bold text-cyan-400 mt-1">уникальные услуги салона</p>
+          <p className="text-white text-sm md:text-base">После чего формируются</p>
+          <p className="text-xl md:text-2xl font-bold text-cyan-400 mt-1">уникальные услуги салона</p>
         </div>
       </SlideWrapper>
     ),
@@ -474,8 +482,8 @@ const slides: Slide[] = [
         <div className="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-400/60 flex items-center justify-center">
           <Icon name="User" size={36} className="text-cyan-400" />
         </div>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Сергей Водопьянов</h2>
-        <p className="text-white/60 text-lg">Основатель МассоПро</p>
+        <H2>Сергей Водопьянов</H2>
+        <p className="text-white/60 text-sm md:text-base">Основатель МассоПро</p>
         <BulletList
           items={[
             "практикующий специалист",
@@ -497,7 +505,7 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Преимущества</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">Почему выбирают МассоПро</h2>
+        <H2>Почему выбирают МассоПро</H2>
         <CheckList
           items={[
             "системный подход",
@@ -516,10 +524,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Главная идея</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white/70 leading-tight">
-          МассоПро — это не просто обучение.
-        </h2>
-        <p className="text-3xl md:text-5xl font-black text-white leading-tight max-w-2xl">
+        <H2>МассоПро — это не просто обучение.</H2>
+        <p className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight max-w-2xl">
           Это внедрение{" "}
           <span className="text-cyan-400">прибыльной системы</span>{" "}
           массажных услуг в салоне.
@@ -533,10 +539,8 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Финал</Tag>
-        <h2 className="text-3xl md:text-5xl font-black text-white">
-          Получите консультацию по внедрению МассоПро
-        </h2>
-        <p className="text-white/60 text-lg max-w-xl">
+        <H2>Получите консультацию по внедрению МассоПро</H2>
+        <p className="text-white/60 text-sm md:text-base max-w-xl">
           Ответим в течение 24 часов и подберём оптимальный формат для вашего салона
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-2">
@@ -558,6 +562,7 @@ export default function Presentation() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState<"next" | "prev">("next");
+  const touchStartX = useRef<number | null>(null);
 
   const goTo = useCallback(
     (index: number, dir: "next" | "prev") => {
@@ -590,6 +595,20 @@ export default function Presentation() {
     return () => window.removeEventListener("keydown", handler);
   }, [next, prev]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+  };
+
   const slide = slides[current];
   const progress = ((current + 1) / slides.length) * 100;
 
@@ -619,7 +638,11 @@ export default function Presentation() {
       </div>
 
       {/* Slide */}
-      <div className="flex-1 flex items-center justify-center px-4 md:px-12 py-8 overflow-hidden">
+      <div
+        className="flex-1 flex items-center justify-center px-4 md:px-12 py-6 md:py-8 overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           className="w-full transition-all duration-280"
           style={{
@@ -634,35 +657,42 @@ export default function Presentation() {
       </div>
 
       {/* Bottom nav */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-t border-white/8 shrink-0">
+      <div className="flex items-center justify-between px-3 md:px-8 py-3 md:py-4 border-t border-white/8 shrink-0 gap-3">
+        {/* Prev */}
         <button
           onClick={prev}
           disabled={current === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/8 transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm"
+          className="flex items-center gap-1.5 px-4 py-3 md:px-5 md:py-3 rounded-xl bg-white/8 hover:bg-white/15 active:bg-white/20 text-white/70 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm font-medium min-w-[80px] justify-center"
         >
           <Icon name="ChevronLeft" size={18} />
           <span className="hidden sm:inline">Назад</span>
         </button>
 
-        {/* Dots — show max 10 for small screens */}
-        <div className="flex gap-1.5 items-center">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i, i > current ? "next" : "prev")}
-              className={`rounded-full transition-all ${
-                i === current
-                  ? "w-5 h-2 bg-cyan-400"
-                  : "w-2 h-2 bg-white/20 hover:bg-white/40"
-              }`}
-            />
-          ))}
+        {/* Dots (compact on mobile — show only nearby) */}
+        <div className="flex gap-1.5 items-center overflow-hidden">
+          {slides.map((_, i) => {
+            const dist = Math.abs(i - current);
+            if (dist > 4) return null;
+            return (
+              <button
+                key={i}
+                onClick={() => goTo(i, i > current ? "next" : "prev")}
+                className={`rounded-full transition-all shrink-0 ${
+                  i === current
+                    ? "w-6 h-2.5 bg-cyan-400"
+                    : dist === 1 ? "w-2 h-2 bg-white/30 hover:bg-white/50"
+                    : "w-1.5 h-1.5 bg-white/15 hover:bg-white/30"
+                }`}
+              />
+            );
+          })}
         </div>
 
+        {/* Next */}
         <button
           onClick={next}
           disabled={current === slides.length - 1}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/8 transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm"
+          className="flex items-center gap-1.5 px-4 py-3 md:px-5 md:py-3 rounded-xl bg-cyan-500/80 hover:bg-cyan-400 active:bg-cyan-300 text-gray-900 font-semibold transition-all disabled:opacity-20 disabled:cursor-not-allowed text-sm min-w-[80px] justify-center"
         >
           <span className="hidden sm:inline">Далее</span>
           <Icon name="ChevronRight" size={18} />
