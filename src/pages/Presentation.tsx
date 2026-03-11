@@ -479,8 +479,12 @@ const slides: Slide[] = [
     content: (
       <SlideWrapper>
         <Tag>Эксперт</Tag>
-        <div className="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-400/60 flex items-center justify-center">
-          <Icon name="User" size={36} className="text-cyan-400" />
+        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-2 border-cyan-400/60 overflow-hidden shrink-0">
+          <img
+            src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/292aeb82-ac83-4cf8-8afb-e138f14f0180.png"
+            alt="Сергей Водопьянов"
+            className="w-full h-full object-cover object-top"
+          />
         </div>
         <H2>Сергей Водопьянов</H2>
         <p className="text-white/60 text-sm md:text-base">Основатель МассоПро</p>
