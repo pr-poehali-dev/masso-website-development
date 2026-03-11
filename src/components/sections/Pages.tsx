@@ -604,7 +604,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
       <section className="py-12 md:py-16 gradient-section">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <AnimatedSection>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">Станьте частью Массо<span className="text-white">ПРО</span></h2>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">Станьте частью Массо<span className="gradient-text">ПРО</span></h2>
             <CTAButton large onClick={() => onNavigate("contacts")}>Получить консультацию</CTAButton>
           </AnimatedSection>
         </div>
