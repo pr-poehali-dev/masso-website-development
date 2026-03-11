@@ -577,13 +577,16 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5">Команда</div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                   {[
-                    { role: "Основатель", exp: "15+ лет в индустрии красоты" },
-                    { role: "Главный эксперт", exp: "Сертифицированный преподаватель массажа" },
-                    { role: "Директор по развитию", exp: "Опыт работы с 50+ салонами" },
+                    { role: "Основатель", exp: "15+ лет в индустрии красоты", photo: "https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/292aeb82-ac83-4cf8-8afb-e138f14f0180.png" },
+                    { role: "Главный эксперт", exp: "Сертифицированный преподаватель массажа", photo: null },
+                    { role: "Директор по развитию", exp: "Опыт работы с 50+ салонами", photo: null },
                   ].map((member, i) => (
                     <div key={i} className="flex items-start gap-4">
-                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl gradient-bg flex items-center justify-center shrink-0 glow-cyan">
-                        <Icon name="User" size={22} style={{ color: "hsl(220, 30%, 6%)" }} />
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl overflow-hidden shrink-0 glow-cyan">
+                        {member.photo
+                          ? <img src={member.photo} alt={member.role} className="w-full h-full object-cover object-top" />
+                          : <div className="w-full h-full gradient-bg flex items-center justify-center"><Icon name="User" size={22} style={{ color: "hsl(220, 30%, 6%)" }} /></div>
+                        }
                       </div>
                       <div>
                         <div className="text-foreground font-body font-semibold text-sm mb-1">{member.role}</div>
