@@ -19,7 +19,7 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
               <Icon name="Waves" size={16} style={{ color: "hsl(220, 30%, 6%)" }} />
             </div>
             <span className="font-display text-xl font-bold text-foreground">
-              Masso<span className="gradient-text">PRO</span>
+              Массо<span className="gradient-text">ПРО</span>
             </span>
           </button>
 
@@ -85,7 +85,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 <Icon name="Waves" size={14} style={{ color: "hsl(220, 30%, 6%)" }} />
               </div>
               <span className="font-display text-lg font-bold text-foreground">
-                Masso<span className="gradient-text">PRO</span>
+                Массо<span className="gradient-text">ПРО</span>
               </span>
             </div>
             <p className="text-muted-foreground text-xs font-body max-w-xs leading-relaxed">

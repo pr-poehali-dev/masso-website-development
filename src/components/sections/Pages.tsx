@@ -115,8 +115,8 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
             </div>
 
             <h1 className="font-display text-6xl md:text-8xl font-bold leading-[0.95] mb-6 animate-fadeInUp" style={{ animationDelay: "0.1s" }}>
-              <span className="text-foreground">Masso</span>
-              <span className="gradient-text">PRO</span>
+              <span className="text-foreground">Массо</span>
+              <span className="gradient-text">ПРО</span>
             </h1>
 
             <p className="font-display text-2xl md:text-3xl text-foreground/70 font-light mb-4 animate-fadeInUp" style={{ animationDelay: "0.2s" }}>
