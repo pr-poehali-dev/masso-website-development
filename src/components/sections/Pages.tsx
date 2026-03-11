@@ -95,7 +95,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl animate-float" />
           <div className="absolute bottom-1/3 left-1/4 w-64 h-64 rounded-full bg-primary/8 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-          <div className="absolute top-20 left-1/2 w-px h-40 bg-gradient-to-b from-primary/40 to-transparent" />
+
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
           <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
             <defs>
