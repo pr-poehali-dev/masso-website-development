@@ -96,9 +96,9 @@ const BENEFITS = [
 ];
 
 const CALC_PLANS = [
-  { name: "Старт", price: 1490 },
-  { name: "Профи", price: 2990 },
-  { name: "Мастер", price: 4990 },
+  { name: "Базовый", price: 150000 },
+  { name: "Расширенный", price: 250000 },
+  { name: "Полный", price: 400000 },
 ];
 
 function Calculator() {
@@ -155,18 +155,12 @@ function Calculator() {
         display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16,
       }}>
         <div>
-          <div style={{ fontSize: 13, color: "#888", marginBottom: 4 }}>Ваш доход в месяц</div>
+          <div style={{ fontSize: 13, color: "#888", marginBottom: 4 }}>Ваша комиссия</div>
           <div style={{ fontFamily: "Cormorant, serif", fontSize: 48, fontWeight: 700, color: ACCENT, lineHeight: 1 }}>
             {monthly.toLocaleString("ru")} ₽
           </div>
           <div style={{ fontSize: 13, color: "#aaa", marginTop: 6 }}>
             {salons} салон{salons === 1 ? "" : salons < 5 ? "а" : "ов"} × {CALC_PLANS[planIdx].price.toLocaleString("ru")} ₽ × 10%
-          </div>
-        </div>
-        <div style={{ textAlign: "right" as const }}>
-          <div style={{ fontSize: 13, color: "#888", marginBottom: 4 }}>В год</div>
-          <div style={{ fontFamily: "Cormorant, serif", fontSize: 32, fontWeight: 700, color: "#1a1a1a" }}>
-            {(monthly * 12).toLocaleString("ru")} ₽
           </div>
         </div>
       </div>
