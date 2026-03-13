@@ -285,7 +285,7 @@ export default function Tarify() {
 
       {/* Hero */}
       <section style={{ paddingTop: 144, paddingBottom: 72 }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
             <div style={{
               display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em",
@@ -306,7 +306,7 @@ export default function Tarify() {
             </h1>
           </FadeIn>
           <FadeIn delay={200}>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", maxWidth: 580, margin: "0 auto 16px" }}>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", maxWidth: 580, marginBottom: 16 }}>
               Три формата внедрения МассоПро — выберите подходящий для вашего салона. Все тарифы включают обучение мастеров и доступ к онлайн-платформе.
             </p>
           </FadeIn>
