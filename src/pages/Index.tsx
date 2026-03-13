@@ -24,7 +24,7 @@ export default function Index() {
     home: <PageHome onNavigate={navigate} />,
     how: <PageHow onNavigate={navigate} />,
     salons: <PageSalons onNavigate={navigate} />,
-    catalog: <PageCatalog />,
+    catalog: <PageCatalog onNavigate={navigate} />,
     about: <PageAbout onNavigate={navigate} />,
     contacts: <PageContacts onNavigate={navigate} />,
     privacy: <PagePrivacy />,

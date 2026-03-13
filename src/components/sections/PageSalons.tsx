@@ -130,7 +130,7 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
 // ─── PageCatalog ──────────────────────────────────────────────────────────────
 
-export function PageCatalog() {
+export function PageCatalog({ onNavigate }: { onNavigate: (p: Page) => void }) {
   return (
     <div>
       <section className="pt-24 md:pt-32 pb-16 md:pb-24 gradient-hero min-h-screen flex items-center">
