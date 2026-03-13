@@ -2,7 +2,7 @@ import { ACCENT, ACCENT_DARK, ACCENT_SHADOW, ACCENT_SHADOW_HOVER, FadeIn } from 
 
 export default function PartnerHero() {
   return (
-    <section style={{ paddingTop: 80, paddingBottom: 0 }}>
+    <section style={{ paddingTop: 144, paddingBottom: 0 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 64, alignItems: "center" }}>
           <div>

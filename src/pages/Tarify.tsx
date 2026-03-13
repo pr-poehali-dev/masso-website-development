@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import DokFooter from "@/components/DokFooter";
+import DokNavbar from "@/components/DokNavbar";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -280,9 +281,10 @@ function ConsultForm() {
 export default function Tarify() {
   return (
     <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif", minHeight: "100vh" }}>
+      <DokNavbar />
 
       {/* Hero */}
-      <section style={{ paddingTop: 80, paddingBottom: 72 }}>
+      <section style={{ paddingTop: 144, paddingBottom: 72 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <FadeIn>
             <div style={{

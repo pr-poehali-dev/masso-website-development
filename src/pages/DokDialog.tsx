@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import DokFooter from "@/components/DokFooter";
+import DokNavbar from "@/components/DokNavbar";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -148,9 +149,10 @@ function ConsultForm() {
 export default function DokDialog() {
   return (
     <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif", minHeight: "100vh" }}>
+      <DokNavbar />
 
       {/* Hero */}
-      <section style={{ paddingTop: 0, paddingBottom: 80 }}>
+      <section style={{ paddingTop: 120, paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <div style={{
             display: "grid",
