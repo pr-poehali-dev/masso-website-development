@@ -38,17 +38,17 @@ export default function DokDialog() {
     <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section style={{ paddingTop: 40, paddingBottom: 80 }}>
+      <section style={{ paddingTop: 0, paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
             gap: 64,
-            alignItems: "center",
+            alignItems: "start",
           }}>
 
             {/* Left */}
-            <div>
+            <div style={{ paddingTop: 40 }}>
               <FadeIn delay={0}>
                 <div style={{
                   display: "inline-block",
@@ -131,7 +131,7 @@ export default function DokDialog() {
             </div>
 
             {/* Right — image */}
-            <FadeIn delay={150}>
+            <FadeIn delay={150} style={{ paddingTop: 40 }}>
               <div style={{
                 borderRadius: 24,
                 overflow: "hidden",
@@ -139,7 +139,7 @@ export default function DokDialog() {
                 aspectRatio: "4/5",
               }}>
                 <img
-                  src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/eb14bab8-7443-476d-b998-e554ced72794.jpg"
+                  src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/56f66ace-211a-4578-a447-96d5332b3eb0.jpg"
                   alt="Специалист Dok Диалог"
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
