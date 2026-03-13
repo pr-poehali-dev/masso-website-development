@@ -4,7 +4,7 @@ import { PageOffer } from "@/components/sections/PageOffer";
 
 export default function Offer() {
   return (
-    <div style={{ background: "#f8f8f6", minHeight: "100vh", fontFamily: "Montserrat, sans-serif" }}>
+    <div className="dark" style={{ minHeight: "100vh" }}>
       <DokNavbar />
       <div style={{ paddingTop: 80 }}>
         <PageOffer />
