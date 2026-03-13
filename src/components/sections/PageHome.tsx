@@ -27,7 +27,7 @@ function SectionHeader({ tag, title }: { tag: string; title: string }) {
 const SEND_CONTACT_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
 
 function ConsultForm({ onNavigate }: { onNavigate: (p: Page) => void }) {
-  const [form, setForm] = useState({ city: "", salon: "", hasМassage: "", masters: "" });
+  const [form, setForm] = useState({ city: "", salon: "", phone: "", email: "", hasМassage: "", masters: "" });
   const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ function ConsultForm({ onNavigate }: { onNavigate: (p: Page) => void }) {
         body: JSON.stringify({
           name: form.salon || "Не указано",
           contact: form.city || "—",
-          message: `Салон: ${form.salon || "—"}\nГород: ${form.city || "—"}\nМассаж в меню: ${massageLabel}\nМастеров: ${form.masters || "—"}`,
+          message: `Салон: ${form.salon || "—"}\nГород: ${form.city || "—"}\nТелефон: ${form.phone || "—"}\nEmail: ${form.email || "—"}\nМассаж в меню: ${massageLabel}\nМастеров: ${form.masters || "—"}`,
         }),
       });
       if (res.ok) setSent(true);
@@ -97,6 +97,28 @@ function ConsultForm({ onNavigate }: { onNavigate: (p: Page) => void }) {
             placeholder="Название вашего салона"
             value={form.salon}
             onChange={e => setForm(f => ({ ...f, salon: e.target.value }))}
+            className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="text-muted-foreground text-xs font-body uppercase tracking-wider mb-2 block">Телефон</label>
+          <input
+            type="tel"
+            placeholder="+7 (999) 000-00-00"
+            value={form.phone}
+            onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+            className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
+          />
+        </div>
+        <div>
+          <label className="text-muted-foreground text-xs font-body uppercase tracking-wider mb-2 block">Email</label>
+          <input
+            type="email"
+            placeholder="salon@example.com"
+            value={form.email}
+            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
             className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
           />
         </div>
