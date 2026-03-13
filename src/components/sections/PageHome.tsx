@@ -24,13 +24,38 @@ function SectionHeader({ tag, title }: { tag: string; title: string }) {
 
 // ─── ConsultForm ──────────────────────────────────────────────────────────────
 
-function ConsultForm() {
-  const [form, setForm] = useState({ city: "", salon: "", hasМassage: "", masters: "" });
-  const [sent, setSent] = useState(false);
+const SEND_CONTACT_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
 
-  const handleSubmit = (e: React.FormEvent) => {
+function ConsultForm({ onNavigate }: { onNavigate: (p: Page) => void }) {
+  const [form, setForm] = useState({ city: "", salon: "", hasМassage: "", masters: "" });
+  const [agreed, setAgreed] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    if (!agreed) { setError("Необходимо дать согласие"); return; }
+    setLoading(true);
+    setError("");
+    try {
+      const massageLabel = { yes: "Да, уже есть", no: "Нет, хотим добавить", partial: "Частично" }[form.hasМassage] || "—";
+      const res = await fetch(SEND_CONTACT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.salon || "Не указано",
+          contact: form.city || "—",
+          message: `Салон: ${form.salon || "—"}\nГород: ${form.city || "—"}\nМассаж в меню: ${massageLabel}\nМастеров: ${form.masters || "—"}`,
+        }),
+      });
+      if (res.ok) setSent(true);
+      else setError("Не удалось отправить. Попробуйте ещё раз.");
+    } catch {
+      setError("Ошибка сети. Проверьте подключение.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (sent) {
@@ -99,7 +124,22 @@ function ConsultForm() {
           className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
         />
       </div>
-      <CTAButton large>Отправить заявку</CTAButton>
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={e => setAgreed(e.target.checked)}
+          className="mt-0.5 w-4 h-4 shrink-0 accent-primary cursor-pointer"
+        />
+        <span className="text-muted-foreground text-xs font-body leading-relaxed">
+          Даю согласие с{" "}
+          <button type="button" onClick={() => onNavigate("privacy")} className="text-primary hover:underline">Политикой конфиденциальности</button>
+          {" "}и{" "}
+          <button type="button" onClick={() => onNavigate("offer")} className="text-primary hover:underline">Условиями оферты</button>
+        </span>
+      </label>
+      {error && <p className="text-red-400 text-xs font-body">{error}</p>}
+      <CTAButton large>{loading ? "Отправляем..." : "Отправить заявку"}</CTAButton>
     </form>
   );
 }
@@ -288,7 +328,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <p className="text-muted-foreground font-body text-sm">Ответим в течение 24 часов и подберём оптимальный формат для вашего салона</p>
               </div>
               <div className="gradient-card rounded-3xl p-6 sm:p-8 glow-cyan">
-                <ConsultForm />
+                <ConsultForm onNavigate={onNavigate} />
               </div>
             </AnimatedSection>
           </div>
