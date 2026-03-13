@@ -36,7 +36,7 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
           </div>
 
           <div className="hidden lg:block">
-            <CTAButton onClick={() => onNavigate("contacts")}>Консультация</CTAButton>
+            <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Консультация</CTAButton>
           </div>
 
           <button
