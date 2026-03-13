@@ -106,7 +106,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
         <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-muted-foreground text-xs font-body">
-          <span>© 2026 MassoPRO. Все права защищены.</span>
+          <span>© 2026 MassoPRO. Все права защищены.<br className="sm:hidden" /> ИП Водопьянов С.Г. ОГРНИП 321508100047334</span>
           <div className="flex gap-4">
             <button onClick={() => onNavigate("privacy")} className="hover:text-primary transition-colors">
               Политика конфиденциальности
