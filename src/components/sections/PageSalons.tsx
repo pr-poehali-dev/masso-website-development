@@ -102,8 +102,8 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
                   <span className="gradient-text">25%</span>, а возвратность клиентов увеличилась вдвое»
                 </blockquote>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center glow-cyan">
-                    <Icon name="User" size={20} style={{ color: "hsl(220, 30%, 6%)" }} />
+                  <div className="w-12 h-12 rounded-full overflow-hidden glow-cyan shrink-0">
+                    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/78b04f6f-e80e-4580-9eb1-581ee0c4065a.jpg" alt="Партнёр МассоПРО" className="w-full h-full object-cover object-top" />
                   </div>
                   <div>
                     <div className="text-foreground font-body font-semibold text-sm">Партнёр МассоПРО</div>
