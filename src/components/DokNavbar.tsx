@@ -71,6 +71,25 @@ export default function DokNavbar() {
             })}
           </div>
 
+          {/* Cabinet button */}
+          <a
+            href="https://school.brossok.ru/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="dok-nav-cabinet"
+            style={{
+              fontSize: 14, fontWeight: 600, color: "#fff",
+              background: ACCENT, textDecoration: "none",
+              padding: "8px 18px", borderRadius: 10,
+              transition: "all 0.2s ease",
+              whiteSpace: "nowrap" as const,
+            }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "hsl(185, 85%, 26%)"; el.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = ACCENT; el.style.transform = "translateY(0)"; }}
+          >
+            Личный кабинет
+          </a>
+
           {/* Mobile burger */}
           <button
             onClick={() => setMobileOpen(o => !o)}
