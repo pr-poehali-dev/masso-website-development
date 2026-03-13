@@ -216,7 +216,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <OutlineButton onClick={() => onNavigate("how")}>Как это работает</OutlineButton>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-xs sm:max-w-sm md:max-w-lg animate-fadeInUp" style={{ animationDelay: "0.5s" }}>
+              <div className="grid grid-cols-3 gap-3 md:gap-4 animate-fadeInUp" style={{ animationDelay: "0.5s" }}>
                 <StatBadge value="25%" label="рост среднего чека" />
                 <StatBadge value="4 шага" label="до старта" />
                 <StatBadge value="100%" label="под ключ" />
