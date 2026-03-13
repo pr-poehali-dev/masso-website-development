@@ -187,7 +187,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
               </p>
 
               <div className="flex flex-wrap gap-3 mb-10 md:mb-14 animate-fadeInUp" style={{ animationDelay: "0.4s" }}>
-                <CTAButton large onClick={() => onNavigate("contacts")}>Получить консультацию</CTAButton>
+                <CTAButton large onClick={() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" })}>Получить консультацию</CTAButton>
                 <OutlineButton onClick={() => onNavigate("how")}>Как это работает</OutlineButton>
               </div>
 
