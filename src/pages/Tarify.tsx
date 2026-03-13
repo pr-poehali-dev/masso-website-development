@@ -125,48 +125,21 @@ const FAQ = [
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 16,
-        overflow: "hidden",
-        boxShadow: "0 2px 16px rgba(0,0,0,0.05)",
-        transition: "box-shadow 0.2s",
-      }}
-    >
+    <div style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", transition: "box-shadow 0.2s" }}>
       <button
         onClick={() => setOpen(o => !o)}
         style={{
-          width: "100%",
-          textAlign: "left" as const,
-          background: "none",
-          border: "none",
-          padding: "22px 28px",
-          fontSize: 16,
-          fontWeight: 600,
-          color: "#1a1a1a",
-          cursor: "pointer",
-          fontFamily: "Montserrat, sans-serif",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 16,
+          width: "100%", textAlign: "left" as const, background: "none", border: "none",
+          padding: "18px 20px", fontSize: 15, fontWeight: 600, color: "#1a1a1a",
+          cursor: "pointer", fontFamily: "Montserrat, sans-serif",
+          display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12,
         }}
       >
         <span>{q}</span>
-        <span style={{
-          color: ACCENT,
-          fontSize: 22,
-          lineHeight: 1,
-          transition: "transform 0.2s",
-          transform: open ? "rotate(45deg)" : "rotate(0deg)",
-          flexShrink: 0,
-        }}>+</span>
+        <span style={{ color: ACCENT, fontSize: 20, lineHeight: 1, transition: "transform 0.2s", transform: open ? "rotate(45deg)" : "rotate(0deg)", flexShrink: 0 }}>+</span>
       </button>
       {open && (
-        <div style={{ padding: "0 28px 22px", fontSize: 15, color: "#5a5a5a", lineHeight: 1.7 }}>
-          {a}
-        </div>
+        <div style={{ padding: "0 20px 18px", fontSize: 14, color: "#5a5a5a", lineHeight: 1.7 }}>{a}</div>
       )}
     </div>
   );
@@ -186,14 +159,10 @@ function ConsultForm() {
 
   if (sent) {
     return (
-      <div style={{ textAlign: "center", padding: "48px 24px" }}>
+      <div style={{ textAlign: "center", padding: "32px 16px" }}>
         <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
-        <div style={{ fontFamily: "Cormorant, serif", fontSize: 28, fontWeight: 700, color: "#1a1a1a", marginBottom: 12 }}>
-          Заявка принята!
-        </div>
-        <p style={{ fontSize: 16, color: "#5a5a5a", lineHeight: 1.65 }}>
-          Мы свяжемся с вами в течение рабочего дня и расскажем всё о доступе к платформе.
-        </p>
+        <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(22px, 5vw, 28px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 12 }}>Заявка принята!</div>
+        <p style={{ fontSize: 15, color: "#5a5a5a", lineHeight: 1.65 }}>Мы свяжемся с вами в течение рабочего дня и расскажем всё о доступе к платформе.</p>
       </div>
     );
   }
@@ -202,45 +171,24 @@ function ConsultForm() {
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div>
         <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>Ваше имя</label>
-        <input
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="Мария Иванова"
-          required
-          style={{
-            width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0",
-            fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "Montserrat, sans-serif",
-          }}
+        <input value={name} onChange={e => setName(e.target.value)} placeholder="Мария Иванова" required
+          style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "Montserrat, sans-serif" }}
           onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
           onBlur={e => (e.currentTarget.style.borderColor = "#e0e0e0")}
         />
       </div>
       <div>
         <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>Телефон</label>
-        <input
-          value={phone}
-          onChange={e => setPhone(e.target.value)}
-          placeholder="+7 (___) ___-__-__"
-          required
-          style={{
-            width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0",
-            fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "Montserrat, sans-serif",
-          }}
+        <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 (___) ___-__-__" required
+          style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "Montserrat, sans-serif" }}
           onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
           onBlur={e => (e.currentTarget.style.borderColor = "#e0e0e0")}
         />
       </div>
       <div>
         <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>Интересующий тариф</label>
-        <select
-          value={plan}
-          onChange={e => setPlan(e.target.value)}
-          required
-          style={{
-            width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0",
-            fontSize: 15, outline: "none", background: "#fff", boxSizing: "border-box",
-            fontFamily: "Montserrat, sans-serif", color: plan ? "#1a1a1a" : "#999",
-          }}
+        <select value={plan} onChange={e => setPlan(e.target.value)} required
+          style={{ width: "100%", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #e0e0e0", fontSize: 15, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "Montserrat, sans-serif", color: plan ? "#1a1a1a" : "#999" }}
         >
           <option value="" disabled>Выберите тариф</option>
           <option value="Базовый">Базовый — 150 000 ₽</option>
@@ -248,32 +196,14 @@ function ConsultForm() {
           <option value="Полный">Полный — по запросу</option>
         </select>
       </div>
-      <button
-        type="submit"
-        style={{
-          marginTop: 8, background: ACCENT, color: "#fff", padding: "14px 28px",
-          borderRadius: 12, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer",
-          transition: "all 0.25s ease", boxShadow: `0 4px 20px ${ACCENT_SHADOW}`,
-          fontFamily: "Montserrat, sans-serif",
-        }}
-        onMouseEnter={e => {
-          const el = e.currentTarget as HTMLButtonElement;
-          el.style.background = ACCENT_DARK;
-          el.style.boxShadow = `0 8px 32px ${ACCENT_SHADOW_HOVER}`;
-          el.style.transform = "translateY(-2px)";
-        }}
-        onMouseLeave={e => {
-          const el = e.currentTarget as HTMLButtonElement;
-          el.style.background = ACCENT;
-          el.style.boxShadow = `0 4px 20px ${ACCENT_SHADOW}`;
-          el.style.transform = "translateY(0)";
-        }}
+      <button type="submit"
+        style={{ marginTop: 8, background: ACCENT, color: "#fff", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", transition: "all 0.25s ease", boxShadow: `0 4px 20px ${ACCENT_SHADOW}`, fontFamily: "Montserrat, sans-serif" }}
+        onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = ACCENT_DARK; el.style.boxShadow = `0 8px 32px ${ACCENT_SHADOW_HOVER}`; el.style.transform = "translateY(-2px)"; }}
+        onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = ACCENT; el.style.boxShadow = `0 4px 20px ${ACCENT_SHADOW}`; el.style.transform = "translateY(0)"; }}
       >
         Оставить заявку на консультацию
       </button>
-      <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>
-        Отправляя заявку, вы соглашаетесь на обработку персональных данных
-      </p>
+      <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>Отправляя заявку, вы соглашаетесь на обработку персональных данных</p>
     </form>
   );
 }
@@ -281,32 +211,63 @@ function ConsultForm() {
 export default function Tarify() {
   return (
     <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif", minHeight: "100vh" }}>
+      <style>{`
+        .tarify-plans-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
+          align-items: stretch;
+        }
+        .tarify-plan-card {
+          padding: 40px 32px;
+        }
+        .tarify-price {
+          font-size: 48px;
+        }
+        .tarify-split-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .tarify-split-col {
+          padding: 56px 48px;
+        }
+        @media (max-width: 640px) {
+          .tarify-plans-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .tarify-plan-card {
+            padding: 28px 20px;
+          }
+          .tarify-price {
+            font-size: 36px !important;
+          }
+          .tarify-split-grid {
+            grid-template-columns: 1fr;
+          }
+          .tarify-split-col {
+            padding: 32px 24px;
+          }
+        }
+      `}</style>
       <DokNavbar />
 
       {/* Hero */}
-      <section style={{ paddingTop: 144, paddingBottom: 72 }}>
+      <section style={{ paddingTop: 144, paddingBottom: 56 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
-            <div style={{
-              display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em",
-              textTransform: "uppercase" as const, color: ACCENT, marginBottom: 20,
-            }}>
-              Тарифы Док Диалог
+            <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 20 }}>
+              Тарифы Dok Диалог
             </div>
           </FadeIn>
           <FadeIn delay={100}>
-            <h1 style={{
-              fontFamily: "Cormorant, serif",
-              fontSize: "clamp(40px, 5vw, 64px)",
-              fontWeight: 700, lineHeight: 1.1, color: "#1a1a1a",
-              marginBottom: 24, letterSpacing: "-0.5px",
-            }}>
+            <h1 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 700, lineHeight: 1.1, color: "#1a1a1a", marginBottom: 20, letterSpacing: "-0.5px" }}>
               Выберите свой<br />
               <span style={{ color: ACCENT }}>план обучения</span>
             </h1>
           </FadeIn>
           <FadeIn delay={200}>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", maxWidth: 580, marginBottom: 16 }}>
+            <p style={{ fontSize: "clamp(15px, 2.5vw, 17px)", lineHeight: 1.75, color: "#5a5a5a", maxWidth: 580, marginBottom: 0 }}>
               Три формата внедрения МассоПро — выберите подходящий для вашего салона. Все тарифы включают обучение мастеров и доступ к онлайн-платформе.
             </p>
           </FadeIn>
@@ -314,65 +275,49 @@ export default function Tarify() {
       </section>
 
       {/* Plans */}
-      <section style={{ paddingBottom: 100 }}>
+      <section style={{ paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 24,
-            alignItems: "stretch",
-          }}>
+          <div className="tarify-plans-grid">
             {PLANS.map((plan, i) => (
-              <FadeIn key={i} delay={i * 120}>
-                <div style={{
-                  background: plan.color,
-                  borderRadius: 24,
-                  padding: "40px 32px",
-                  boxShadow: plan.name === "Расширенный"
-                    ? `0 24px 80px ${ACCENT_SHADOW}`
-                    : "0 4px 32px rgba(0,0,0,0.08)",
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
+              <FadeIn key={i} delay={i * 100}>
+                <div className="tarify-plan-card" style={{
+                  background: plan.color, borderRadius: 24,
+                  boxShadow: plan.name === "Расширенный" ? `0 24px 80px ${ACCENT_SHADOW}` : "0 4px 32px rgba(0,0,0,0.08)",
+                  display: "flex", flexDirection: "column", height: "100%",
                   position: "relative" as const,
-                  transform: plan.name === "Расширенный" ? "scale(1.03)" : "scale(1)",
+                  transform: plan.name === "Расширенный" ? "scale(1.02)" : "scale(1)",
                   boxSizing: "border-box",
                 }}>
                   {plan.badge && (
                     <div style={{
                       position: "absolute" as const, top: -14, left: "50%", transform: "translateX(-50%)",
-                      background: "#fff", color: ACCENT, fontSize: 12, fontWeight: 700,
+                      background: "#fff", color: ACCENT, fontSize: 11, fontWeight: 700,
                       letterSpacing: "0.12em", textTransform: "uppercase" as const,
-                      padding: "6px 20px", borderRadius: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+                      padding: "6px 18px", borderRadius: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+                      whiteSpace: "nowrap" as const,
                     }}>
                       {plan.badge}
                     </div>
                   )}
 
                   <div style={{ marginBottom: 8 }}>
-                    <div style={{ fontFamily: "Cormorant, serif", fontSize: 30, fontWeight: 700, color: plan.textColor, marginBottom: 4 }}>
-                      {plan.name}
-                    </div>
-                    <div style={{ fontSize: 13, color: plan.textColor, opacity: 0.65, lineHeight: 1.5 }}>
-                      {plan.note}
-                    </div>
+                    <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(24px, 3vw, 30px)", fontWeight: 700, color: plan.textColor, marginBottom: 4 }}>{plan.name}</div>
+                    <div style={{ fontSize: 13, color: plan.textColor, opacity: 0.65, lineHeight: 1.5 }}>{plan.note}</div>
                   </div>
 
-                  <div style={{ margin: "28px 0", borderTop: `1px solid ${plan.textColor === "#fff" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)"}` }} />
+                  <div style={{ margin: "20px 0", borderTop: `1px solid ${plan.textColor === "#fff" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)"}` }} />
 
-                  <div style={{ marginBottom: 28 }}>
-                    <span style={{ fontFamily: "Cormorant, serif", fontSize: 48, fontWeight: 700, color: plan.textColor, lineHeight: 1 }}>
+                  <div style={{ marginBottom: 24 }}>
+                    <span className="tarify-price" style={{ fontFamily: "Cormorant, serif", fontWeight: 700, color: plan.textColor, lineHeight: 1 }}>
                       {plan.price}{plan.period ? " ₽" : ""}
                     </span>
-                    <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.6, marginLeft: 4 }}>
-                      {plan.period}
-                    </span>
+                    <span style={{ fontSize: 13, color: plan.textColor, opacity: 0.6, marginLeft: 4 }}>{plan.period}</span>
                   </div>
 
-                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
+                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 28px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
                     {plan.features.map((f, fi) => (
                       <li key={fi} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                        <span style={{ color: plan.name === "Расширенный" ? "#fff" : ACCENT, fontWeight: 700, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
+                        <span style={{ color: plan.name === "Расширенный" ? "#fff" : ACCENT, fontWeight: 700, fontSize: 15, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
                         <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.9, lineHeight: 1.55 }}>{f}</span>
                       </li>
                     ))}
@@ -383,20 +328,11 @@ export default function Tarify() {
                       background: plan.ctaStyle === "outline" ? "transparent" : plan.name === "Расширенный" ? "#fff" : ACCENT,
                       color: plan.ctaStyle === "outline" ? "#1a1a1a" : plan.name === "Расширенный" ? ACCENT : "#fff",
                       border: plan.ctaStyle === "outline" ? "2px solid #d0d0d0" : "none",
-                      padding: "14px 24px", borderRadius: 12, fontSize: 14, fontWeight: 600,
-                      cursor: "pointer", fontFamily: "Montserrat, sans-serif",
-                      transition: "all 0.2s ease", letterSpacing: "0.02em",
+                      padding: "13px 20px", borderRadius: 12, fontSize: 14, fontWeight: 600,
+                      cursor: "pointer", fontFamily: "Montserrat, sans-serif", transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLButtonElement;
-                      el.style.opacity = "0.85";
-                      el.style.transform = "translateY(-1px)";
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLButtonElement;
-                      el.style.opacity = "1";
-                      el.style.transform = "translateY(0)";
-                    }}
+                    onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.opacity = "0.85"; el.style.transform = "translateY(-1px)"; }}
+                    onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.opacity = "1"; el.style.transform = "translateY(0)"; }}
                   >
                     {plan.cta}
                   </button>
@@ -408,52 +344,35 @@ export default function Tarify() {
       </section>
 
       {/* Private practice */}
-      <section style={{ paddingBottom: 100 }}>
+      <section style={{ paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
-            <div style={{
-              background: "#fff",
-              borderRadius: 32,
-              overflow: "hidden",
-              boxShadow: "0 8px 48px rgba(0,0,0,0.08)",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            }}>
-              <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{
-                  display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em",
-                  textTransform: "uppercase" as const, color: ACCENT, marginBottom: 20,
-                }}>
+            <div style={{ background: "#fff", borderRadius: 28, overflow: "hidden", boxShadow: "0 8px 48px rgba(0,0,0,0.08)" }} className="tarify-split-grid">
+              <div className="tarify-split-col" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 20 }}>
                   Частная практика
                 </div>
-                <h2 style={{
-                  fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 3.5vw, 42px)",
-                  fontWeight: 700, color: "#1a1a1a", marginBottom: 20, lineHeight: 1.2,
-                }}>
+                <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(26px, 3.5vw, 42px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 20, lineHeight: 1.2 }}>
                   Работаете<br />на себя?
                 </h2>
-                <p style={{ fontSize: 16, lineHeight: 1.75, color: "#5a5a5a", marginBottom: 16 }}>
+                <p style={{ fontSize: "clamp(14px, 2vw, 16px)", lineHeight: 1.75, color: "#5a5a5a", marginBottom: 16 }}>
                   Платформа Dok Диалог создана для мастеров салонов и студий системы МассоПро. Но если вы ведёте <strong>частную практику</strong> и хотите профессионально расти — мы готовы рассмотреть вашу заявку.
                 </p>
-                <p style={{ fontSize: 16, lineHeight: 1.75, color: "#5a5a5a", marginBottom: 0 }}>
+                <p style={{ fontSize: "clamp(14px, 2vw, 16px)", lineHeight: 1.75, color: "#5a5a5a", marginBottom: 0 }}>
                   Доступ к платформе предоставляется при <strong>наличии активной подписки</strong> на один из тарифов. Оставьте заявку — мы проконсультируем и поможем выбрать оптимальный план.
                 </p>
-                <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 10 }}>
                   {["Онлайн-обучение в любое удобное время", "Актуальные техники и протоколы", "Поддержка профессионального сообщества"].map((item, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ color: ACCENT, fontWeight: 700, fontSize: 16 }}>✓</span>
-                      <span style={{ fontSize: 15, color: "#3a3a3a" }}>{item}</span>
+                      <span style={{ color: ACCENT, fontWeight: 700, fontSize: 15 }}>✓</span>
+                      <span style={{ fontSize: 14, color: "#3a3a3a" }}>{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div style={{ background: "#f8f8f6", padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ fontFamily: "Cormorant, serif", fontSize: 26, fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>
-                  Оставить заявку
-                </div>
-                <p style={{ fontSize: 14, color: "#888", marginBottom: 28, lineHeight: 1.55 }}>
-                  Заполните форму, и мы свяжемся с вами для консультации. Доступ предоставляется при покупке любого тарифа.
-                </p>
+              <div className="tarify-split-col" style={{ background: "#f8f8f6", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(22px, 3vw, 26px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>Оставить заявку</div>
+                <p style={{ fontSize: 14, color: "#888", marginBottom: 28, lineHeight: 1.55 }}>Заполните форму, и мы свяжемся с вами для консультации. Доступ предоставляется при покупке любого тарифа.</p>
                 <ConsultForm />
               </div>
             </div>
@@ -462,22 +381,19 @@ export default function Tarify() {
       </section>
 
       {/* FAQ */}
-      <section style={{ paddingBottom: 120 }}>
+      <section style={{ paddingBottom: 100 }}>
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
-            <div style={{ textAlign: "center", marginBottom: 48 }}>
-              <div style={{
-                display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em",
-                textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16,
-              }}>
+            <div style={{ marginBottom: 40 }}>
+              <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16 }}>
                 Вопросы и ответы
               </div>
-              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: "#1a1a1a", margin: 0 }}>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(26px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", margin: 0 }}>
                 Частые вопросы
               </h2>
             </div>
           </FadeIn>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {FAQ.map((item, i) => (
               <FadeIn key={i} delay={i * 80}>
                 <FaqItem q={item.q} a={item.a} />

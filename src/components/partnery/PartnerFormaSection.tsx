@@ -91,23 +91,35 @@ function PartnerForm() {
 export default function PartnerFormaSection() {
   return (
     <>
+      <style>{`
+        .pf-forma-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .pf-forma-left { padding: 56px 48px; }
+        .pf-forma-right { padding: 56px 48px; }
+        .pf-cabinet { padding: 48px 40px; }
+        @media (max-width: 640px) {
+          .pf-forma-grid { grid-template-columns: 1fr; }
+          .pf-forma-left { padding: 32px 24px; }
+          .pf-forma-right { padding: 32px 24px; }
+          .pf-cabinet { padding: 32px 24px; }
+        }
+      `}</style>
+
       {/* Forma */}
-      <section id="forma" style={{ paddingBottom: 100 }}>
+      <section id="forma" style={{ paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
-            <div style={{
-              background: "#fff", borderRadius: 32, overflow: "hidden",
-              boxShadow: "0 8px 48px rgba(0,0,0,0.08)",
-              display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            }}>
-              <div style={{ background: ACCENT, padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: "#fff", marginBottom: 24, lineHeight: 1.2 }}>
+            <div style={{ background: "#fff", borderRadius: 28, overflow: "hidden", boxShadow: "0 8px 48px rgba(0,0,0,0.08)" }} className="pf-forma-grid">
+              <div className="pf-forma-left" style={{ background: ACCENT, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 700, color: "#fff", marginBottom: 20, lineHeight: 1.2 }}>
                   Станьте партнёром<br />Dok Диалог
                 </div>
-                <p style={{ fontSize: 16, color: "rgba(255,255,255,0.85)", lineHeight: 1.7, marginBottom: 36 }}>
+                <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "rgba(255,255,255,0.85)", lineHeight: 1.7, marginBottom: 28 }}>
                   Оставьте заявку — мы свяжемся с вами, расскажем об условиях программы и выдадим ваш уникальный промокод.
                 </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   {[
                     "Бесплатное подключение",
                     "Промокод с первого дня",
@@ -115,14 +127,14 @@ export default function PartnerFormaSection() {
                     "Выплаты без задержек",
                   ].map((item, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ background: "rgba(255,255,255,0.2)", borderRadius: "50%", width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: "#fff", flexShrink: 0 }}>✓</span>
-                      <span style={{ fontSize: 15, color: "rgba(255,255,255,0.9)" }}>{item}</span>
+                      <span style={{ background: "rgba(255,255,255,0.2)", borderRadius: "50%", width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: "#fff", flexShrink: 0 }}>✓</span>
+                      <span style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ fontFamily: "Cormorant, serif", fontSize: 28, fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>
+              <div className="pf-forma-right" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(22px, 3vw, 28px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>
                   Заявка на партнёрство
                 </div>
                 <p style={{ fontSize: 14, color: "#888", marginBottom: 28, lineHeight: 1.55 }}>
@@ -136,35 +148,21 @@ export default function PartnerFormaSection() {
       </section>
 
       {/* Cabinet CTA */}
-      <section id="kabinet" style={{ paddingBottom: 120 }}>
+      <section id="kabinet" style={{ paddingBottom: 100 }}>
         <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <FadeIn>
-            <div style={{ background: "#1a1a1a", borderRadius: 28, padding: "56px 48px", boxShadow: "0 16px 64px rgba(0,0,0,0.15)" }}>
-              <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(26px, 4vw, 40px)", fontWeight: 700, color: "#fff", marginBottom: 16 }}>
+            <div className="pf-cabinet" style={{ background: "#1a1a1a", borderRadius: 24, boxShadow: "0 16px 64px rgba(0,0,0,0.15)" }}>
+              <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(24px, 4vw, 40px)", fontWeight: 700, color: "#fff", marginBottom: 16 }}>
                 Уже являетесь партнёром?
               </div>
-              <p style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: 36 }}>
+              <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: 28 }}>
                 Войдите в личный кабинет, чтобы отслеживать активации промокода, начисленные комиссии и историю выплат.
               </p>
               <a
                 href="#"
-                style={{
-                  display: "inline-block", background: "#fff", color: "#1a1a1a",
-                  padding: "16px 40px", borderRadius: 12, fontSize: 15, fontWeight: 700,
-                  textDecoration: "none", transition: "all 0.25s ease",
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = ACCENT;
-                  el.style.color = "#fff";
-                  el.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = "#fff";
-                  el.style.color = "#1a1a1a";
-                  el.style.transform = "translateY(0)";
-                }}
+                style={{ display: "inline-block", background: "#fff", color: "#1a1a1a", padding: "14px 36px", borderRadius: 12, fontSize: 15, fontWeight: 700, textDecoration: "none", transition: "all 0.25s ease" }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = ACCENT; el.style.color = "#fff"; el.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#fff"; el.style.color = "#1a1a1a"; el.style.transform = "translateY(0)"; }}
               >
                 Войти в кабинет →
               </a>
