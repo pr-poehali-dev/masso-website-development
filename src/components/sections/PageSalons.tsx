@@ -142,13 +142,15 @@ export function PageCatalog() {
             <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-foreground mb-4 md:mb-6">
               Каталог <span className="gradient-text">студий</span>
             </h1>
-            <p className="font-body text-muted-foreground text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 md:mb-8">
+            <p className="font-body text-muted-foreground text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-4">
               Каталог сертифицированных студий откроется после формирования сети партнёрских салонов.
             </p>
-            <div className="inline-flex items-center gap-3 bg-secondary border border-border rounded-2xl px-5 py-3 md:px-6 md:py-4">
-              <div className="w-3 h-3 rounded-full bg-gold animate-pulse" />
-              <span className="text-muted-foreground font-body text-sm">Будет доступен позже</span>
-            </div>
+            <p className="font-body text-foreground font-semibold text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 md:mb-8">
+              Мы подключаем ограниченное количество салонов в каждом городе — 3–5 студий на город.
+            </p>
+            <CTAButton onClick={() => onNavigate("contact")} className="mb-4">
+              Оставить заявку
+            </CTAButton>
 
             <div className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto opacity-25 pointer-events-none select-none">
               {["А", "Б", "В"].map((_, i) => (
