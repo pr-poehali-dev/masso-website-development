@@ -176,7 +176,7 @@ export function PageContacts() {
               <div className="space-y-4">
                 {[
                   { icon: "Phone", label: "Телефон", value: "+7 (902) 900-74-74", sub: "Пн–Пт, 9:00–18:00" },
-                  { icon: "Mail", label: "Email", value: "info@massopro.ru", sub: "Ответим в течение 24ч" },
+                  { icon: "Mail", label: "Email", value: "massopro@mail.ru", sub: "Ответим в течение 24ч" },
                   { icon: "MessageCircle", label: "Telegram", value: "@SergeuVodopianov", sub: "Быстрый ответ" },
                   { icon: "Instagram", label: "Instagram", value: "@massopro.ru", sub: "Кейсы и новости" },
                 ].map((contact, i) => (
