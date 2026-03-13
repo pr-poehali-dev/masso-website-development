@@ -41,59 +41,63 @@ const ACCENT_SHADOW_HOVER = "hsla(185, 85%, 32%, 0.45)";
 
 const PLANS = [
   {
-    name: "Старт",
-    price: "1 490",
-    period: "/ месяц",
+    name: "Базовый",
+    price: "150 000",
+    period: "/ внедрение",
     badge: null,
     color: "#fff",
     textColor: "#1a1a1a",
     features: [
-      "Доступ к базовым курсам платформы",
-      "Методические материалы и гайды",
-      "Протоколы массажных техник",
-      "Обновления материалов 1 раз в месяц",
-      "Поддержка по email",
+      "Для салонов до 3 мастеров",
+      "Медицинский массаж",
+      "Висцеральный массаж",
+      "Остеопатические техники",
+      "Коррекция фигуры без масла",
+      "Диагностика и протоколы работы",
+      "Доступ к онлайн-курсам платформы",
     ],
-    note: "Для специалистов, только начинающих работу с МассоПро",
-    cta: "Начать обучение",
+    note: "Для салонов, только начинающих внедрение МассоПро",
+    cta: "Выбрать Базовый",
     ctaStyle: "outline",
   },
   {
-    name: "Профи",
-    price: "2 990",
-    period: "/ месяц",
+    name: "Расширенный",
+    price: "250 000",
+    period: "/ внедрение",
     badge: "Популярный",
     color: ACCENT,
     textColor: "#fff",
     features: [
-      "Все курсы платформы без ограничений",
-      "Живые онлайн-разборы с экспертами",
-      "Доступ к закрытому сообществу",
-      "Сертификаты о прохождении курсов",
-      "Обновления материалов в реальном времени",
-      "Приоритетная поддержка",
+      "Для салонов до 3 мастеров",
+      "Все техники Базового тарифа",
+      "Регуляция ВНС",
+      "Работа с ВНЧС",
+      "Доступ к чату специалистов",
+      "Участие в вебинарах",
+      "Поддержка специалистов",
     ],
-    note: "Для специалистов, нацеленных на профессиональный рост",
-    cta: "Выбрать Профи",
+    note: "Для салонов, нацеленных на профессиональный рост",
+    cta: "Выбрать Расширенный",
     ctaStyle: "filled",
   },
   {
-    name: "Мастер",
-    price: "4 990",
-    period: "/ месяц",
+    name: "Полный",
+    price: "По запросу",
+    period: "",
     badge: null,
     color: "#1a1a1a",
     textColor: "#fff",
     features: [
-      "Всё из тарифа Профи",
-      "Персональная обратная связь куратора",
-      "Разбор кейсов из вашей практики",
+      "Для салонов от 3 специалистов",
+      "Все техники Расширенного тарифа",
+      "Краниосакральные техники",
+      "Курс по онлайн-рекламе",
+      "Доступ ко всем онлайн-курсам",
+      "Внедрение услуг под конкретных мастеров",
       "Приоритетная поддержка 24/7",
-      "Доступ к архиву всех мероприятий",
-      "Диплом специалиста МассоПро",
     ],
     note: "Для мастеров, стремящихся к экспертному уровню",
-    cta: "Стать Мастером",
+    cta: "Получить предложение",
     ctaStyle: "filled",
   },
 ];
@@ -238,9 +242,9 @@ function ConsultForm() {
           }}
         >
           <option value="" disabled>Выберите тариф</option>
-          <option value="Старт">Старт — 1 490 ₽/мес</option>
-          <option value="Профи">Профи — 2 990 ₽/мес</option>
-          <option value="Мастер">Мастер — 4 990 ₽/мес</option>
+          <option value="Базовый">Базовый — 150 000 ₽</option>
+          <option value="Расширенный">Расширенный — 250 000 ₽</option>
+          <option value="Полный">Полный — по запросу</option>
         </select>
       </div>
       <button
@@ -301,7 +305,7 @@ export default function Tarify() {
           </FadeIn>
           <FadeIn delay={200}>
             <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", maxWidth: 580, margin: "0 auto 16px" }}>
-              Все тарифы дают доступ к онлайн-платформе Dok Диалог. Подписка ежемесячная — без скрытых платежей и долгосрочных обязательств.
+              Три формата внедрения МассоПро — выберите подходящий для вашего салона. Все тарифы включают обучение мастеров и доступ к онлайн-платформе.
             </p>
           </FadeIn>
         </div>
@@ -322,14 +326,14 @@ export default function Tarify() {
                   background: plan.color,
                   borderRadius: 24,
                   padding: "40px 32px",
-                  boxShadow: plan.name === "Профи"
+                  boxShadow: plan.name === "Расширенный"
                     ? `0 24px 80px ${ACCENT_SHADOW}`
                     : "0 4px 32px rgba(0,0,0,0.08)",
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
                   position: "relative" as const,
-                  transform: plan.name === "Профи" ? "scale(1.03)" : "scale(1)",
+                  transform: plan.name === "Расширенный" ? "scale(1.03)" : "scale(1)",
                   boxSizing: "border-box",
                 }}>
                   {plan.badge && (
@@ -356,7 +360,7 @@ export default function Tarify() {
 
                   <div style={{ marginBottom: 28 }}>
                     <span style={{ fontFamily: "Cormorant, serif", fontSize: 48, fontWeight: 700, color: plan.textColor, lineHeight: 1 }}>
-                      {plan.price} ₽
+                      {plan.price}{plan.period ? " ₽" : ""}
                     </span>
                     <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.6, marginLeft: 4 }}>
                       {plan.period}
@@ -366,7 +370,7 @@ export default function Tarify() {
                   <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
                     {plan.features.map((f, fi) => (
                       <li key={fi} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                        <span style={{ color: plan.name === "Профи" ? "#fff" : ACCENT, fontWeight: 700, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
+                        <span style={{ color: plan.name === "Расширенный" ? "#fff" : ACCENT, fontWeight: 700, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
                         <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.9, lineHeight: 1.55 }}>{f}</span>
                       </li>
                     ))}
@@ -374,8 +378,8 @@ export default function Tarify() {
 
                   <button
                     style={{
-                      background: plan.ctaStyle === "outline" ? "transparent" : plan.name === "Профи" ? "#fff" : ACCENT,
-                      color: plan.ctaStyle === "outline" ? "#1a1a1a" : plan.name === "Профи" ? ACCENT : "#fff",
+                      background: plan.ctaStyle === "outline" ? "transparent" : plan.name === "Расширенный" ? "#fff" : ACCENT,
+                      color: plan.ctaStyle === "outline" ? "#1a1a1a" : plan.name === "Расширенный" ? ACCENT : "#fff",
                       border: plan.ctaStyle === "outline" ? "2px solid #d0d0d0" : "none",
                       padding: "14px 24px", borderRadius: 12, fontSize: 14, fontWeight: 600,
                       cursor: "pointer", fontFamily: "Montserrat, sans-serif",
