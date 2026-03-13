@@ -11,6 +11,8 @@ import DokDialog from "./pages/DokDialog";
 import Tarify from "./pages/Tarify";
 import Partnery from "./pages/Partnery";
 import Kontakty from "./pages/Kontakty";
+import Privacy from "./pages/Privacy";
+import Offer from "./pages/Offer";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/tarify" element={<Tarify />} />
           <Route path="/partnery" element={<Partnery />} />
           <Route path="/kontakty" element={<Kontakty />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/offer" element={<Offer />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
