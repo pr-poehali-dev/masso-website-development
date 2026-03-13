@@ -94,6 +94,7 @@ function MessageForm() {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -101,6 +102,7 @@ function MessageForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !contact.trim() || !message.trim()) return;
+    if (!agreed) { setError("Необходимо дать согласие"); return; }
     setLoading(true);
     setError("");
     try {
@@ -170,7 +172,12 @@ function MessageForm() {
         {loading ? "Отправляем..." : "Отправить сообщение"}
       </button>
       {error && <p style={{ margin: 0, fontSize: 13, color: "#e53e3e", textAlign: "center" }}>{error}</p>}
-      <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>Отправляя сообщение, вы соглашаетесь на обработку персональных данных</p>
+      <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+        <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: 2, width: 16, height: 16, accentColor: ACCENT, flexShrink: 0, cursor: "pointer" }} />
+        <span style={{ fontSize: 12, color: "#666", lineHeight: 1.6 }}>
+          Я согласен с <a href="/privacy" style={{ color: ACCENT }} target="_blank">политикой конфиденциальности</a> и <a href="/offer" style={{ color: ACCENT }} target="_blank">офертой</a>
+        </span>
+      </label>
     </form>
   );
 }

@@ -46,6 +46,7 @@ function ConsultForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [plan, setPlan] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -53,6 +54,7 @@ function ConsultForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || !plan) return;
+    if (!agreed) { setError("Необходимо дать согласие"); return; }
     setLoading(true);
     setError("");
     try {
@@ -113,15 +115,20 @@ function ConsultForm() {
           <option value="Полный">Полный — по запросу</option>
         </select>
       </div>
+      <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+        <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: 2, width: 16, height: 16, accentColor: ACCENT, flexShrink: 0, cursor: "pointer" }} />
+        <span style={{ fontSize: 12, color: "#666", lineHeight: 1.6 }}>
+          Я согласен с <a href="/privacy" style={{ color: ACCENT }} target="_blank">политикой конфиденциальности</a> и <a href="/offer" style={{ color: ACCENT }} target="_blank">офертой</a>
+        </span>
+      </label>
       <button type="submit"
-        style={{ marginTop: 8, background: ACCENT, color: "#fff", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", transition: "all 0.25s ease", boxShadow: `0 4px 20px ${ACCENT_SHADOW}`, fontFamily: "Montserrat, sans-serif" }}
+        style={{ marginTop: 4, background: ACCENT, color: "#fff", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", transition: "all 0.25s ease", boxShadow: `0 4px 20px ${ACCENT_SHADOW}`, fontFamily: "Montserrat, sans-serif" }}
         onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = ACCENT_DARK; el.style.boxShadow = `0 8px 32px ${ACCENT_SHADOW_HOVER}`; el.style.transform = "translateY(-2px)"; }}
         onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = ACCENT; el.style.boxShadow = `0 4px 20px ${ACCENT_SHADOW}`; el.style.transform = "translateY(0)"; }}
       >
         {loading ? "Отправляем..." : "Оставить заявку на консультацию"}
       </button>
       {error && <p style={{ margin: 0, fontSize: 13, color: "#e53e3e", textAlign: "center" }}>{error}</p>}
-      <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>Отправляя заявку, вы соглашаетесь на обработку персональных данных</p>
     </form>
   );
 }
