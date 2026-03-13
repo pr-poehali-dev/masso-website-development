@@ -73,7 +73,7 @@ export default function DokDialog() {
                   marginBottom: 32,
                   letterSpacing: "-0.5px",
                 }}>
-                  Dok{" "}
+                  Док{" "}
                   <span style={{ color: "hsl(185, 85%, 32%)" }}>Диалог</span>
 
                 </h1>
