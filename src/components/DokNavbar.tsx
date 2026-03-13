@@ -87,7 +87,7 @@ export default function DokNavbar() {
             onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "hsl(185, 85%, 26%)"; el.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = ACCENT; el.style.transform = "translateY(0)"; }}
           >
-            Личный кабинет
+            Войти
           </a>
 
           {/* Mobile burger */}
