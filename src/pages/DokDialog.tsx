@@ -33,6 +33,209 @@ function FadeIn({ children, delay = 0, style = {} }: { children: React.ReactNode
   );
 }
 
+const ACCENT = "hsl(185, 85%, 32%)";
+const ACCENT_DARK = "hsl(185, 85%, 26%)";
+const ACCENT_SHADOW = "hsla(185, 85%, 32%, 0.3)";
+const ACCENT_SHADOW_HOVER = "hsla(185, 85%, 32%, 0.45)";
+
+const PLANS = [
+  {
+    name: "Старт",
+    price: "1 490",
+    period: "/ месяц",
+    badge: null,
+    color: "#fff",
+    textColor: "#1a1a1a",
+    features: [
+      "Доступ к базовым курсам",
+      "Методические материалы",
+      "Протоколы массажных техник",
+      "Обновления 1 раз в месяц",
+    ],
+    note: "Для специалистов, только начинающих в МассоПро",
+    cta: "Выбрать тариф",
+    ctaStyle: "outline",
+  },
+  {
+    name: "Профи",
+    price: "2 990",
+    period: "/ месяц",
+    badge: "Популярный",
+    color: ACCENT,
+    textColor: "#fff",
+    features: [
+      "Все курсы платформы",
+      "Живые онлайн-разборы с экспертами",
+      "Доступ к закрытому сообществу",
+      "Сертификаты о прохождении",
+      "Обновления в режиме реального времени",
+    ],
+    note: "Для специалистов, стремящихся к росту",
+    cta: "Выбрать тариф",
+    ctaStyle: "filled",
+  },
+  {
+    name: "Мастер",
+    price: "4 990",
+    period: "/ месяц",
+    badge: null,
+    color: "#1a1a1a",
+    textColor: "#fff",
+    features: [
+      "Всё из тарифа Профи",
+      "Персональная обратная связь от куратора",
+      "Разбор кейсов из вашей практики",
+      "Приоритетная поддержка 24/7",
+      "Доступ к архиву мероприятий",
+      "Диплом специалиста МассоПро",
+    ],
+    note: "Для мастеров, нацеленных на экспертный уровень",
+    cta: "Выбрать тариф",
+    ctaStyle: "filled",
+  },
+];
+
+function ConsultForm() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [plan, setPlan] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !phone.trim() || !plan) return;
+    setSent(true);
+  };
+
+  if (sent) {
+    return (
+      <div style={{ textAlign: "center", padding: "48px 24px" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+        <div style={{ fontFamily: "Cormorant, serif", fontSize: 28, fontWeight: 700, color: "#1a1a1a", marginBottom: 12 }}>
+          Заявка принята!
+        </div>
+        <p style={{ fontSize: 16, color: "#5a5a5a", lineHeight: 1.65 }}>
+          Мы свяжемся с вами в течение рабочего дня и расскажем всё о доступе к платформе.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>
+          Ваше имя
+        </label>
+        <input
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="Мария Иванова"
+          required
+          style={{
+            width: "100%",
+            padding: "12px 16px",
+            borderRadius: 10,
+            border: "1.5px solid #e0e0e0",
+            fontSize: 15,
+            outline: "none",
+            transition: "border-color 0.2s",
+            boxSizing: "border-box",
+            fontFamily: "Montserrat, sans-serif",
+          }}
+          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+          onBlur={e => (e.currentTarget.style.borderColor = "#e0e0e0")}
+        />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>
+          Телефон
+        </label>
+        <input
+          value={phone}
+          onChange={e => setPhone(e.target.value)}
+          placeholder="+7 (___) ___-__-__"
+          required
+          style={{
+            width: "100%",
+            padding: "12px 16px",
+            borderRadius: 10,
+            border: "1.5px solid #e0e0e0",
+            fontSize: 15,
+            outline: "none",
+            transition: "border-color 0.2s",
+            boxSizing: "border-box",
+            fontFamily: "Montserrat, sans-serif",
+          }}
+          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+          onBlur={e => (e.currentTarget.style.borderColor = "#e0e0e0")}
+        />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#3a3a3a", marginBottom: 6 }}>
+          Интересующий тариф
+        </label>
+        <select
+          value={plan}
+          onChange={e => setPlan(e.target.value)}
+          required
+          style={{
+            width: "100%",
+            padding: "12px 16px",
+            borderRadius: 10,
+            border: "1.5px solid #e0e0e0",
+            fontSize: 15,
+            outline: "none",
+            background: "#fff",
+            boxSizing: "border-box",
+            fontFamily: "Montserrat, sans-serif",
+            color: plan ? "#1a1a1a" : "#999",
+          }}
+        >
+          <option value="" disabled>Выберите тариф</option>
+          <option value="Старт">Старт — 1 490 ₽/мес</option>
+          <option value="Профи">Профи — 2 990 ₽/мес</option>
+          <option value="Мастер">Мастер — 4 990 ₽/мес</option>
+        </select>
+      </div>
+      <button
+        type="submit"
+        style={{
+          marginTop: 8,
+          background: ACCENT,
+          color: "#fff",
+          padding: "14px 28px",
+          borderRadius: 12,
+          fontSize: 15,
+          fontWeight: 600,
+          border: "none",
+          cursor: "pointer",
+          transition: "all 0.25s ease",
+          boxShadow: `0 4px 20px ${ACCENT_SHADOW}`,
+          fontFamily: "Montserrat, sans-serif",
+        }}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLButtonElement;
+          el.style.background = ACCENT_DARK;
+          el.style.boxShadow = `0 8px 32px ${ACCENT_SHADOW_HOVER}`;
+          el.style.transform = "translateY(-2px)";
+        }}
+        onMouseLeave={e => {
+          const el = e.currentTarget as HTMLButtonElement;
+          el.style.background = ACCENT;
+          el.style.boxShadow = `0 4px 20px ${ACCENT_SHADOW}`;
+          el.style.transform = "translateY(0)";
+        }}
+      >
+        Оставить заявку на консультацию
+      </button>
+      <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>
+        Отправляя заявку, вы соглашаетесь на обработку персональных данных
+      </p>
+    </form>
+  );
+}
+
 export default function DokDialog() {
   return (
     <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif", minHeight: "100vh" }}>
@@ -56,7 +259,7 @@ export default function DokDialog() {
                   fontWeight: 700,
                   letterSpacing: "0.2em",
                   textTransform: "uppercase" as const,
-                  color: "hsl(185, 85%, 32%)",
+                  color: ACCENT,
                   marginBottom: 20,
                 }}>
                   Образовательная платформа
@@ -74,8 +277,7 @@ export default function DokDialog() {
                   letterSpacing: "-0.5px",
                 }}>
                   Док{" "}
-                  <span style={{ color: "hsl(185, 85%, 32%)" }}>Диалог</span>
-
+                  <span style={{ color: ACCENT }}>Диалог</span>
                 </h1>
               </FadeIn>
 
@@ -86,20 +288,20 @@ export default function DokDialog() {
                     <strong>специалистов</strong> системы <strong>МассоПро</strong>.
                   </p>
                   <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", margin: 0 }}>
-                    Платформа объединяет обучение, профессиональное сообщество и базу знаний для мастеров салонов и студий массажа.
+                    Платформа объединяет структурированное онлайн-обучение, профессиональное сообщество и базу знаний — всё, что нужно мастеру массажа для роста.
                   </p>
                   <p style={{ fontSize: 17, lineHeight: 1.75, color: "#5a5a5a", margin: 0 }}>
-                    Доступ к платформе получают специалисты салонов, подключённых к системе МассоПро.
+                    Доступ к платформе получают специалисты салонов и студий, подключённых к системе МассоПро.
                   </p>
                 </div>
               </FadeIn>
 
               <FadeIn delay={300}>
                 <a
-                  href="https://massopro.ru"
+                  href="#plans"
                   style={{
                     display: "inline-block",
-                    background: "hsl(185, 85%, 32%)",
+                    background: ACCENT,
                     color: "#fff",
                     padding: "16px 32px",
                     borderRadius: 12,
@@ -108,25 +310,25 @@ export default function DokDialog() {
                     letterSpacing: "0.02em",
                     textDecoration: "none",
                     transition: "all 0.25s ease",
-                    boxShadow: "0 4px 20px hsla(185, 85%, 32%, 0.3)",
+                    boxShadow: `0 4px 20px ${ACCENT_SHADOW}`,
                   }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.background = "hsl(185, 85%, 26%)";
-                    el.style.boxShadow = "0 8px 32px hsla(185, 85%, 32%, 0.45)";
+                    el.style.background = ACCENT_DARK;
+                    el.style.boxShadow = `0 8px 32px ${ACCENT_SHADOW_HOVER}`;
                     el.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={e => {
                     const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.background = "hsl(185, 85%, 32%)";
-                    el.style.boxShadow = "0 4px 20px hsla(185, 85%, 32%, 0.3)";
+                    el.style.background = ACCENT;
+                    el.style.boxShadow = `0 4px 20px ${ACCENT_SHADOW}`;
                     el.style.transform = "translateY(0)";
                   }}
                 >
-                  Получить консультацию по подключению салона
+                  Смотреть тарифы
                 </a>
                 <p style={{ marginTop: 12, marginBottom: 0, fontSize: 13, color: "#999", lineHeight: 1.5 }}>
-                  Доступ предоставляется только специалистам салонов
+                  Доступ предоставляется специалистам салонов и частным мастерам
                 </p>
               </FadeIn>
             </div>
@@ -160,9 +362,9 @@ export default function DokDialog() {
             gap: 24,
           }}>
             {[
-              { icon: "📚", title: "Обучение", text: "Структурированные курсы и программы для мастеров массажа" },
-              { icon: "👥", title: "Сообщество", text: "Профессиональная сеть специалистов со всей России" },
-              { icon: "🗂️", title: "База знаний", text: "Методические материалы, протоколы и рекомендации" },
+              { icon: "📚", title: "Онлайн-обучение", text: "Структурированные курсы от практикующих экспертов в удобном формате — смотри в любое время" },
+              { icon: "👥", title: "Сообщество", text: "Закрытый клуб специалистов МассоПро: обмен опытом, разборы случаев, поддержка коллег" },
+              { icon: "🗂️", title: "База знаний", text: "Методические материалы, протоколы, техники и рекомендации всегда под рукой" },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 100}>
                 <div
@@ -193,6 +395,232 @@ export default function DokDialog() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="plans" style={{ paddingBottom: 100 }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <FadeIn>
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <div style={{
+                display: "inline-block",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase" as const,
+                color: ACCENT,
+                marginBottom: 16,
+              }}>
+                Тарифы
+              </div>
+              <h2 style={{
+                fontFamily: "Cormorant, serif",
+                fontSize: "clamp(34px, 4vw, 52px)",
+                fontWeight: 700,
+                color: "#1a1a1a",
+                margin: 0,
+                lineHeight: 1.1,
+              }}>
+                Выберите подходящий план
+              </h2>
+              <p style={{ fontSize: 16, color: "#6a6a6a", marginTop: 16, marginBottom: 0, lineHeight: 1.65 }}>
+                Все тарифы включают доступ к платформе и обновления материалов.<br />
+                Подписка ежемесячная — без скрытых платежей.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 24,
+            alignItems: "stretch",
+          }}>
+            {PLANS.map((plan, i) => (
+              <FadeIn key={i} delay={i * 120}>
+                <div style={{
+                  background: plan.color,
+                  borderRadius: 24,
+                  padding: "40px 32px",
+                  boxShadow: plan.name === "Профи"
+                    ? `0 24px 80px ${ACCENT_SHADOW}`
+                    : "0 4px 32px rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  position: "relative" as const,
+                  transform: plan.name === "Профи" ? "scale(1.03)" : "scale(1)",
+                  transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                  boxSizing: "border-box",
+                }}>
+                  {plan.badge && (
+                    <div style={{
+                      position: "absolute" as const,
+                      top: -14,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      background: "#fff",
+                      color: ACCENT,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase" as const,
+                      padding: "6px 20px",
+                      borderRadius: 100,
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+                    }}>
+                      {plan.badge}
+                    </div>
+                  )}
+
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{
+                      fontFamily: "Cormorant, serif",
+                      fontSize: 30,
+                      fontWeight: 700,
+                      color: plan.textColor,
+                      marginBottom: 4,
+                    }}>{plan.name}</div>
+                    <div style={{ fontSize: 13, color: plan.textColor, opacity: 0.65, lineHeight: 1.5 }}>
+                      {plan.note}
+                    </div>
+                  </div>
+
+                  <div style={{ margin: "28px 0", borderTop: `1px solid ${plan.textColor === "#fff" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)"}` }} />
+
+                  <div style={{ marginBottom: 28 }}>
+                    <span style={{ fontFamily: "Cormorant, serif", fontSize: 48, fontWeight: 700, color: plan.textColor, lineHeight: 1 }}>
+                      {plan.price} ₽
+                    </span>
+                    <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.6, marginLeft: 4 }}>
+                      {plan.period}
+                    </span>
+                  </div>
+
+                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
+                    {plan.features.map((f, fi) => (
+                      <li key={fi} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                        <span style={{ color: plan.name === "Профи" ? "#fff" : ACCENT, fontWeight: 700, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
+                        <span style={{ fontSize: 14, color: plan.textColor, opacity: 0.9, lineHeight: 1.55 }}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    style={{
+                      background: plan.ctaStyle === "outline" ? "transparent" : plan.name === "Профи" ? "#fff" : ACCENT,
+                      color: plan.ctaStyle === "outline" ? "#1a1a1a" : plan.name === "Профи" ? ACCENT : "#fff",
+                      border: plan.ctaStyle === "outline" ? "2px solid #d0d0d0" : "none",
+                      padding: "14px 24px",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      fontFamily: "Montserrat, sans-serif",
+                      transition: "all 0.2s ease",
+                      letterSpacing: "0.02em",
+                    }}
+                    onMouseEnter={e => {
+                      const el = e.currentTarget as HTMLButtonElement;
+                      el.style.opacity = "0.85";
+                      el.style.transform = "translateY(-1px)";
+                    }}
+                    onMouseLeave={e => {
+                      const el = e.currentTarget as HTMLButtonElement;
+                      el.style.opacity = "1";
+                      el.style.transform = "translateY(0)";
+                    }}
+                  >
+                    {plan.cta}
+                  </button>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Private practice block */}
+      <section style={{ paddingBottom: 120 }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <FadeIn>
+            <div style={{
+              background: "#fff",
+              borderRadius: 32,
+              overflow: "hidden",
+              boxShadow: "0 8px 48px rgba(0,0,0,0.08)",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: 0,
+            }}>
+              {/* Left info */}
+              <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{
+                  display: "inline-block",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase" as const,
+                  color: ACCENT,
+                  marginBottom: 20,
+                }}>
+                  Частная практика
+                </div>
+                <h2 style={{
+                  fontFamily: "Cormorant, serif",
+                  fontSize: "clamp(28px, 3.5vw, 42px)",
+                  fontWeight: 700,
+                  color: "#1a1a1a",
+                  marginBottom: 20,
+                  lineHeight: 1.2,
+                }}>
+                  Работаете<br />на себя?
+                </h2>
+                <p style={{ fontSize: 16, lineHeight: 1.75, color: "#5a5a5a", marginBottom: 16 }}>
+                  Платформа Док Диалог создана прежде всего для мастеров салонов и студий системы МассоПро. Но если вы ведёте <strong>частную практику</strong> и хотите профессионально расти — мы готовы рассмотреть вашу заявку.
+                </p>
+                <p style={{ fontSize: 16, lineHeight: 1.75, color: "#5a5a5a", marginBottom: 0 }}>
+                  Обратите внимание: доступ к платформе предоставляется только при <strong>наличии активной подписки</strong> на один из тарифов. Оставьте заявку — мы проконсультируем вас и поможем выбрать оптимальный план.
+                </p>
+                <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 12 }}>
+                  {[
+                    "Онлайн-обучение в любое удобное время",
+                    "Актуальные техники и протоколы",
+                    "Поддержка профессионального сообщества",
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ color: ACCENT, fontWeight: 700, fontSize: 16 }}>✓</span>
+                      <span style={{ fontSize: 15, color: "#3a3a3a" }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right form */}
+              <div style={{
+                background: "#f8f8f6",
+                padding: "56px 48px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}>
+                <div style={{
+                  fontFamily: "Cormorant, serif",
+                  fontSize: 26,
+                  fontWeight: 700,
+                  color: "#1a1a1a",
+                  marginBottom: 8,
+                }}>
+                  Оставить заявку
+                </div>
+                <p style={{ fontSize: 14, color: "#888", marginBottom: 28, lineHeight: 1.55 }}>
+                  Заполните форму, и мы свяжемся с вами для консультации. Доступ предоставляется при покупке любого тарифа.
+                </p>
+                <ConsultForm />
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
