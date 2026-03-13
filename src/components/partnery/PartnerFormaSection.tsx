@@ -1,16 +1,38 @@
 import { useState } from "react";
 import { ACCENT, ACCENT_DARK, ACCENT_SHADOW, ACCENT_SHADOW_HOVER, FadeIn } from "./partneryUtils";
 
+const SEND_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
+
 function PartnerForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [about, setAbout] = useState("");
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
-    setSent(true);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(SEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          contact: phone,
+          message: `Заявка на партнёрство\nТелефон: ${phone}${about ? `\nО себе: ${about}` : ""}`,
+        }),
+      });
+      if (res.ok) setSent(true);
+      else setError("Не удалось отправить. Попробуйте ещё раз.");
+    } catch {
+      setError("Ошибка сети. Проверьте подключение.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (sent) {
@@ -79,8 +101,9 @@ function PartnerForm() {
           el.style.transform = "translateY(0)";
         }}
       >
-        Стать партнёром
+        {loading ? "Отправляем..." : "Стать партнёром"}
       </button>
+      {error && <p style={{ margin: 0, fontSize: 13, color: "#e53e3e", textAlign: "center" }}>{error}</p>}
       <p style={{ margin: 0, fontSize: 12, color: "#aaa", textAlign: "center", lineHeight: 1.5 }}>
         Отправляя заявку, вы соглашаетесь на обработку персональных данных
       </p>
