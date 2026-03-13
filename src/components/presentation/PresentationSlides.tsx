@@ -28,9 +28,9 @@ export const slides: Slide[] = [
         <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-xl">
           Профессиональная система массажных услуг для салонов
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 text-white/80 text-base">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 text-white/80 text-sm sm:text-base w-full">
           {["Внедрение", "Обучение мастеров", "Рост прибыли"].map((t) => (
-            <div key={t} className="flex items-center gap-2 bg-white/8 border border-white/15 rounded-xl px-5 py-3">
+            <div key={t} className="flex items-center gap-2 bg-white/8 border border-white/15 rounded-xl px-3 sm:px-5 py-2 sm:py-3">
               <Icon name="Check" size={16} className="text-cyan-400" />
               {t}
             </div>
@@ -92,7 +92,7 @@ export const slides: Slide[] = [
       <SlideWrapper>
         <Tag>Система</Tag>
         <H2>Профессиональный протокол работы</H2>
-        <div className="flex flex-col md:grid md:grid-cols-5 gap-2 md:gap-3 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3 w-full">
           {[
             { n: "1", t: "Диагностика клиента" },
             { n: "2", t: "Сбор анамнеза" },
@@ -136,7 +136,7 @@ export const slides: Slide[] = [
       <SlideWrapper>
         <Tag>Финансы</Tag>
         <H2>Финансовая модель салона</H2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full">
           <Card>
             <div className="text-white/60 text-sm mb-2">Средний чек процедуры</div>
             <div className="text-4xl font-black text-cyan-400">8 000 ₽</div>
@@ -161,7 +161,7 @@ export const slides: Slide[] = [
       <SlideWrapper>
         <Tag>Расчёт</Tag>
         <H2>Доход одного массажиста</H2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full">
           <Card>
             <div className="text-white/60 text-sm mb-2">Всего 2 клиента в день</div>
             <div className="text-4xl font-black text-cyan-400">16 000 ₽</div>

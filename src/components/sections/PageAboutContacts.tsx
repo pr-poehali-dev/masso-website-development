@@ -25,7 +25,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
             <AnimatedSection>
-              <div className="gradient-card rounded-3xl p-8 sm:p-10 md:p-16 mb-4 md:mb-6 glow-card relative overflow-hidden">
+              <div className="gradient-card rounded-3xl p-5 sm:p-8 md:p-12 lg:p-16 mb-4 md:mb-6 glow-card relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-primary/5 blur-3xl" />
                 <div className="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12 items-center">
                   <div className="flex-1">
@@ -63,7 +63,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
             </div>
 
             <AnimatedSection>
-              <div className="gradient-card rounded-3xl p-6 sm:p-8 glow-card">
+              <div className="gradient-card rounded-3xl p-4 sm:p-6 md:p-8 glow-card">
                 <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5">Команда</div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                   {[

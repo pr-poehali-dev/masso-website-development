@@ -165,7 +165,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
           </svg>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10 pt-24 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 pt-16 md:pt-24 pb-10 md:pb-16">
           <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
             <div className="flex-1 min-w-0">
               <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6 md:mb-8 animate-fadeInUp">
@@ -173,7 +173,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <span className="text-primary text-xs font-body font-semibold uppercase tracking-widest">Профессиональный стандарт</span>
               </div>
 
-              <h1 className="font-display text-5xl sm:text-6xl md:text-8xl font-bold leading-[0.95] mb-4 md:mb-6 animate-fadeInUp" style={{ animationDelay: "0.1s" }}>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-[0.95] mb-4 md:mb-6 animate-fadeInUp" style={{ animationDelay: "0.1s" }}>
                 <span className="text-foreground">Массо</span>
                 <span className="gradient-text">ПРО</span>
               </h1>

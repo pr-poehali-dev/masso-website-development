@@ -12,7 +12,7 @@ interface NavbarProps {
 export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggleMobile }: NavbarProps) {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-lg shadow-black/20" : "bg-transparent"}`}>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <button onClick={() => onNavigate("home")} className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -50,7 +50,7 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
 
       {mobileOpen && (
         <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border py-4">
-          <div className="container mx-auto px-6 space-y-1">
+          <div className="container mx-auto px-4 sm:px-6 space-y-1">
             {NAV_ITEMS.map(item => (
               <button
                 key={item.id}
@@ -77,7 +77,7 @@ interface FooterProps {
 export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="border-t border-border py-12 gradient-section">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -93,7 +93,7 @@ export function Footer({ onNavigate }: FooterProps) {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-4 md:gap-6">
             {NAV_ITEMS.map(item => (
               <button
                 key={item.id}

@@ -43,7 +43,7 @@ export function PageHow({ onNavigate }: { onNavigate: (p: Page) => void }) {
             },
           ].map((step, i) => (
             <AnimatedSection key={i} delay={100} className="mb-4 md:mb-6">
-              <div className="gradient-card rounded-3xl p-6 sm:p-8 md:p-10 glow-card">
+              <div className="gradient-card rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 glow-card">
                 <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
                   <div className="shrink-0">
                     <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center glow-cyan">

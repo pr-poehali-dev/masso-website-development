@@ -18,7 +18,7 @@ export function PagePrivacy() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
             <AnimatedSection>
-              <div className="gradient-card rounded-3xl p-6 sm:p-10 glow-card mb-6 text-xs font-body text-muted-foreground space-y-1">
+              <div className="gradient-card rounded-3xl p-4 sm:p-6 md:p-10 glow-card mb-6 text-xs font-body text-muted-foreground space-y-1">
                 <div><span className="text-foreground font-semibold">УТВЕРЖДЕНА</span></div>
                 <div>Приказ ИП Водопьянов С.Г. № 2 от 24.03.2008 г.</div>
                 <div>Размещена на сайте: <a href="https://massopro.ru/privacy" className="text-primary hover:underline">massopro.ru/privacy</a></div>

@@ -52,7 +52,7 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
               },
             ].map((pkg, i) => (
               <AnimatedSection key={i} delay={i * 150}>
-                <div className={`rounded-3xl p-6 sm:p-8 h-full flex flex-col glow-card transition-all duration-300 ${pkg.accent ? "gradient-bg relative overflow-hidden" : "gradient-card"}`}>
+                <div className={`rounded-3xl p-4 sm:p-6 md:p-8 h-full flex flex-col glow-card transition-all duration-300 ${pkg.accent ? "gradient-bg relative overflow-hidden" : "gradient-card"}`}>
                   {pkg.accent && (
                     <div className="absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-body font-semibold uppercase tracking-wider" style={{ background: "rgba(0,0,0,0.2)", color: "hsl(220, 30%, 6%)" }}>
                       Популярный
@@ -93,8 +93,8 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
       <section className="py-16 md:py-24 gradient-section">
         <div className="container mx-auto px-4 sm:px-6">
           <AnimatedSection>
-            <div className="max-w-4xl mx-auto gradient-card rounded-3xl p-8 sm:p-10 md:p-16 relative overflow-hidden glow-card">
-              <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+            <div className="max-w-4xl mx-auto gradient-card rounded-3xl p-5 sm:p-8 md:p-12 lg:p-16 relative overflow-hidden glow-card">
+              <div className="absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 rounded-full bg-primary/5 blur-3xl" />
               <div className="relative z-10">
                 <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5">Кейс</div>
                 <blockquote className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground leading-tight mb-6">
