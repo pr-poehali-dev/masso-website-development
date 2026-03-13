@@ -27,7 +27,7 @@ export function PagePrivacy() {
             </AnimatedSection>
 
             <AnimatedSection delay={100}>
-              <div className="prose prose-sm max-w-none space-y-8 font-body text-muted-foreground text-sm leading-relaxed">
+              <div className="prose prose-sm max-w-none space-y-8 font-body text-foreground/80 text-sm leading-relaxed">
 
                 <p>
                   Настоящая Политика конфиденциальности регулирует порядок обработки и использования персональных данных

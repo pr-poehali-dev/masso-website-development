@@ -31,7 +31,7 @@ export function PageOffer() {
             </AnimatedSection>
 
             <AnimatedSection delay={100}>
-              <div className="space-y-5 font-body text-muted-foreground text-sm leading-relaxed">
+              <div className="space-y-5 font-body text-foreground/80 text-sm leading-relaxed">
 
                 <div className="gradient-card rounded-2xl p-5 sm:p-7 glow-card">
                   <p>
