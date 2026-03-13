@@ -20,7 +20,7 @@ export default function DokFooter() {
           {/* Brand + requisites */}
           <div>
             <div style={{ fontFamily: "Cormorant, serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>
-              Dok <span style={{ color: ACCENT }}>Диалог</span>
+              Док <span style={{ color: ACCENT }}>Диалог</span>
             </div>
             <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>
               ИП Водопьянов С.Г.<br />
@@ -54,7 +54,7 @@ export default function DokFooter() {
 
           {/* Copyright */}
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)" }}>
-            © {new Date().getFullYear()} Dok Диалог
+            © {new Date().getFullYear()} Док Диалог
           </div>
 
         </div>
