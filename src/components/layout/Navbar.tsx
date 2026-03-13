@@ -61,7 +61,7 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
               </button>
             ))}
             <div className="pt-3">
-              <CTAButton onClick={() => onNavigate("contacts")}>Получить консультацию</CTAButton>
+              <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Получить консультацию</CTAButton>
             </div>
           </div>
         </div>

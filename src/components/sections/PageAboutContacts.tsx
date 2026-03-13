@@ -84,7 +84,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">Станьте частью Массо<span className="gradient-text">ПРО</span></h2>
-            <CTAButton large onClick={() => onNavigate("contacts")}>Получить консультацию</CTAButton>
+            <CTAButton large onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Получить консультацию</CTAButton>
           </AnimatedSection>
         </div>
       </section>
