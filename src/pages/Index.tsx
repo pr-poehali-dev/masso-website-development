@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navbar, Footer } from "@/components/layout/Navbar";
-import { PageHome, PageHow, PageSalons, PageCatalog, PageAbout, PageContacts } from "@/components/sections/Pages";
+import { PageHome, PageHow, PageSalons, PageCatalog, PageAbout, PageContacts, PagePrivacy } from "@/components/sections/Pages";
 import { Page } from "@/components/ui/shared";
 
 export default function Index() {
@@ -27,6 +27,7 @@ export default function Index() {
     catalog: <PageCatalog />,
     about: <PageAbout onNavigate={navigate} />,
     contacts: <PageContacts />,
+    privacy: <PagePrivacy />,
   };
 
   return (

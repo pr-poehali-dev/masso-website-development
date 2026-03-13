@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-export type Page = "home" | "how" | "salons" | "catalog" | "about" | "contacts";
+export type Page = "home" | "how" | "salons" | "catalog" | "about" | "contacts" | "privacy";
 
 export const NAV_ITEMS: { id: Page; label: string }[] = [
   { id: "home", label: "Главная" },
