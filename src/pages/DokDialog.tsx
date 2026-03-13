@@ -75,6 +75,7 @@ export default function DokDialog() {
                 }}>
                   Dok{" "}
                   <span style={{ color: "hsl(185, 85%, 32%)" }}>Диалог</span>
+
                 </h1>
               </FadeIn>
 
