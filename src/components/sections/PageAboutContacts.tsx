@@ -68,7 +68,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                   {[
                     { name: "Сергей Водопьянов", role: "Основатель", exp: "15+ лет в индустрии красоты", link: "https://osteopatplus.ru/", photo: "https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/292aeb82-ac83-4cf8-8afb-e138f14f0180.png" },
-                    { name: "Главный эксперт", role: "Главный эксперт", exp: "17+ лет опыта в массаже и остеопатии", link: "https://yandex.com/maps/org/osteopat_plyus/99582120415/reviews/", photo: "https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/9229d360-cfbd-4e77-8807-ca93fe6f8ecb.jpg" },
+                    { name: "Главный эксперт", role: "Главный эксперт", exp: "17+ лет опыта в массаже и остеопатии", link: "https://yandex.com/maps/org/osteopat_plyus/99582120415/reviews/", photo: "https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/f265dad9-4afb-4dbc-be0b-048ac63777ba.jpg" },
                     { name: "Анна Уварова", role: "Директор по развитию", exp: "Основатель проекта ПоДелам", link: "https://podelam.su/", photo: "https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/aa954072-1c0f-4efe-a908-a10f9ace5293.jpg" },
                   ].map((member, i) => (
                     <a key={i} href={member.link} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 group">
