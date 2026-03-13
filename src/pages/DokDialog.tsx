@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import DokFooter from "@/components/DokFooter";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -364,6 +365,7 @@ export default function DokDialog() {
         </div>
       </section>
 
+      <DokFooter />
     </div>
   );
 }
