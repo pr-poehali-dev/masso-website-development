@@ -73,7 +73,7 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
                     ))}
                   </ul>
                   <button
-                    onClick={() => onNavigate("contacts")}
+                    onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}
                     className="w-full rounded-xl py-3 text-sm font-body font-semibold transition-all duration-300"
                     style={pkg.accent
                       ? { background: "hsl(220, 30%, 6%)", color: "hsl(185, 85%, 45%)" }
@@ -120,7 +120,7 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">Готовы стать партнёром?</h2>
-            <CTAButton large onClick={() => onNavigate("contacts")}>Оставить заявку на консультацию</CTAButton>
+            <CTAButton large onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Оставить заявку на консультацию</CTAButton>
           </AnimatedSection>
         </div>
       </section>
