@@ -27,16 +27,25 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
             <AnimatedSection>
               <div className="gradient-card rounded-3xl p-8 sm:p-10 md:p-16 mb-4 md:mb-6 glow-card relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-primary/5 blur-3xl" />
-                <div className="relative z-10 max-w-2xl">
-                  <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5">Миссия</div>
-                  <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4 leading-tight">
-                    Профессиональный стандарт массажа — в каждом российском салоне
-                  </h2>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                    Мы верим, что профессиональный массаж должен быть доступен везде — не только в дорогих спа-отелях.
-                    Наша миссия: создать сеть сертифицированных салонов с единым стандартом качества,
-                    где клиент всегда знает, что получит отличный результат.
-                  </p>
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+                  <div className="flex-1">
+                    <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5">Миссия</div>
+                    <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4 leading-tight">
+                      Профессиональный стандарт массажа — в каждом российском салоне
+                    </h2>
+                    <p className="text-muted-foreground font-body text-sm leading-relaxed">
+                      Мы верим, что профессиональный массаж должен быть доступен везде — не только в дорогих спа-отелях.
+                      Наша миссия: создать сеть сертифицированных салонов с единым стандартом качества,
+                      где клиент всегда знает, что получит отличный результат.
+                    </p>
+                  </div>
+                  <div className="shrink-0 w-full md:w-64 lg:w-72">
+                    <img
+                      src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/65987bbc-3c36-4f09-8d46-76a2af03e82a.png"
+                      alt="Обучение мастеров"
+                      className="w-full rounded-2xl object-cover shadow-lg"
+                    />
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
