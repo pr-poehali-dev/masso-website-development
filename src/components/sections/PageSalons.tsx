@@ -148,7 +148,7 @@ export function PageCatalog({ onNavigate }: { onNavigate: (p: Page) => void }) {
             <p className="font-body text-foreground font-semibold text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 md:mb-8">
               Мы подключаем ограниченное количество салонов в каждом городе — 3–5 студий на город.
             </p>
-            <CTAButton onClick={() => onNavigate("contact")} className="mb-4">
+            <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="mb-4">
               Оставить заявку
             </CTAButton>
 

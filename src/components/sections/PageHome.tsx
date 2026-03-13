@@ -316,7 +316,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
       </section>
 
       {/* CTA Form */}
-      <section className="py-16 md:py-24 gradient-section">
+      <section id="cta-form" className="py-16 md:py-24 gradient-section">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-2xl mx-auto">
             <AnimatedSection>
