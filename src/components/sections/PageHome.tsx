@@ -183,7 +183,7 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
         </div>
 
         <div className="absolute right-4 sm:right-8 bottom-6 sm:bottom-8 flex items-center gap-2 animate-bounce">
-          <span className="text-muted-foreground text-xs font-body hidden sm:block">Скролл вниз</span>
+          <span className="text-muted-foreground text-xs font-body hidden sm:block">Узнать подробнее</span>
           <Icon name="ChevronDown" size={16} className="text-primary" />
         </div>
       </section>
