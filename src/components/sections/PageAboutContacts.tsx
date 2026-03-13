@@ -94,13 +94,34 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
 // ─── PageContacts ─────────────────────────────────────────────────────────────
 
+const SEND_CONTACT_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
+
 export function PageContacts() {
   const [form, setForm] = useState({ name: "", contact: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(SEND_CONTACT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        setError("Не удалось отправить. Попробуйте ещё раз.");
+      }
+    } catch {
+      setError("Ошибка сети. Проверьте подключение.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,7 +187,8 @@ export function PageContacts() {
                         className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors resize-none"
                       />
                     </div>
-                    <CTAButton large>Отправить сообщение</CTAButton>
+                    {error && <p className="text-red-400 text-xs font-body">{error}</p>}
+                    <CTAButton large>{loading ? "Отправляем..." : "Отправить сообщение"}</CTAButton>
                   </form>
                 )}
               </div>
