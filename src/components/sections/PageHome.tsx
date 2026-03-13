@@ -35,6 +35,9 @@ function ConsultForm({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.city.trim() || !form.salon.trim() || !form.phone.trim() || !form.email.trim() || !form.hasМassage || !form.masters) {
+      setError("Пожалуйста, заполните все поля"); return;
+    }
     if (!agreed) { setError("Необходимо дать согласие"); return; }
     setLoading(true);
     setError("");
