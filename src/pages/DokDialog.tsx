@@ -162,7 +162,7 @@ export default function DokDialog() {
               <FadeIn delay={200}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40 }}>
                   <p style={{ fontSize: "clamp(16px, 2.5vw, 18px)", lineHeight: 1.75, color: "#3a3a3a", margin: 0 }}>
-                    Dok Диалог — <strong>образовательная платформа</strong> для{" "}
+                    <strong>Образовательная платформа</strong> для{" "}
                     <strong>специалистов</strong> системы <strong>МассоПро</strong>.
                   </p>
                   <p style={{ fontSize: "clamp(15px, 2vw, 17px)", lineHeight: 1.75, color: "#5a5a5a", margin: 0 }}>
