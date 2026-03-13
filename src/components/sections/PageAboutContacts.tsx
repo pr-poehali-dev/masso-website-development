@@ -145,7 +145,18 @@ export function PageContacts() {
           <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <AnimatedSection>
               <div className="gradient-card rounded-3xl p-6 sm:p-8 h-full glow-card">
-                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-foreground mb-6 md:mb-8">Напишите нам</h2>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
+                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-foreground">Напишите нам</h2>
+                  <a
+                    href="/presentation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-colors rounded-xl px-4 py-2 text-primary text-xs font-body font-semibold"
+                  >
+                    <Icon name="Presentation" fallback="FileText" size={14} />
+                    Посмотреть презентацию
+                  </a>
+                </div>
 
                 {sent ? (
                   <div className="text-center py-10 md:py-12">
