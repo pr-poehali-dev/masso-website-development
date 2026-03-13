@@ -1,32 +1,28 @@
-import { AnimatedSection } from "@/components/ui/shared";
-
 export function PagePrivacy() {
   return (
     <div>
       <section className="pt-24 md:pt-32 pb-12 gradient-hero">
         <div className="container mx-auto px-4 sm:px-6">
-          <AnimatedSection>
-            <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Документы</div>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4">
-              Политика <span className="gradient-text">конфиденциальности</span>
-            </h1>
-          </AnimatedSection>
+          <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Документы</div>
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4">
+            Политика <span className="gradient-text">конфиденциальности</span>
+          </h1>
         </div>
       </section>
 
       <section className="py-12 md:py-16" style={{ background: "#f8f8f6" }}>
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
-            <AnimatedSection>
+            <div>
               <div style={{ background: "#fff", borderRadius: 16, padding: "20px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", marginBottom: 24, fontSize: 13, color: "#555", lineHeight: 1.7 }} className="space-y-1">
                 <div><span style={{ fontWeight: 700, color: "#1a1a1a" }}>УТВЕРЖДЕНА</span></div>
                 <div>Приказ ИП Водопьянов С.Г. № 2 от 24.03.2008 г.</div>
                 <div>Размещена на сайте: <a href="https://massopro.ru/privacy" className="text-primary hover:underline">massopro.ru/privacy</a></div>
                 <div>Дата размещения: 27.03.2008 г.</div>
               </div>
-            </AnimatedSection>
+            </div>
 
-            <AnimatedSection delay={100}>
+            <div>
               <div className="prose prose-sm max-w-none space-y-8 font-body text-sm leading-relaxed" style={{ color: "#3a3a3a" }}>
 
                 <p>
@@ -170,7 +166,7 @@ export function PagePrivacy() {
                 </Section>
 
               </div>
-            </AnimatedSection>
+            </div>
           </div>
         </div>
       </section>
