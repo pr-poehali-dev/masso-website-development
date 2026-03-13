@@ -14,12 +14,12 @@ export function PagePrivacy() {
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16" style={{ background: "#f8f8f6" }}>
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
             <AnimatedSection>
-              <div className="gradient-card rounded-3xl p-4 sm:p-6 md:p-10 glow-card mb-6 text-xs font-body text-muted-foreground space-y-1">
-                <div><span className="text-foreground font-semibold">УТВЕРЖДЕНА</span></div>
+              <div style={{ background: "#fff", borderRadius: 16, padding: "20px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", marginBottom: 24, fontSize: 13, color: "#555", lineHeight: 1.7 }} className="space-y-1">
+                <div><span style={{ fontWeight: 700, color: "#1a1a1a" }}>УТВЕРЖДЕНА</span></div>
                 <div>Приказ ИП Водопьянов С.Г. № 2 от 24.03.2008 г.</div>
                 <div>Размещена на сайте: <a href="https://massopro.ru/privacy" className="text-primary hover:underline">massopro.ru/privacy</a></div>
                 <div>Дата размещения: 27.03.2008 г.</div>
@@ -27,7 +27,7 @@ export function PagePrivacy() {
             </AnimatedSection>
 
             <AnimatedSection delay={100}>
-              <div className="prose prose-sm max-w-none space-y-8 font-body text-foreground/80 text-sm leading-relaxed">
+              <div className="prose prose-sm max-w-none space-y-8 font-body text-sm leading-relaxed" style={{ color: "#3a3a3a" }}>
 
                 <p>
                   Настоящая Политика конфиденциальности регулирует порядок обработки и использования персональных данных
@@ -180,9 +180,9 @@ export function PagePrivacy() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="gradient-card rounded-2xl p-5 sm:p-7 glow-card space-y-3">
-      <h2 className="font-display text-base sm:text-lg font-semibold text-foreground border-b border-border pb-3 mb-4">{title}</h2>
-      <div className="space-y-3">{children}</div>
+    <div style={{ background: "#fff", borderRadius: 16, padding: "20px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }} className="space-y-3">
+      <h2 style={{ fontFamily: "Cormorant, serif", fontSize: 20, fontWeight: 700, color: "#1a1a1a", borderBottom: "1px solid #e8e8e8", paddingBottom: 10, marginBottom: 12 }}>{title}</h2>
+      <div className="space-y-3" style={{ color: "#3a3a3a" }}>{children}</div>
     </div>
   );
 }
