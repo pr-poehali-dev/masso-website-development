@@ -252,16 +252,18 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
                       </li>
                     ))}
                   </ul>
-                  <button
-                    onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}
-                    className="w-full rounded-xl py-3 text-sm font-body font-semibold transition-all duration-300"
+                  <a
+                    href="/presentation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full rounded-xl py-3 text-sm font-body font-semibold transition-all duration-300 text-center block"
                     style={pkg.accent
                       ? { background: "hsl(220, 30%, 6%)", color: "hsl(185, 85%, 45%)" }
                       : { border: "1px solid hsl(185,85%,45%,0.4)", color: "hsl(185, 85%, 45%)" }
                     }
                   >
                     Выбрать пакет
-                  </button>
+                  </a>
                 </div>
               </AnimatedSection>
             ))}
