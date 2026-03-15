@@ -39,12 +39,12 @@ function Calculator({ onCta }: { onCta: () => void }) {
         <input
           type="range" min={min} max={max} step={step} value={value}
           onChange={e => onChange(Number(e.target.value))}
-          style={{ flex: 1, accentColor: ACCENT, cursor: "pointer" }}
+          style={{ flex: 1, minWidth: 0, accentColor: ACCENT, cursor: "pointer" }}
         />
         <input
           type="number" min={min} max={max} step={step} value={value}
           onChange={e => onChange(Math.min(max, Math.max(min, Number(e.target.value))))}
-          style={{ width: 80, padding: "5px 8px", borderRadius: 8, border: "1px solid hsl(185,85%,30%,0.4)", background: "hsl(220,30%,13%)", color: "hsl(210,40%,90%)", fontSize: 13, textAlign: "right" }}
+          style={{ width: "clamp(58px, 18vw, 84px)", flexShrink: 0, padding: "5px 6px", borderRadius: 8, border: "1px solid hsl(185,85%,30%,0.4)", background: "hsl(220,30%,13%)", color: "hsl(210,40%,90%)", fontSize: 13, textAlign: "right" }}
         />
       </div>
     </div>
@@ -84,7 +84,7 @@ function Calculator({ onCta }: { onCta: () => void }) {
           </div>
         </AnimatedSection>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+        <div className="calc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 1fr))", gap: 24, alignItems: "start" }}>
 
           {/* Inputs */}
           <AnimatedSection delay={150}>
@@ -124,9 +124,9 @@ function Calculator({ onCta }: { onCta: () => void }) {
                 { label: "Доход с 1 клиента (курс)", value: `${fmt(incomeFromCourse)} ₽` },
                 { label: "Общий оборот по курсам", value: `${fmt(mode === "before" ? totalTurnover * BEFORE_MULT : totalTurnover)} ₽/мес` },
               ].map((item, i) => (
-                <div key={i} style={{ background: "hsl(220,30%,11%)", borderRadius: 16, padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid hsl(185,85%,30%,0.15)" }}>
+                <div key={i} style={{ background: "hsl(220,30%,11%)", borderRadius: 16, padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap", border: "1px solid hsl(185,85%,30%,0.15)" }}>
                   <span style={{ fontSize: 13, color: "hsl(210,30%,60%)" }}>{item.label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "hsl(210,40%,90%)" }}>{item.value}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "hsl(210,40%,90%)", whiteSpace: "nowrap" }}>{item.value}</span>
                 </div>
               ))}
 
@@ -145,7 +145,7 @@ function Calculator({ onCta }: { onCta: () => void }) {
 
         {/* Benefits */}
         <AnimatedSection delay={250}>
-          <div style={{ marginTop: 32, background: "hsl(220,30%,11%)", borderRadius: 20, padding: "20px 28px", border: "1px solid hsl(185,85%,30%,0.2)", display: "flex", flexWrap: "wrap", gap: 16 }}>
+          <div style={{ marginTop: 32, background: "hsl(220,30%,11%)", borderRadius: 20, padding: "16px 20px", border: "1px solid hsl(185,85%,30%,0.2)", display: "flex", flexDirection: "column", gap: 12 }}>
             {["Увеличивается средний чек", "Клиенты проходят курс процедур", "Формируется стабильный поток клиентов"].map((t, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 20, height: 20, borderRadius: "50%", background: `${ACCENT}22`, border: `1px solid ${ACCENT}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -167,7 +167,7 @@ function Calculator({ onCta }: { onCta: () => void }) {
               Оставьте заявку — мы подготовим индивидуальный прогноз
             </p>
             <button onClick={onCta}
-              style={{ padding: "14px 36px", borderRadius: 14, background: ACCENT, color: "hsl(220,30%,6%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", transition: "all 0.25s", boxShadow: `0 4px 24px ${ACCENT}55` }}
+              style={{ padding: "14px 24px", width: "100%", maxWidth: 420, borderRadius: 14, background: ACCENT, color: "hsl(220,30%,6%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer", transition: "all 0.25s", boxShadow: `0 4px 24px ${ACCENT}55` }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = ACCENT_DARK; (e.currentTarget as HTMLButtonElement).style.color = "white"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = ACCENT; (e.currentTarget as HTMLButtonElement).style.color = "hsl(220,30%,6%)"; }}
             >
