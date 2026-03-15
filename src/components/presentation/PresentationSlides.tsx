@@ -474,11 +474,11 @@ export const slides: Slide[] = [
         <div className="flex flex-col sm:flex-row gap-4 mt-2">
           <ConsultButton />
           <a
-            href="mailto:info@massopro.ru"
+            href="mailto:massopro@mail.ru"
             className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-8 py-4 rounded-xl border border-white/20 transition-all font-semibold"
           >
             <Icon name="Mail" size={18} />
-            info@massopro.ru
+            massopro@mail.ru
           </a>
         </div>
       </SlideWrapper>
