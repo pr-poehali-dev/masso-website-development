@@ -285,7 +285,7 @@ export default function Tarify() {
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
             <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 20 }}>
-              Тарифы Dok Диалог
+              Тарифы
             </div>
           </FadeIn>
           <FadeIn delay={100}>
