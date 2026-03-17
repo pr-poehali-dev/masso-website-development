@@ -12,7 +12,7 @@ interface DashData {
     specialist_load: number;
   };
   training: { total: number; trained: number };
-  posts: Array<{ id: number; title: string; body: string | null; category: string | null; created_at: string }>;
+  posts: Array<{ id: number; title: string; body: string | null; category: string | null; link_url: string | null; created_at: string }>;
   salon: { name: string; status: string; inspection_date?: string | null };
 }
 
@@ -137,9 +137,23 @@ const SalonDashboard = () => {
                 {post.body && (
                   <p className="text-xs line-clamp-2 mb-2" style={{ color: '#6b7280' }}>{post.body}</p>
                 )}
-                <p className="text-xs" style={{ color: '#d1d5db' }}>
-                  {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
-                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs" style={{ color: '#d1d5db' }}>
+                    {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
+                  </p>
+                  {post.link_url && (
+                    <a
+                      href={post.link_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md"
+                      style={{ background: '#eff6ff', color: '#0da2e7' }}
+                    >
+                      <Icon name="ExternalLink" size={11} />
+                      Открыть
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>

@@ -17,6 +17,7 @@ interface Post {
   title: string;
   body: string | null;
   category: string | null;
+  link_url: string | null;
   status: string;
   is_pinned: boolean;
   author_name: string | null;
@@ -30,6 +31,7 @@ interface FormState {
   category: string;
   status: string;
   is_pinned: boolean;
+  link_url: string;
 }
 
 const statusLabels: Record<string, string> = { draft: 'Черновик', published: 'Опубликован' };
@@ -96,6 +98,16 @@ const PostForm = ({ form, saving, submitLabel, onChange, onSubmit, onCancel }: P
           </SelectContent>
         </Select>
       </div>
+      <div className="space-y-1 md:col-span-2">
+        <Label className="text-xs" style={{ color: '#6b7280' }}>Ссылка (необязательно)</Label>
+        <Input
+          value={form.link_url}
+          onChange={e => onChange({ ...form, link_url: e.target.value })}
+          className="text-sm"
+          placeholder="https://..."
+          style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+        />
+      </div>
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
@@ -126,7 +138,7 @@ const PostForm = ({ form, saving, submitLabel, onChange, onSubmit, onCancel }: P
   </div>
 );
 
-const EMPTY_FORM: FormState = { title: '', body: '', category: '', status: 'draft', is_pinned: false };
+const EMPTY_FORM: FormState = { title: '', body: '', category: '', status: 'draft', is_pinned: false, link_url: '' };
 
 const AdminContent = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -203,7 +215,7 @@ const AdminContent = () => {
 
   const startEdit = (post: Post) => {
     setEditPost(post);
-    setForm({ title: post.title, body: post.body || '', category: post.category || '', status: post.status, is_pinned: post.is_pinned });
+    setForm({ title: post.title, body: post.body || '', category: post.category || '', status: post.status, is_pinned: post.is_pinned, link_url: post.link_url || '' });
     setShowAdd(false);
   };
 
@@ -288,6 +300,12 @@ const AdminContent = () => {
                   )}
                 </div>
                 {post.body && <p className="text-sm line-clamp-2" style={{ color: '#6b7280' }}>{post.body}</p>}
+                {post.link_url && (
+                  <a href={post.link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs mt-1" style={{ color: '#0da2e7' }}>
+                    <Icon name="ExternalLink" size={12} />
+                    {post.link_url}
+                  </a>
+                )}
                 <div className="flex items-center gap-3 mt-2 text-xs" style={{ color: '#9ca3af' }}>
                   <span>{post.author_name || 'Система'}</span>
                   <span>{formatDateTime(post.created_at)}</span>

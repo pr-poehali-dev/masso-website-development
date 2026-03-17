@@ -79,8 +79,8 @@ def handler(event: dict, context) -> dict:
         total = cur.fetchone()["cnt"]
 
         cur.execute(f"""
-            SELECT cp.id, cp.title, cp.category, cp.status, cp.is_pinned,
-                   cp.created_at, cp.updated_at, au.name AS author_name
+            SELECT cp.id, cp.title, cp.body, cp.category, cp.status, cp.is_pinned,
+                   cp.link_url, cp.created_at, cp.updated_at, au.name AS author_name
             FROM content_posts cp
             LEFT JOIN admin_users au ON au.id = cp.author_id
             {where_sql}
@@ -102,6 +102,7 @@ def handler(event: dict, context) -> dict:
         status = body.get("status", "draft")
         is_pinned = body.get("is_pinned", False)
         author_id = body.get("author_id")
+        link_url = body.get("link_url", "").strip()
 
         if not title:
             cur.close()
@@ -109,9 +110,9 @@ def handler(event: dict, context) -> dict:
             return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Заголовок обязателен"}}
 
         cur.execute(
-            """INSERT INTO content_posts (title, body, category, status, is_pinned, author_id)
-               VALUES (%s, %s, %s, %s, %s, %s) RETURNING *""",
-            (title, text or None, category or None, status, is_pinned, author_id),
+            """INSERT INTO content_posts (title, body, category, status, is_pinned, author_id, link_url)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING *""",
+            (title, text or None, category or None, status, is_pinned, author_id, link_url or None),
         )
         post = dict(cur.fetchone())
         cur.close()
@@ -128,7 +129,7 @@ def handler(event: dict, context) -> dict:
 
         fields = []
         values = []
-        for f in ["title", "body", "category", "status", "is_pinned"]:
+        for f in ["title", "body", "category", "status", "is_pinned", "link_url"]:
             if f in body:
                 fields.append(f"{f} = %s")
                 values.append(body[f])

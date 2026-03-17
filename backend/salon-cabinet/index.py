@@ -64,7 +64,7 @@ def handle_dashboard(cur, salon_id):
     dev_index = min((load + return_rate + (course / 5 * 100) + (potential / max(revenue, 1) * 25)) / 4, 100) if revenue > 0 else 0
 
     cur.execute("""
-        SELECT id, title, body, category, created_at FROM content_posts
+        SELECT id, title, body, category, link_url, created_at FROM content_posts
         WHERE status = 'published' ORDER BY is_pinned DESC, created_at DESC LIMIT 5
     """)
     posts = [dict(r) for r in cur.fetchall()]
