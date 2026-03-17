@@ -1,5 +1,4 @@
-import DokFooter from "@/components/DokFooter";
-import DokNavbar from "@/components/DokNavbar";
+import SimpleLayout from "@/components/layout/SimpleLayout";
 
 const ACCENT = "hsl(185, 85%, 32%)";
 
@@ -27,9 +26,9 @@ const p: React.CSSProperties = { margin: 0, fontSize: 15, lineHeight: 1.8, color
 
 export default function Privacy() {
   return (
+    <SimpleLayout>
     <div style={{ background: "#f8f8f6", minHeight: "100vh", fontFamily: "Montserrat, sans-serif", color: "#1a1a1a" }}>
-      <DokNavbar />
-      <div style={{ paddingTop: 80 }}>
+      <div style={{ paddingTop: 0 }}>
         <section style={{ background: "#1a1a1a", padding: "60px 24px 48px" }}>
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: ACCENT, marginBottom: 16 }}>Документы</div>
@@ -151,7 +150,7 @@ export default function Privacy() {
           </div>
         </section>
       </div>
-      <DokFooter />
     </div>
+    </SimpleLayout>
   );
 }
