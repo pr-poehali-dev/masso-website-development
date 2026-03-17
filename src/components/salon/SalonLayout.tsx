@@ -179,15 +179,7 @@ function CabinetFooter() {
 const SidebarContent = ({ salonName, userName, onLogout }: { salonName: string; userName: string; onLogout: () => void }) => (
   <div className="flex flex-col h-full" style={{ background: '#ffffff' }}>
     <div className="p-5 border-b" style={{ borderColor: '#e5e7eb' }}>
-      <div className="flex items-center gap-2">
-        <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center">
-          <Icon name="Waves" size={14} style={{ color: 'hsl(220, 30%, 6%)' }} />
-        </div>
-        <span className="font-display text-lg font-bold text-foreground">
-          Массо<span className="gradient-text">ПРО</span>
-        </span>
-      </div>
-      <p className="text-xs mt-1" style={{ color: '#9ca3af' }}>Личный кабинет</p>
+      <p className="text-sm font-semibold" style={{ color: '#111827' }}>Личный кабинет</p>
     </div>
     <nav className="flex-1 py-3 px-3 space-y-0.5 overflow-y-auto">
       {cabinetNavItems.map((item) => (
