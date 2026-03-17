@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "Get latest salons",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"salons": []},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Search salons by city",
+      "method": "GET",
+      "path": "/?q=Москва",
+      "expectedStatus": 200,
+      "expectedBody": {"salons": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
 import { AnimatedSection, CTAButton, Page } from "@/components/ui/shared";
 
@@ -315,37 +315,207 @@ export function PageSalons({ onNavigate }: { onNavigate: (p: Page) => void }) {
 
 // ─── PageCatalog ──────────────────────────────────────────────────────────────
 
+const CATALOG_URL = "https://functions.poehali.dev/caf17fe7-0696-4bc2-b522-0aec0aae8cbf";
+
+interface CatalogSalon {
+  id: number;
+  name: string;
+  city: string;
+  techniques: string | null;
+  rating: number;
+  is_published: boolean;
+}
+
+function SalonCard({ salon, index }: { salon: CatalogSalon; index: number }) {
+  const services = salon.techniques
+    ? salon.techniques.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  return (
+    <div
+      className="relative gradient-card rounded-3xl p-6 glow-card flex flex-col gap-4 overflow-hidden"
+      style={{
+        border: "1px solid hsla(185, 85%, 45%, 0.18)",
+        background: "linear-gradient(135deg, hsl(220,25%,10%) 0%, hsl(220,25%,7%) 100%)",
+        animationDelay: `${index * 120}ms`,
+      }}
+    >
+      <div
+        className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+        style={{ background: "radial-gradient(circle, hsl(185,85%,45%) 0%, transparent 70%)", transform: "translate(30%,-30%)" }}
+      />
+
+      <div className="flex items-start justify-between gap-3">
+        <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center shrink-0 glow-cyan">
+          <Icon name="Leaf" size={20} style={{ color: "hsl(220, 30%, 6%)" }} />
+        </div>
+        {salon.rating > 0 && (
+          <div className="flex items-center gap-1 text-xs font-body font-semibold" style={{ color: "hsl(185,85%,55%)" }}>
+            <Icon name="Star" size={12} style={{ color: "hsl(45,90%,55%)", fill: "hsl(45,90%,55%)" }} />
+            {salon.rating.toFixed(1)}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <h3 className="font-display text-lg font-bold text-foreground leading-tight mb-1">{salon.name}</h3>
+        <div className="flex items-center gap-1.5 text-xs font-body" style={{ color: "hsl(185,85%,55%)" }}>
+          <Icon name="MapPin" size={12} />
+          <span>{salon.city || "Город не указан"}</span>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {services.length > 0 ? (
+          services.slice(0, 4).map((s, i) => (
+            <span
+              key={i}
+              className="text-[11px] font-body px-2.5 py-1 rounded-full"
+              style={{
+                background: "hsla(185,85%,45%,0.12)",
+                border: "1px solid hsla(185,85%,45%,0.25)",
+                color: "hsl(185,85%,70%)",
+              }}
+            >
+              {s}
+            </span>
+          ))
+        ) : (
+          <span className="text-xs text-muted-foreground">Услуги уточняются</span>
+        )}
+      </div>
+
+      <div className="flex items-center gap-1.5 text-[11px] font-body font-semibold" style={{ color: "hsl(185,85%,45%)" }}>
+        <Icon name="ShieldCheck" size={12} />
+        Сертифицировано МассоПРО
+      </div>
+    </div>
+  );
+}
+
 export function PageCatalog({ onNavigate }: { onNavigate: (p: Page) => void }) {
+  const [salons, setSalons] = useState<CatalogSalon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<CatalogSalon[] | null>(null);
+  const [searching, setSearching] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    fetch(CATALOG_URL)
+      .then((r) => r.json())
+      .then((d) => setSalons(d.salons || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleSearch = (val: string) => {
+    setQuery(val);
+    setNotFound(false);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!val.trim()) {
+      setSearchResults(null);
+      return;
+    }
+    debounceRef.current = setTimeout(() => {
+      setSearching(true);
+      fetch(`${CATALOG_URL}?q=${encodeURIComponent(val.trim())}`)
+        .then((r) => r.json())
+        .then((d) => {
+          const res = d.salons || [];
+          setSearchResults(res);
+          setNotFound(res.length === 0);
+        })
+        .catch(() => setSearchResults([]))
+        .finally(() => setSearching(false));
+    }, 400);
+  };
+
+  const displayed = searchResults !== null ? searchResults : salons;
+
   return (
     <div>
-      <section className="pt-24 md:pt-32 pb-16 md:pb-24 gradient-hero min-h-screen flex items-center">
-        <div className="container mx-auto px-4 sm:px-6 text-center">
+      <section className="pt-24 md:pt-32 pb-16 md:pb-24 gradient-hero">
+        <div className="container mx-auto px-4 sm:px-6">
           <AnimatedSection>
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl gradient-bg flex items-center justify-center mx-auto mb-6 md:mb-8 glow-cyan animate-float">
-              <Icon name="LayoutGrid" size={36} style={{ color: "hsl(220, 30%, 6%)" }} />
+            <div className="text-center mb-10 md:mb-14">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl gradient-bg flex items-center justify-center mx-auto mb-6 glow-cyan animate-float">
+                <Icon name="LayoutGrid" size={36} style={{ color: "hsl(220, 30%, 6%)" }} />
+              </div>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-foreground mb-4">
+                Каталог <span className="gradient-text">студий</span>
+              </h1>
+              <p className="font-body text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                Проверьте, соответствует ли ваш салон стандартам МассоПРО, или найдите сертифицированную студию рядом
+              </p>
             </div>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-foreground mb-4 md:mb-6">
-              Каталог <span className="gradient-text">студий</span>
-            </h1>
-            <p className="font-body text-muted-foreground text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-4">
-              Каталог сертифицированных студий откроется после формирования сети партнёрских салонов.
-            </p>
-            <p className="font-body text-foreground font-semibold text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 md:mb-8">
-              Мы подключаем ограниченное количество салонов в каждом городе — 3–5 студий на город.
-            </p>
-            <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="mb-4">
-              Оставить заявку
-            </CTAButton>
 
-            <div className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto opacity-25 pointer-events-none select-none">
-              {["А", "Б", "В"].map((_, i) => (
-                <div key={i} className="gradient-card rounded-2xl p-5 text-left">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 mb-3" />
-                  <div className="h-3 bg-foreground/20 rounded mb-2" />
-                  <div className="h-2 bg-foreground/10 rounded w-2/3" />
+            <div className="max-w-xl mx-auto mb-12 md:mb-16">
+              <div
+                className="relative flex items-center rounded-2xl overflow-hidden"
+                style={{ border: "1px solid hsla(185,85%,45%,0.35)", background: "hsl(220,25%,9%)" }}
+              >
+                <div className="pl-4 pr-2 shrink-0">
+                  <Icon name={searching ? "Loader" : "Search"} size={18} style={{ color: "hsl(185,85%,55%)" }} className={searching ? "animate-spin" : ""} />
                 </div>
-              ))}
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Введите название или город салона..."
+                  className="flex-1 bg-transparent font-body text-foreground text-sm py-4 pr-4 outline-none placeholder:text-muted-foreground/50"
+                />
+                {query && (
+                  <button
+                    onClick={() => { setQuery(""); setSearchResults(null); setNotFound(false); }}
+                    className="pr-4 pl-2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Icon name="X" size={16} />
+                  </button>
+                )}
+              </div>
+              {notFound && (
+                <p className="text-center text-sm font-body mt-3" style={{ color: "hsl(0,70%,65%)" }}>
+                  Салон не найден в базе МассоПРО. Возможно, он ещё не прошёл сертификацию.
+                </p>
+              )}
             </div>
+
+            {!query && (
+              <p className="text-center text-xs font-body text-muted-foreground mb-6 tracking-widest uppercase">
+                Последние добавленные студии
+              </p>
+            )}
+
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="gradient-card rounded-3xl p-6 animate-pulse h-48" style={{ border: "1px solid hsla(185,85%,45%,0.1)" }}>
+                    <div className="w-12 h-12 rounded-2xl bg-foreground/10 mb-4" />
+                    <div className="h-4 bg-foreground/10 rounded mb-2 w-3/4" />
+                    <div className="h-3 bg-foreground/10 rounded w-1/2" />
+                  </div>
+                ))}
+              </div>
+            ) : displayed.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                {displayed.map((s, i) => (
+                  <SalonCard key={s.id} salon={s} index={i} />
+                ))}
+              </div>
+            ) : null}
+
+            {!query && (
+              <div className="text-center mt-14 md:mt-20">
+                <p className="font-body text-foreground font-semibold text-sm sm:text-base mb-3">
+                  Мы подключаем ограниченное количество салонов — 3–5 студий на город
+                </p>
+                <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>
+                  Оставить заявку
+                </CTAButton>
+              </div>
+            )}
           </AnimatedSection>
         </div>
       </section>
