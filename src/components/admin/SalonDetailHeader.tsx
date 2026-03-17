@@ -24,10 +24,12 @@ interface SalonDetailHeaderProps {
   salonId: number;
   salonName: string;
   salonStatus: string;
+  fullAccess: boolean;
   editing: boolean;
   saving: boolean;
   onBack: () => void;
   onStatusChange: (status: string) => void;
+  onFullAccessChange: (value: boolean) => void;
   onEditStart: () => void;
   onEditCancel: () => void;
   onSave: () => void;
@@ -37,10 +39,12 @@ const SalonDetailHeader = ({
   salonId,
   salonName,
   salonStatus,
+  fullAccess,
   editing,
   saving,
   onBack,
   onStatusChange,
+  onFullAccessChange,
   onEditStart,
   onEditCancel,
   onSave,
@@ -72,7 +76,19 @@ const SalonDetailHeader = ({
         </div>
       </div>
     </div>
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
+      <button
+        onClick={() => onFullAccessChange(!fullAccess)}
+        className="flex items-center gap-2 h-9 px-3 rounded-lg text-sm font-medium border transition-colors"
+        style={{
+          background: fullAccess ? '#f0fdf4' : '#f9fafb',
+          borderColor: fullAccess ? '#86efac' : '#d1d5db',
+          color: fullAccess ? '#16a34a' : '#6b7280',
+        }}
+      >
+        <Icon name={fullAccess ? 'Unlock' : 'Lock'} size={14} />
+        {fullAccess ? 'Полный доступ' : 'Базовый доступ'}
+      </button>
       <Select value={salonStatus} onValueChange={onStatusChange}>
         <SelectTrigger
           className="w-[160px] h-9 text-sm"

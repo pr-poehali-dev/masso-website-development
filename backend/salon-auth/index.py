@@ -128,7 +128,7 @@ def handler(event: dict, context) -> dict:
         conn.close()
         return {"statusCode": 401, "headers": CORS_HEADERS, "body": {"success": False, "error": "Неверный email или пароль"}}
 
-    cur.execute("SELECT id, name, status, tariff FROM salons WHERE id = %s", (user["salon_id"],))
+    cur.execute("SELECT id, name, status, tariff, full_access FROM salons WHERE id = %s", (user["salon_id"],))
     salon = cur.fetchone()
 
     cur.close()

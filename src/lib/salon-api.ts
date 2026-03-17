@@ -14,6 +14,7 @@ export interface SalonInfo {
   name: string;
   status: string;
   tariff?: string;
+  full_access: boolean;
 }
 
 export function getSalonUser(): SalonUser | null {

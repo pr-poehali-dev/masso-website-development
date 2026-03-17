@@ -49,6 +49,7 @@ interface SalonDetail {
   techniques: string | null;
   tariff: string;
   status: string;
+  full_access: boolean;
   rating: number;
   is_published: boolean;
   inspection_date: string | null;
@@ -137,6 +138,21 @@ const AdminSalonDetail = () => {
     }
   };
 
+  const handleFullAccessChange = async (value: boolean) => {
+    try {
+      const data = await adminFetch('salons', {
+        method: 'PUT',
+        body: JSON.stringify({ id: Number(id), full_access: value }),
+      });
+      if (data.salon) {
+        toast.success(value ? 'Полный доступ открыт' : 'Доступ ограничен');
+        setSalon({ ...salon!, full_access: value });
+      }
+    } catch {
+      toast.error('Ошибка изменения доступа');
+    }
+  };
+
   const handleAddComment = () => {
     if (!newComment.trim()) return;
     setAddingComment(true);
@@ -179,10 +195,12 @@ const AdminSalonDetail = () => {
         salonId={salon.id}
         salonName={salon.name}
         salonStatus={salon.status}
+        fullAccess={salon.full_access}
         editing={editing}
         saving={saving}
         onBack={() => navigate('/admin/salons')}
         onStatusChange={handleStatusChange}
+        onFullAccessChange={handleFullAccessChange}
         onEditStart={() => setEditing(true)}
         onEditCancel={() => setEditing(false)}
         onSave={handleSave}

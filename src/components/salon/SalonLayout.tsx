@@ -5,7 +5,12 @@ import { getSalonUser, getSalonInfo, logoutSalon } from '@/lib/salon-api';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { NAV_ITEMS } from '@/components/ui/shared';
 
-const cabinetNavItems = [
+const FREE_NAV_ITEMS = [
+  { label: 'Главная', icon: 'LayoutDashboard', path: '/cabinet' },
+  { label: 'Инструменты', icon: 'Calculator', path: '/cabinet/tools' },
+];
+
+const FULL_NAV_ITEMS = [
   { label: 'Главная', icon: 'LayoutDashboard', path: '/cabinet' },
   { label: 'Аналитика', icon: 'BarChart3', path: '/cabinet/analytics' },
   { label: 'Инструменты', icon: 'Calculator', path: '/cabinet/tools' },
@@ -15,6 +20,45 @@ const cabinetNavItems = [
   { label: 'Рейтинг', icon: 'Star', path: '/cabinet/rating' },
   { label: 'Профиль', icon: 'Building2', path: '/cabinet/profile' },
 ];
+
+const UPGRADE_BENEFITS = [
+  'Аналитика продаж и оборота',
+  'Управление специалистами',
+  'Доступ к обучению Док Диалог',
+  'База знаний и материалы',
+  'Рейтинг и сертификация',
+  'Профиль и тарифы',
+];
+
+function UpgradeBanner() {
+  return (
+    <div className="mx-4 mb-4 rounded-xl p-4 border" style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)', borderColor: '#bfdbfe' }}>
+      <div className="flex items-center gap-2 mb-2">
+        <Icon name="Sparkles" size={16} style={{ color: '#0da2e7' }} />
+        <p className="text-sm font-semibold" style={{ color: '#111827' }}>Полный доступ</p>
+      </div>
+      <p className="text-xs mb-3 leading-relaxed" style={{ color: '#4b5563' }}>
+        Заключите договор на услуги и откройте все возможности платформы:
+      </p>
+      <ul className="space-y-1 mb-3">
+        {UPGRADE_BENEFITS.map((b) => (
+          <li key={b} className="flex items-center gap-1.5 text-xs" style={{ color: '#374151' }}>
+            <Icon name="Check" size={12} style={{ color: '#22c55e' }} />
+            {b}
+          </li>
+        ))}
+      </ul>
+      <a
+        href="/tarify"
+        className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-xs font-semibold text-white transition-opacity hover:opacity-90"
+        style={{ background: '#0da2e7' }}
+      >
+        <Icon name="FileText" size={13} />
+        Узнать о тарифах
+      </a>
+    </div>
+  );
+}
 
 const pageNames: Record<string, string> = {
   '/cabinet': 'Главная',
@@ -176,13 +220,15 @@ function CabinetFooter() {
   );
 }
 
-const SidebarContent = ({ salonName, userName, onLogout }: { salonName: string; userName: string; onLogout: () => void }) => (
+const SidebarContent = ({ salonName, userName, onLogout, fullAccess }: { salonName: string; userName: string; onLogout: () => void; fullAccess: boolean }) => {
+  const navItems = fullAccess ? FULL_NAV_ITEMS : FREE_NAV_ITEMS;
+  return (
   <div className="flex flex-col h-full" style={{ background: '#ffffff' }}>
     <div className="p-5 border-b" style={{ borderColor: '#e5e7eb' }}>
       <p className="text-sm font-semibold" style={{ color: '#111827' }}>Личный кабинет</p>
     </div>
     <nav className="flex-1 py-3 px-3 space-y-0.5 overflow-y-auto">
-      {cabinetNavItems.map((item) => (
+      {navItems.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
@@ -200,6 +246,7 @@ const SidebarContent = ({ salonName, userName, onLogout }: { salonName: string; 
         </NavLink>
       ))}
     </nav>
+    {!fullAccess && <UpgradeBanner />}
     <div className="p-4 border-t" style={{ borderColor: '#e5e7eb' }}>
       <p className="text-sm font-medium truncate" style={{ color: '#111827' }}>{salonName}</p>
       <p className="text-xs" style={{ color: '#9ca3af' }}>{userName}</p>
@@ -213,13 +260,15 @@ const SidebarContent = ({ salonName, userName, onLogout }: { salonName: string; 
       </button>
     </div>
   </div>
-);
+  );
+};
 
 const SalonLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [userName, setUserName] = useState('');
   const [salonName, setSalonName] = useState('');
+  const [fullAccess, setFullAccess] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -231,6 +280,7 @@ const SalonLayout = () => {
     }
     setUserName(u.name || u.email);
     setSalonName(s.name);
+    setFullAccess(!!s.full_access);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -239,6 +289,13 @@ const SalonLayout = () => {
   };
 
   const currentPage = pageNames[location.pathname] || 'Кабинет';
+
+  const ALLOWED_FREE_PATHS = ['/cabinet', '/cabinet/tools'];
+  useEffect(() => {
+    if (userName && !fullAccess && !ALLOWED_FREE_PATHS.includes(location.pathname)) {
+      navigate('/cabinet', { replace: true });
+    }
+  }, [location.pathname, fullAccess, userName]);
 
   if (!userName) return null;
 
@@ -251,7 +308,7 @@ const SalonLayout = () => {
           className="hidden lg:flex lg:flex-col lg:w-[250px] lg:flex-shrink-0 border-r fixed top-16 bottom-0 left-0 z-20"
           style={{ borderColor: '#e5e7eb', background: '#ffffff' }}
         >
-          <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
+          <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} fullAccess={fullAccess} />
         </aside>
 
         <div className="lg:hidden fixed top-16 left-0 right-0 z-20 h-12 flex items-center px-4 border-b" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
@@ -264,7 +321,7 @@ const SalonLayout = () => {
             <SheetContent side="left" className="p-0 w-[280px]" style={{ background: '#ffffff' }}>
               <SheetTitle className="sr-only">Навигация</SheetTitle>
               <div onClick={() => setMobileSidebarOpen(false)}>
-                <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
+                <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} fullAccess={fullAccess} />
               </div>
             </SheetContent>
           </Sheet>

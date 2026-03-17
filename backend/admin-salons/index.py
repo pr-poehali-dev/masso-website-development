@@ -16,7 +16,7 @@ CORS_HEADERS = {
 ALLOWED_SALON_FIELDS = {
     "name", "city", "owner_name", "phone", "email",
     "description", "techniques", "tariff", "status",
-    "rating", "is_published", "inspection_date",
+    "rating", "is_published", "inspection_date", "full_access",
 }
 
 
