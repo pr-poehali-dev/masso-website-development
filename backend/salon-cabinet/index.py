@@ -166,7 +166,7 @@ def handle_knowledge(cur, params):
 
 
 def handle_rating(cur, salon_id):
-    """Рейтинг салона: офлайн обучение (40%), онлайн (25%), аттестация (20%), техники (15%)."""
+    """Рейтинг салона: офлайн 100% = 4.0, онлайн завершили 100% = +0.5, аттестация 100% = +0.5. Итого макс 5.0."""
     cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
     total = cur.fetchone()["total"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('offline_trained', 'in_progress', 'completed', 'certified')", (salon_id,))
@@ -176,34 +176,36 @@ def handle_rating(cur, salon_id):
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'", (salon_id,))
     attested = cur.fetchone()["cnt"]
 
-    cur.execute("SELECT techniques FROM salons WHERE id = %s", (salon_id,))
-    salon = cur.fetchone()
-    techniques_str = salon.get("techniques") or "" if salon else ""
-    techniques_count = len([t for t in techniques_str.split(",") if t.strip()]) if techniques_str else 0
+    if total == 0:
+        offline_pct = trained_pct = attested_pct = 0.0
+    else:
+        offline_pct = offline / total * 100
+        trained_pct = trained / total * 100
+        attested_pct = attested / total * 100
 
-    offline_pct = (offline / total * 100) if total > 0 else 0
-    trained_pct = (trained / total * 100) if total > 0 else 0
-    attested_pct = (attested / total * 100) if total > 0 else 0
-    tech_score = min(techniques_count * 20, 100)
-    rating = offline_pct * 0.4 + trained_pct * 0.25 + attested_pct * 0.2 + tech_score * 0.15
-    rating_5 = round(rating / 20, 1)
+    # Офлайн 100% -> 4.0 баллов (80% шкалы)
+    # Онлайн завершено 100% -> +0.5 (10%)
+    # Аттестация 100% -> +0.5 (10%)
+    rating_5 = (offline_pct / 100 * 4.0) + (trained_pct / 100 * 0.5) + (attested_pct / 100 * 0.5)
+    rating_5 = round(min(rating_5, 5.0), 1)
+    rating_100 = round(rating_5 * 20, 1)
 
-    status = "участник"
-    if rating >= 80:
-        status = "профессиональный"
-    elif rating >= 50:
-        status = "сертифицирован"
+    status = "Участник"
+    if rating_5 >= 5.0:
+        status = "Профессиональный"
+    elif rating_5 >= 4.5:
+        status = "Сертифицирован"
+    elif rating_5 >= 4.0:
+        status = "Обучен"
 
-    cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (min(rating_5, 5), salon_id))
+    cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (rating_5, salon_id))
 
     return {
         "rating": rating_5,
-        "rating_100": round(rating, 1),
+        "rating_100": rating_100,
         "offline_pct": round(offline_pct, 1),
         "trained_pct": round(trained_pct, 1),
         "attested_pct": round(attested_pct, 1),
-        "techniques_count": techniques_count,
-        "tech_score": tech_score,
         "status": status,
         "total_specialists": total,
         "offline_trained": offline,
