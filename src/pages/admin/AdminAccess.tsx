@@ -37,6 +37,7 @@ interface AccessItem {
   specialist_id: number | null;
   specialist_name: string | null;
   email: string;
+  password: string | null;
   salon_id: number | null;
   salon_name: string | null;
   status: string;
@@ -69,7 +70,7 @@ const AdminAccess = () => {
   const [search, setSearch] = useState('');
   const [addOpen, setAddOpen] = useState(false);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
-  const [newAccess, setNewAccess] = useState({ specialist_id: '', email: '' });
+  const [newAccess, setNewAccess] = useState({ specialist_id: '', email: '', password: '' });
   const [saving, setSaving] = useState(false);
 
   const loadData = () => {
@@ -143,6 +144,7 @@ const AdminAccess = () => {
       body: JSON.stringify({
         specialist_id: newAccess.specialist_id ? Number(newAccess.specialist_id) : null,
         email: newAccess.email,
+        password: newAccess.password || null,
         status: 'issued',
       }),
     })
@@ -151,7 +153,7 @@ const AdminAccess = () => {
         if (data.access_record) {
           toast.success('Доступ выдан');
           setAddOpen(false);
-          setNewAccess({ specialist_id: '', email: '' });
+          setNewAccess({ specialist_id: '', email: '', password: '' });
           loadData();
         } else {
           toast.error(data.error || 'Ошибка');
@@ -225,6 +227,16 @@ const AdminAccess = () => {
                   style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
                 />
               </div>
+              <div>
+                <Label className="text-sm" style={{ color: '#374151' }}>Пароль</Label>
+                <Input
+                  value={newAccess.password}
+                  onChange={(e) => setNewAccess(prev => ({ ...prev, password: e.target.value }))}
+                  placeholder="Пароль для входа на платформу"
+                  className="h-9 text-sm mt-1"
+                  style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                />
+              </div>
               <button
                 onClick={handleAddAccess}
                 disabled={saving}
@@ -256,6 +268,7 @@ const AdminAccess = () => {
               <TableRow style={{ borderColor: '#e5e7eb' }}>
                 <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Специалист</TableHead>
                 <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Email</TableHead>
+                <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Пароль</TableHead>
                 <TableHead className="text-xs font-semibold hidden md:table-cell" style={{ color: '#6b7280' }}>Салон</TableHead>
                 <TableHead className="text-xs font-semibold hidden md:table-cell" style={{ color: '#6b7280' }}>Дата выдачи</TableHead>
                 <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Статус</TableHead>
@@ -273,6 +286,7 @@ const AdminAccess = () => {
                     {item.specialist_name || '-'}
                   </TableCell>
                   <TableCell className="text-sm" style={{ color: '#6b7280' }}>{item.email}</TableCell>
+                  <TableCell className="text-sm font-mono" style={{ color: '#111827' }}>{item.password || '-'}</TableCell>
                   <TableCell className="text-sm hidden md:table-cell" style={{ color: '#6b7280' }}>{item.salon_name || '-'}</TableCell>
                   <TableCell className="text-sm hidden md:table-cell" style={{ color: '#9ca3af' }}>{formatDateTime(item.issued_at)}</TableCell>
                   <TableCell>

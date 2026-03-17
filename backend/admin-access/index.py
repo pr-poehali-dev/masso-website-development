@@ -16,7 +16,7 @@ CORS_HEADERS = {
 }
 
 ALLOWED_ACCESS_FIELDS = {
-    "specialist_id", "salon_id", "email", "status",
+    "specialist_id", "salon_id", "email", "status", "password",
 }
 
 
@@ -88,7 +88,7 @@ def handle_get_list(cur, params):
     # Fetch access records with specialist and salon names
     list_sql = (
         f"SELECT da.id, da.specialist_id, sp.name AS specialist_name, "
-        f"da.email, da.salon_id, s.name AS salon_name, "
+        f"da.email, da.password, da.salon_id, s.name AS salon_name, "
         f"da.status, da.issued_at, da.activated_at "
         f"FROM dok_dialog_access da "
         f"LEFT JOIN specialists sp ON sp.id = da.specialist_id "

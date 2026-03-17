@@ -9,6 +9,7 @@ interface TrainingSpec {
   training_status: string;
   attestation_status: string;
   access_status: string | null;
+  access_password: string | null;
   issued_at: string | null;
   activated_at: string | null;
 }
@@ -98,6 +99,12 @@ const SalonTraining = () => {
                       <p className="text-xs mt-0.5" style={{ color: '#6b7280' }}>
                         {accessLabels[s.access_status] || s.access_status}
                       </p>
+                    )}
+                    {s.access_password && (
+                      <div className="flex items-center gap-1.5 justify-end mt-1">
+                        <Icon name="KeyRound" size={12} style={{ color: '#f59e0b' }} />
+                        <span className="text-xs font-mono font-medium" style={{ color: '#111827' }}>{s.access_password}</span>
+                      </div>
                     )}
                   </div>
                 </div>

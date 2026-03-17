@@ -144,7 +144,7 @@ def handle_training(cur, salon_id):
     """Обучение: статус специалистов в Док Диалог."""
     cur.execute("""
         SELECT s.id, s.name, s.email, s.training_status, s.attestation_status,
-               d.status AS access_status, d.issued_at, d.activated_at
+               d.status AS access_status, d.password AS access_password, d.issued_at, d.activated_at
         FROM specialists s
         LEFT JOIN dok_dialog_access d ON d.specialist_id = s.id AND d.salon_id = %s
         WHERE s.salon_id = %s ORDER BY s.id
