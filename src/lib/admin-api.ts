@@ -111,6 +111,15 @@ export function getTrainingStatusColor(status: string): string {
   return map[status] || 'bg-gray-100 text-gray-700 border-gray-300';
 }
 
+export function getAttestationColor(status: string): string {
+  const map: Record<string, string> = {
+    none: 'bg-gray-100 text-gray-700 border-gray-300',
+    passed: 'bg-green-50 text-green-700 border-green-300',
+    failed: 'bg-red-50 text-red-700 border-red-300',
+  };
+  return map[status] || 'bg-gray-100 text-gray-700 border-gray-300';
+}
+
 export function getAccessStatusLabel(status: string): string {
   const map: Record<string, string> = {
     issued: 'Выдан',

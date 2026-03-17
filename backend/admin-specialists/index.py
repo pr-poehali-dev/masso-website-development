@@ -152,11 +152,43 @@ def handle_post(cur, body):
     return respond(201, {"specialist": specialist})
 
 
+def recalc_salon_rating(cur, salon_id):
+    """Пересчёт рейтинга салона по формуле: (обученные% + аттестованные% + техники_балл) / 3."""
+    if not salon_id:
+        return
+    cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
+    total = cur.fetchone()["total"]
+    if total == 0:
+        cur.execute("UPDATE salons SET rating = 0 WHERE id = %s", (salon_id,))
+        return
+    cur.execute(
+        "SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('completed', 'certified')",
+        (salon_id,),
+    )
+    trained = cur.fetchone()["cnt"]
+    cur.execute(
+        "SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'",
+        (salon_id,),
+    )
+    attested = cur.fetchone()["cnt"]
+    cur.execute("SELECT techniques FROM salons WHERE id = %s", (salon_id,))
+    salon = cur.fetchone()
+    tech_str = (salon.get("techniques") or "") if salon else ""
+    tech_count = len([t for t in tech_str.split(",") if t.strip()]) if tech_str else 0
+    trained_pct = trained / total * 100
+    attested_pct = attested / total * 100
+    tech_score = min(tech_count * 20, 100)
+    rating_5 = round((trained_pct + attested_pct + tech_score) / 3 / 20, 1)
+    cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (min(rating_5, 5), salon_id))
+
+
 def handle_put(cur, body):
-    """Обновление специалиста по id. Обновляются только переданные поля."""
+    """Обновление специалиста по id. Обновляются только переданные поля. Автопересчёт рейтинга салона."""
     specialist_id = body.get("id")
     if not specialist_id:
         return respond(400, {"error": "id специалиста обязателен"})
+
+    status_changed = "training_status" in body or "attestation_status" in body
 
     updates = []
     values = []
@@ -178,6 +210,9 @@ def handle_put(cur, body):
 
     if not specialist:
         return respond(404, {"error": "Специалист не найден"})
+
+    if status_changed and specialist.get("salon_id"):
+        recalc_salon_rating(cur, specialist["salon_id"])
 
     return respond(200, {"specialist": specialist})
 

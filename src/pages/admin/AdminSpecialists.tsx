@@ -28,6 +28,7 @@ import {
   adminFetch,
   getTrainingStatusLabel,
   getTrainingStatusColor,
+  getAttestationColor,
   formatDate,
 } from '@/lib/admin-api';
 import { toast } from 'sonner';
@@ -75,6 +76,27 @@ const AdminSpecialists = () => {
   const [salons, setSalons] = useState<Salon[]>([]);
   const [newSpec, setNewSpec] = useState({ name: '', email: '', salon_id: '', experience_years: '0', training_status: 'added', attestation_status: 'none' });
   const [saving, setSaving] = useState(false);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
+
+  const updateSpecialistStatus = (specId: number, field: string, value: string) => {
+    setUpdatingId(specId);
+    fetch('https://functions.poehali.dev/6c30e659-c8be-4c63-942a-03dac1c456f5', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: specId, [field]: value }),
+    })
+      .then(r => r.json())
+      .then((data) => {
+        if (data.specialist) {
+          setSpecialists(prev => prev.map(s => s.id === specId ? { ...s, [field]: value } : s));
+          toast.success('Статус обновлён');
+        } else {
+          toast.error(data.error || 'Ошибка обновления');
+        }
+      })
+      .catch(() => toast.error('Ошибка соединения'))
+      .finally(() => setUpdatingId(null));
+  };
 
   const loadData = () => {
     setLoading(true);
@@ -300,11 +322,51 @@ const AdminSpecialists = () => {
                   <TableCell className="text-sm hidden lg:table-cell" style={{ color: '#6b7280' }}>{spec.salon_name || '-'}</TableCell>
                   <TableCell className="text-sm hidden md:table-cell" style={{ color: '#6b7280' }}>{spec.experience_years} лет</TableCell>
                   <TableCell>
-                    <span className={`text-xs px-2 py-0.5 rounded-full border ${getTrainingStatusColor(spec.training_status)}`}>
-                      {getTrainingStatusLabel(spec.training_status)}
-                    </span>
+                    <Select
+                      value={spec.training_status}
+                      onValueChange={(v) => updateSpecialistStatus(spec.id, 'training_status', v)}
+                      disabled={updatingId === spec.id}
+                    >
+                      <SelectTrigger className="h-7 w-auto min-w-[120px] border-0 p-0 shadow-none focus:ring-0">
+                        <span className={`text-xs px-2 py-0.5 rounded-full border ${getTrainingStatusColor(spec.training_status)}`}>
+                          {getTrainingStatusLabel(spec.training_status)}
+                        </span>
+                      </SelectTrigger>
+                      <SelectContent style={{ background: '#ffffff' }}>
+                        {TRAINING_STATUSES.filter(s => s.value !== 'all').map(s => (
+                          <SelectItem key={s.value} value={s.value} style={{ color: '#111827' }}>
+                            <span className={`text-xs px-2 py-0.5 rounded-full border ${getTrainingStatusColor(s.value)}`}>
+                              {s.label}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </TableCell>
-                  <TableCell className="text-sm hidden lg:table-cell" style={{ color: '#6b7280' }}>{ATTESTATION_MAP[spec.attestation_status] || spec.attestation_status}</TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    <Select
+                      value={spec.attestation_status}
+                      onValueChange={(v) => updateSpecialistStatus(spec.id, 'attestation_status', v)}
+                      disabled={updatingId === spec.id}
+                    >
+                      <SelectTrigger className="h-7 w-auto min-w-[110px] border-0 p-0 shadow-none focus:ring-0">
+                        <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor(spec.attestation_status)}`}>
+                          {ATTESTATION_MAP[spec.attestation_status] || spec.attestation_status}
+                        </span>
+                      </SelectTrigger>
+                      <SelectContent style={{ background: '#ffffff' }}>
+                        <SelectItem value="none" style={{ color: '#111827' }}>
+                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('none')}`}>Нет</span>
+                        </SelectItem>
+                        <SelectItem value="passed" style={{ color: '#111827' }}>
+                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('passed')}`}>Пройдена</span>
+                        </SelectItem>
+                        <SelectItem value="failed" style={{ color: '#111827' }}>
+                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('failed')}`}>Не пройдена</span>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell className="text-sm hidden md:table-cell" style={{ color: '#9ca3af' }}>{formatDate(spec.created_at)}</TableCell>
                 </TableRow>
               ))}
