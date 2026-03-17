@@ -5,6 +5,10 @@ const API_URLS = {
   leads: 'https://functions.poehali.dev/a579537c-e3a4-4397-8155-dd88bc1a2fd9',
   specialists: 'https://functions.poehali.dev/6c30e659-c8be-4c63-942a-03dac1c456f5',
   access: 'https://functions.poehali.dev/c0272ba8-c8f1-4d74-9845-0b8e1e6e8384',
+  analytics: 'https://functions.poehali.dev/829532ec-4f4a-40e8-9efb-d2de1bcf5e95',
+  tools: 'https://functions.poehali.dev/71554603-778d-47d8-9cbd-6cea59fd8755',
+  content: 'https://functions.poehali.dev/d1f87f5a-f858-49a7-ae65-c2f11fdcdd21',
+  settings: 'https://functions.poehali.dev/49c21920-2064-4a7b-bd3a-98a7e14428b2',
 };
 
 export async function adminFetch(endpoint: keyof typeof API_URLS, options?: RequestInit) {
