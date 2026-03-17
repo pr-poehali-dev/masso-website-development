@@ -119,13 +119,27 @@ const SalonDashboard = () => {
 
       {data.posts.length > 0 && (
         <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-          <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Последние публикации</h3>
+          <div className="flex items-center gap-2 mb-4">
+            <Icon name="Newspaper" size={16} style={{ color: '#0da2e7' }} />
+            <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Новости и материалы</h3>
+          </div>
           <div className="space-y-3">
             {data.posts.map(post => (
-              <div key={post.id} className="pb-3 border-b last:border-0 last:pb-0" style={{ borderColor: '#f3f4f6' }}>
-                <p className="text-sm font-medium" style={{ color: '#111827' }}>{post.title}</p>
-                {post.body && <p className="text-xs mt-0.5 line-clamp-2" style={{ color: '#6b7280' }}>{post.body}</p>}
-                <p className="text-xs mt-1" style={{ color: '#d1d5db' }}>{new Date(post.created_at).toLocaleDateString('ru-RU')}</p>
+              <div key={post.id} className="rounded-lg p-4 border" style={{ background: '#f9fafb', borderColor: '#f3f4f6' }}>
+                <div className="flex items-start justify-between gap-2 mb-1.5">
+                  <p className="text-sm font-semibold leading-snug" style={{ color: '#111827' }}>{post.title}</p>
+                  {post.category && (
+                    <span className="flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: '#eff6ff', color: '#0da2e7' }}>
+                      {post.category}
+                    </span>
+                  )}
+                </div>
+                {post.body && (
+                  <p className="text-xs line-clamp-2 mb-2" style={{ color: '#6b7280' }}>{post.body}</p>
+                )}
+                <p className="text-xs" style={{ color: '#d1d5db' }}>
+                  {new Date(post.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
+                </p>
               </div>
             ))}
           </div>
