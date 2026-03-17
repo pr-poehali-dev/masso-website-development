@@ -93,7 +93,7 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   {[
                     "o4aLwoPaNMNsPmRU517kdr",
-                    "7on4nVofXbcgkDmWbjaZvH",
+                    "us9ULPt46B7G77bQYwBXXt",
                     "jWics1Kq1BrrtcFK25Vmgu",
                     "vk9wa3fBfxQZwMbRvN9YJG",
                     "sCFSxwbdZSjobWC3KKzDmj",
