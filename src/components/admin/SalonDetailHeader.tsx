@@ -49,49 +49,49 @@ const SalonDetailHeader = ({
   onEditCancel,
   onSave,
 }: SalonDetailHeaderProps) => (
-  <div className="flex items-center justify-between flex-wrap gap-2 sm:gap-3">
+  <div className="flex flex-col gap-3">
+    {/* Row 1: back + name */}
     <div className="flex items-center gap-3">
       <button
         onClick={onBack}
-        className="p-2 rounded-lg border transition-colors"
+        className="p-2 rounded-lg border transition-colors shrink-0"
         style={{ borderColor: '#e5e7eb', color: '#374151' }}
         onMouseEnter={(e) => (e.currentTarget.style.background = '#f3f4f6')}
         onMouseLeave={(e) => (e.currentTarget.style.background = '')}
       >
         <Icon name="ArrowLeft" size={18} />
       </button>
-      <div>
-        <h2 className="text-base sm:text-xl font-bold font-sans" style={{ color: '#111827' }}>
+      <div className="min-w-0">
+        <h2 className="text-base sm:text-xl font-bold font-sans truncate" style={{ color: '#111827' }}>
           {salonName}
         </h2>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-sm" style={{ color: '#6b7280' }}>
-            ID: {salonId}
-          </span>
-          <span
-            className={`text-xs px-2 py-0.5 rounded-full border ${getSalonStatusColor(salonStatus)}`}
-          >
+        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+          <span className="text-sm" style={{ color: '#6b7280' }}>ID: {salonId}</span>
+          <span className={`text-xs px-2 py-0.5 rounded-full border ${getSalonStatusColor(salonStatus)}`}>
             {getSalonStatusLabel(salonStatus)}
           </span>
         </div>
       </div>
     </div>
-    <div className="flex items-center gap-2 flex-wrap">
+
+    {/* Row 2: controls */}
+    <div className="flex flex-wrap gap-2">
       <button
         onClick={() => onFullAccessChange(!fullAccess)}
-        className="flex items-center gap-2 h-9 px-3 rounded-lg text-xs sm:text-sm font-medium border transition-colors"
+        className="flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-medium border transition-colors"
         style={{
           background: fullAccess ? '#f0fdf4' : '#f9fafb',
           borderColor: fullAccess ? '#86efac' : '#d1d5db',
           color: fullAccess ? '#16a34a' : '#6b7280',
         }}
       >
-        <Icon name={fullAccess ? 'Unlock' : 'Lock'} size={14} />
+        <Icon name={fullAccess ? 'Unlock' : 'Lock'} size={13} />
         {fullAccess ? 'Полный доступ' : 'Базовый доступ'}
       </button>
+
       <Select value={salonStatus} onValueChange={onStatusChange}>
         <SelectTrigger
-          className="w-full sm:w-[160px] h-9 text-sm"
+          className="h-9 text-xs min-w-[120px] flex-1 sm:flex-none sm:w-[150px]"
           style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
         >
           <SelectValue />
@@ -104,22 +104,21 @@ const SalonDetailHeader = ({
           ))}
         </SelectContent>
       </Select>
+
       {!editing ? (
         <button
           onClick={onEditStart}
-          className="h-9 px-4 rounded-lg text-sm font-medium text-white flex items-center gap-2"
+          className="h-9 px-3 rounded-lg text-xs font-medium text-white flex items-center gap-1.5 ml-auto"
           style={{ background: '#0da2e7' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = '#0b8dcc')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = '#0da2e7')}
         >
-          <Icon name="Pencil" size={14} />
+          <Icon name="Pencil" size={13} />
           Редактировать
         </button>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex gap-2 ml-auto">
           <button
             onClick={onEditCancel}
-            className="h-9 px-4 rounded-lg text-sm font-medium border"
+            className="h-9 px-3 rounded-lg text-xs font-medium border"
             style={{ borderColor: '#d1d5db', color: '#374151', background: '#ffffff' }}
           >
             Отмена
@@ -127,7 +126,7 @@ const SalonDetailHeader = ({
           <button
             onClick={onSave}
             disabled={saving}
-            className="h-9 px-4 rounded-lg text-sm font-semibold text-white disabled:opacity-50"
+            className="h-9 px-3 rounded-lg text-xs font-semibold text-white disabled:opacity-50"
             style={{ background: '#22c55e' }}
           >
             {saving ? 'Сохранение...' : 'Сохранить'}
