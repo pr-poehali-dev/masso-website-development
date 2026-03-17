@@ -69,6 +69,7 @@ const SalonProfile = () => {
         phone: profileRes.salon?.phone || '',
         email: profileRes.salon?.email || '',
         techniques: profileRes.salon?.techniques || '',
+        website: profileRes.salon?.website || '',
         specialists_count: profileRes.settings?.specialists_count || 1,
         clients_per_day: profileRes.settings?.clients_per_day || 4,
         avg_price: profileRes.settings?.avg_price || 3000,
@@ -203,6 +204,7 @@ const SalonProfile = () => {
           <Field label="Телефон" field="phone" editing={editing} form={form} setForm={setForm} />
           <Field label="Email" field="email" editing={editing} form={form} setForm={setForm} />
           <Field label="Техники (через запятую)" field="techniques" editing={editing} form={form} setForm={setForm} />
+          <Field label="Сайт салона" field="website" editing={editing} form={form} setForm={setForm} />
         </div>
       </div>
 

@@ -7,6 +7,15 @@ export interface CatalogSalon {
   techniques: string | null;
   rating: number;
   is_published: boolean;
+  website?: string | null;
+}
+
+function formatWebsite(url: string): string {
+  return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+}
+
+function ensureHttp(url: string): string {
+  return /^https?:\/\//.test(url) ? url : `https://${url}`;
 }
 
 export function CatalogCard({ salon, index }: { salon: CatalogSalon; index: number }) {
@@ -68,9 +77,23 @@ export function CatalogCard({ salon, index }: { salon: CatalogSalon; index: numb
         )}
       </div>
 
-      <div className="flex items-center gap-1.5 text-[11px] font-body font-semibold" style={{ color: "hsl(185,85%,45%)" }}>
-        <Icon name="ShieldCheck" size={12} />
-        Сертифицировано МассоПРО
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 text-[11px] font-body font-semibold" style={{ color: "hsl(185,85%,45%)" }}>
+          <Icon name="ShieldCheck" size={12} />
+          Сертифицировано МассоПРО
+        </div>
+        {salon.website && (
+          <a
+            href={ensureHttp(salon.website)}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="flex items-center gap-1 text-[11px] font-body font-medium shrink-0 hover:underline"
+            style={{ color: "hsl(185,85%,60%)" }}
+          >
+            <Icon name="ExternalLink" size={11} />
+            {formatWebsite(salon.website)}
+          </a>
+        )}
       </div>
     </div>
   );

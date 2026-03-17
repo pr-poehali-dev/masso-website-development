@@ -32,7 +32,7 @@ def handler(event: dict, context) -> dict:
         like = f"%{query}%"
         cur.execute(
             """
-            SELECT id, name, city, techniques, rating, is_published, created_at
+            SELECT id, name, city, techniques, rating, is_published, website, created_at
             FROM salons
             WHERE (name ILIKE %s OR city ILIKE %s)
             ORDER BY created_at DESC
@@ -43,7 +43,7 @@ def handler(event: dict, context) -> dict:
     else:
         cur.execute(
             """
-            SELECT id, name, city, techniques, rating, is_published, created_at
+            SELECT id, name, city, techniques, rating, is_published, website, created_at
             FROM salons
             ORDER BY created_at DESC
             LIMIT 3

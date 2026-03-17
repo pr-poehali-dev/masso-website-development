@@ -216,7 +216,7 @@ def handle_profile(cur, salon_id, method, body):
     if method == "PUT":
         salon_fields = []
         salon_vals = []
-        for f in ["name", "city", "owner_name", "phone", "email", "description", "techniques"]:
+        for f in ["name", "city", "owner_name", "phone", "email", "description", "techniques", "website"]:
             if f in body:
                 salon_fields.append(f"{f} = %s")
                 salon_vals.append(body[f])
