@@ -1,5 +1,6 @@
 import json
 import os
+import hashlib
 from datetime import date, datetime
 from decimal import Decimal
 import psycopg2
@@ -85,6 +86,34 @@ def handler(event: dict, context) -> dict:
             conn.close()
             return {"statusCode": 201, "headers": CORS_HEADERS, "body": serialize({"tariff": tariff})}
 
+        if action == "create_user":
+            name = body.get("name", "").strip()
+            email = body.get("email", "").strip().lower()
+            password = body.get("password", "").strip()
+            role = body.get("role", "manager")
+            if not name or not email or not password:
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Имя, email и пароль обязательны"}}
+            if len(password) < 6:
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Пароль минимум 6 символов"}}
+            cur.execute("SELECT id FROM admin_users WHERE email = %s", (email,))
+            if cur.fetchone():
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Пользователь с таким email уже существует"}}
+            password_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+            cur.execute(
+                "INSERT INTO admin_users (name, email, password_hash, role) VALUES (%s, %s, %s, %s) RETURNING id, email, name, role, is_active, created_at",
+                (name, email, password_hash, role),
+            )
+            user = dict(cur.fetchone())
+            cur.close()
+            conn.close()
+            return {"statusCode": 201, "headers": CORS_HEADERS, "body": serialize({"user": user})}
+
         cur.close()
         conn.close()
         return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Неизвестное действие"}}
@@ -141,7 +170,7 @@ def handler(event: dict, context) -> dict:
                 return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "ID обязателен"}}
             fields = []
             values = []
-            for f in ["name", "email", "role", "is_active"]:
+            for f in ["name", "role", "is_active"]:
                 if f in body:
                     fields.append(f"{f} = %s")
                     values.append(body[f])
@@ -152,6 +181,52 @@ def handler(event: dict, context) -> dict:
             fields.append("updated_at = NOW()")
             values.append(int(user_id))
             cur.execute(f"UPDATE admin_users SET {', '.join(fields)} WHERE id = %s RETURNING id, email, name, role, is_active", values)
+            user = cur.fetchone()
+            cur.close()
+            conn.close()
+            if not user:
+                return {"statusCode": 404, "headers": CORS_HEADERS, "body": {"error": "Пользователь не найден"}}
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": serialize({"user": dict(user)})}
+
+        if action == "change_email":
+            user_id = body.get("id")
+            new_email = body.get("email", "").strip().lower()
+            if not user_id or not new_email:
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "ID и новый email обязательны"}}
+            cur.execute("SELECT id FROM admin_users WHERE email = %s AND id != %s", (new_email, int(user_id)))
+            if cur.fetchone():
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Этот email уже используется"}}
+            cur.execute(
+                "UPDATE admin_users SET email = %s, updated_at = NOW() WHERE id = %s RETURNING id, email, name, role, is_active",
+                (new_email, int(user_id)),
+            )
+            user = cur.fetchone()
+            cur.close()
+            conn.close()
+            if not user:
+                return {"statusCode": 404, "headers": CORS_HEADERS, "body": {"error": "Пользователь не найден"}}
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": serialize({"user": dict(user)})}
+
+        if action == "change_password":
+            user_id = body.get("id")
+            new_password = body.get("password", "").strip()
+            if not user_id or not new_password:
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "ID и новый пароль обязательны"}}
+            if len(new_password) < 6:
+                cur.close()
+                conn.close()
+                return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Пароль минимум 6 символов"}}
+            password_hash = hashlib.sha256(new_password.encode("utf-8")).hexdigest()
+            cur.execute(
+                "UPDATE admin_users SET password_hash = %s, updated_at = NOW() WHERE id = %s RETURNING id, email, name, role, is_active",
+                (password_hash, int(user_id)),
+            )
             user = cur.fetchone()
             cur.close()
             conn.close()

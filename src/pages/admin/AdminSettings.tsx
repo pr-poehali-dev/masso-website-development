@@ -38,6 +38,10 @@ const AdminSettings = () => {
   const [saving, setSaving] = useState(false);
   const [editUserId, setEditUserId] = useState<number | null>(null);
   const [editUserData, setEditUserData] = useState<Partial<AdminUser>>({});
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'manager' });
+  const [emailModal, setEmailModal] = useState<{ id: number; email: string } | null>(null);
+  const [passwordModal, setPasswordModal] = useState<{ id: number; password: string; confirm: string } | null>(null);
 
   useEffect(() => {
     fetch(SETTINGS_URL, { headers: { 'Content-Type': 'application/json' } })
@@ -73,7 +77,7 @@ const AdminSettings = () => {
     const res = await fetch(SETTINGS_URL, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'update_user', id: editUserId, ...editUserData }),
+      body: JSON.stringify({ action: 'update_user', id: editUserId, name: editUserData.name, role: editUserData.role }),
     }).then(r => r.json());
     if (res.user) {
       setUsers(users.map(u => u.id === editUserId ? { ...u, ...res.user } : u));
@@ -95,6 +99,83 @@ const AdminSettings = () => {
       setUsers(users.map(u => u.id === user.id ? { ...u, ...res.user } : u));
       toast.success(res.user.is_active ? 'Активирован' : 'Деактивирован');
     }
+  };
+
+  const handleCreateUser = async () => {
+    if (!newUser.name.trim() || !newUser.email.trim() || !newUser.password.trim()) {
+      toast.error('Заполните все поля');
+      return;
+    }
+    if (newUser.password.length < 6) {
+      toast.error('Пароль минимум 6 символов');
+      return;
+    }
+    setSaving(true);
+    const res = await fetch(SETTINGS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'create_user', ...newUser }),
+    }).then(r => r.json());
+    if (res.user) {
+      setUsers([...users, res.user]);
+      setShowAddUser(false);
+      setNewUser({ name: '', email: '', password: '', role: 'manager' });
+      toast.success('Администратор добавлен');
+    } else {
+      toast.error(res.error || 'Ошибка');
+    }
+    setSaving(false);
+  };
+
+  const handleChangeEmail = async () => {
+    if (!emailModal) return;
+    if (!emailModal.email.trim()) {
+      toast.error('Введите email');
+      return;
+    }
+    setSaving(true);
+    const res = await fetch(SETTINGS_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'change_email', id: emailModal.id, email: emailModal.email }),
+    }).then(r => r.json());
+    if (res.user) {
+      setUsers(users.map(u => u.id === emailModal.id ? { ...u, ...res.user } : u));
+      setEmailModal(null);
+      toast.success('Email обновлён');
+    } else {
+      toast.error(res.error || 'Ошибка');
+    }
+    setSaving(false);
+  };
+
+  const handleChangePassword = async () => {
+    if (!passwordModal) return;
+    if (!passwordModal.password.trim()) {
+      toast.error('Введите пароль');
+      return;
+    }
+    if (passwordModal.password.length < 6) {
+      toast.error('Пароль минимум 6 символов');
+      return;
+    }
+    if (passwordModal.password !== passwordModal.confirm) {
+      toast.error('Пароли не совпадают');
+      return;
+    }
+    setSaving(true);
+    const res = await fetch(SETTINGS_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'change_password', id: passwordModal.id, password: passwordModal.password }),
+    }).then(r => r.json());
+    if (res.user) {
+      setPasswordModal(null);
+      toast.success('Пароль изменён');
+    } else {
+      toast.error(res.error || 'Ошибка');
+    }
+    setSaving(false);
   };
 
   if (loading) {
@@ -153,103 +234,251 @@ const AdminSettings = () => {
         </TabsContent>
 
         <TabsContent value="users">
-          <div className="rounded-xl border mt-4 overflow-hidden" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
-            {users.length === 0 ? (
-              <div className="text-center py-12">
-                <Icon name="Users" size={32} className="mx-auto" style={{ color: '#d1d5db' }} />
-                <p className="text-sm mt-2" style={{ color: '#9ca3af' }}>Нет пользователей</p>
-              </div>
-            ) : (
-              <div className="divide-y" style={{ borderColor: '#f3f4f6' }}>
-                {users.map(user => (
-                  <div key={user.id} className="p-4">
-                    {editUserId === user.id ? (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div className="space-y-1">
-                          <Label className="text-xs" style={{ color: '#6b7280' }}>Имя</Label>
-                          <Input
-                            value={editUserData.name || ''}
-                            onChange={e => setEditUserData({ ...editUserData, name: e.target.value })}
-                            className="text-sm"
-                            style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <Label className="text-xs" style={{ color: '#6b7280' }}>Email</Label>
-                          <Input
-                            value={editUserData.email || ''}
-                            onChange={e => setEditUserData({ ...editUserData, email: e.target.value })}
-                            className="text-sm"
-                            style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <Label className="text-xs" style={{ color: '#6b7280' }}>Роль</Label>
-                          <Select value={editUserData.role || 'manager'} onValueChange={v => setEditUserData({ ...editUserData, role: v })}>
-                            <SelectTrigger className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent style={{ background: '#ffffff' }}>
-                              <SelectItem value="admin" style={{ color: '#111827' }}>Администратор</SelectItem>
-                              <SelectItem value="manager" style={{ color: '#111827' }}>Менеджер</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="md:col-span-3 flex gap-2 mt-1">
-                          <button onClick={handleSaveUser} disabled={saving} className="h-8 px-3 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
-                            Сохранить
-                          </button>
-                          <button onClick={() => setEditUserId(null)} className="h-8 px-3 rounded-lg text-sm font-medium border" style={{ color: '#6b7280', borderColor: '#d1d5db' }}>
-                            Отмена
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0"
-                            style={{ background: user.is_active ? '#0da2e7' : '#9ca3af' }}
-                          >
-                            {user.name.charAt(0).toUpperCase()}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="text-sm font-medium" style={{ color: '#111827' }}>{user.name}</p>
-                              <span className={`text-xs px-2 py-0.5 rounded-full border ${user.role === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-300' : 'bg-blue-50 text-blue-700 border-blue-300'}`}>
-                                {user.role === 'admin' ? 'Админ' : 'Менеджер'}
-                              </span>
-                              {!user.is_active && (
-                                <span className="text-xs px-2 py-0.5 rounded-full border bg-red-50 text-red-700 border-red-300">Неактивен</span>
-                              )}
-                            </div>
-                            <p className="text-xs" style={{ color: '#9ca3af' }}>{user.email} &middot; {formatDateTime(user.created_at)}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => handleToggleUser(user)}
-                            className="p-2 rounded-lg hover:bg-gray-50"
-                            title={user.is_active ? 'Деактивировать' : 'Активировать'}
-                          >
-                            <Icon name={user.is_active ? 'UserX' : 'UserCheck'} size={16} style={{ color: user.is_active ? '#ef4444' : '#22c55e' }} />
-                          </button>
-                          <button
-                            onClick={() => { setEditUserId(user.id); setEditUserData({ name: user.name, email: user.email, role: user.role }); }}
-                            className="p-2 rounded-lg hover:bg-gray-50"
-                          >
-                            <Icon name="Pencil" size={16} style={{ color: '#6b7280' }} />
-                          </button>
-                        </div>
-                      </div>
-                    )}
+          <div className="mt-4 space-y-3">
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Управление администраторами</h3>
+              <button
+                onClick={() => setShowAddUser(!showAddUser)}
+                className="h-8 px-3 rounded-lg text-sm font-medium text-white flex items-center gap-1.5"
+                style={{ background: '#0da2e7' }}
+              >
+                <Icon name={showAddUser ? 'X' : 'UserPlus'} size={14} />
+                {showAddUser ? 'Отмена' : 'Добавить'}
+              </button>
+            </div>
+
+            {showAddUser && (
+              <div className="rounded-xl border p-5" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+                <h4 className="text-sm font-medium mb-3" style={{ color: '#111827' }}>Новый администратор</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <Label className="text-xs" style={{ color: '#6b7280' }}>Имя</Label>
+                    <Input
+                      value={newUser.name}
+                      onChange={e => setNewUser({ ...newUser, name: e.target.value })}
+                      placeholder="Иван Иванов"
+                      className="text-sm"
+                      style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                    />
                   </div>
-                ))}
+                  <div className="space-y-1">
+                    <Label className="text-xs" style={{ color: '#6b7280' }}>Email</Label>
+                    <Input
+                      value={newUser.email}
+                      onChange={e => setNewUser({ ...newUser, email: e.target.value })}
+                      placeholder="admin@example.com"
+                      type="email"
+                      className="text-sm"
+                      style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs" style={{ color: '#6b7280' }}>Пароль</Label>
+                    <Input
+                      value={newUser.password}
+                      onChange={e => setNewUser({ ...newUser, password: e.target.value })}
+                      placeholder="Минимум 6 символов"
+                      type="password"
+                      className="text-sm"
+                      style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs" style={{ color: '#6b7280' }}>Роль</Label>
+                    <Select value={newUser.role} onValueChange={v => setNewUser({ ...newUser, role: v })}>
+                      <SelectTrigger className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent style={{ background: '#ffffff' }}>
+                        <SelectItem value="admin" style={{ color: '#111827' }}>Администратор</SelectItem>
+                        <SelectItem value="manager" style={{ color: '#111827' }}>Менеджер</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <button
+                  onClick={handleCreateUser}
+                  disabled={saving}
+                  className="mt-4 h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                  style={{ background: '#22c55e' }}
+                >
+                  {saving ? 'Создаём...' : 'Создать'}
+                </button>
               </div>
             )}
+
+            <div className="rounded-xl border overflow-hidden" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+              {users.length === 0 ? (
+                <div className="text-center py-12">
+                  <Icon name="Users" size={32} className="mx-auto" style={{ color: '#d1d5db' }} />
+                  <p className="text-sm mt-2" style={{ color: '#9ca3af' }}>Нет пользователей</p>
+                </div>
+              ) : (
+                <div className="divide-y" style={{ borderColor: '#f3f4f6' }}>
+                  {users.map(user => (
+                    <div key={user.id} className="p-4">
+                      {editUserId === user.id ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          <div className="space-y-1">
+                            <Label className="text-xs" style={{ color: '#6b7280' }}>Имя</Label>
+                            <Input
+                              value={editUserData.name || ''}
+                              onChange={e => setEditUserData({ ...editUserData, name: e.target.value })}
+                              className="text-sm"
+                              style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-xs" style={{ color: '#6b7280' }}>Роль</Label>
+                            <Select value={editUserData.role || 'manager'} onValueChange={v => setEditUserData({ ...editUserData, role: v })}>
+                              <SelectTrigger className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent style={{ background: '#ffffff' }}>
+                                <SelectItem value="admin" style={{ color: '#111827' }}>Администратор</SelectItem>
+                                <SelectItem value="manager" style={{ color: '#111827' }}>Менеджер</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="flex items-end gap-2">
+                            <button onClick={handleSaveUser} disabled={saving} className="h-9 px-3 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
+                              Сохранить
+                            </button>
+                            <button onClick={() => setEditUserId(null)} className="h-9 px-3 rounded-lg text-sm font-medium border" style={{ color: '#6b7280', borderColor: '#d1d5db' }}>
+                              Отмена
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0"
+                              style={{ background: user.is_active ? '#0da2e7' : '#9ca3af' }}
+                            >
+                              {user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium" style={{ color: '#111827' }}>{user.name}</p>
+                                <span className={`text-xs px-2 py-0.5 rounded-full border ${user.role === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-300' : 'bg-blue-50 text-blue-700 border-blue-300'}`}>
+                                  {user.role === 'admin' ? 'Админ' : 'Менеджер'}
+                                </span>
+                                {!user.is_active && (
+                                  <span className="text-xs px-2 py-0.5 rounded-full border bg-red-50 text-red-700 border-red-300">Неактивен</span>
+                                )}
+                              </div>
+                              <p className="text-xs" style={{ color: '#9ca3af' }}>{user.email} &middot; {formatDateTime(user.created_at)}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => setEmailModal({ id: user.id, email: user.email })}
+                              className="p-2 rounded-lg hover:bg-gray-50"
+                              title="Сменить email"
+                            >
+                              <Icon name="Mail" size={16} style={{ color: '#6b7280' }} />
+                            </button>
+                            <button
+                              onClick={() => setPasswordModal({ id: user.id, password: '', confirm: '' })}
+                              className="p-2 rounded-lg hover:bg-gray-50"
+                              title="Сменить пароль"
+                            >
+                              <Icon name="KeyRound" size={16} style={{ color: '#6b7280' }} />
+                            </button>
+                            <button
+                              onClick={() => handleToggleUser(user)}
+                              className="p-2 rounded-lg hover:bg-gray-50"
+                              title={user.is_active ? 'Деактивировать' : 'Активировать'}
+                            >
+                              <Icon name={user.is_active ? 'UserX' : 'UserCheck'} size={16} style={{ color: user.is_active ? '#ef4444' : '#22c55e' }} />
+                            </button>
+                            <button
+                              onClick={() => { setEditUserId(user.id); setEditUserData({ name: user.name, role: user.role }); }}
+                              className="p-2 rounded-lg hover:bg-gray-50"
+                              title="Редактировать"
+                            >
+                              <Icon name="Pencil" size={16} style={{ color: '#6b7280' }} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </TabsContent>
       </Tabs>
+
+      {emailModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setEmailModal(null)}>
+          <div className="rounded-xl p-6 w-full max-w-sm mx-4" style={{ background: '#ffffff' }} onClick={e => e.stopPropagation()}>
+            <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Сменить email</h3>
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <Label className="text-xs" style={{ color: '#6b7280' }}>Новый email</Label>
+                <Input
+                  value={emailModal.email}
+                  onChange={e => setEmailModal({ ...emailModal, email: e.target.value })}
+                  type="email"
+                  className="text-sm"
+                  style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                />
+              </div>
+              <div className="flex gap-2">
+                <button onClick={handleChangeEmail} disabled={saving} className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
+                  {saving ? 'Сохраняем...' : 'Сохранить'}
+                </button>
+                <button onClick={() => setEmailModal(null)} className="h-9 px-4 rounded-lg text-sm font-medium border" style={{ color: '#6b7280', borderColor: '#d1d5db' }}>
+                  Отмена
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {passwordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setPasswordModal(null)}>
+          <div className="rounded-xl p-6 w-full max-w-sm mx-4" style={{ background: '#ffffff' }} onClick={e => e.stopPropagation()}>
+            <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Сменить пароль</h3>
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <Label className="text-xs" style={{ color: '#6b7280' }}>Новый пароль</Label>
+                <Input
+                  value={passwordModal.password}
+                  onChange={e => setPasswordModal({ ...passwordModal, password: e.target.value })}
+                  type="password"
+                  placeholder="Минимум 6 символов"
+                  className="text-sm"
+                  style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs" style={{ color: '#6b7280' }}>Подтвердите пароль</Label>
+                <Input
+                  value={passwordModal.confirm}
+                  onChange={e => setPasswordModal({ ...passwordModal, confirm: e.target.value })}
+                  type="password"
+                  placeholder="Повторите пароль"
+                  className="text-sm"
+                  style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+                />
+              </div>
+              <div className="flex gap-2">
+                <button onClick={handleChangePassword} disabled={saving} className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
+                  {saving ? 'Сохраняем...' : 'Сменить пароль'}
+                </button>
+                <button onClick={() => setPasswordModal(null)} className="h-9 px-4 rounded-lg text-sm font-medium border" style={{ color: '#6b7280', borderColor: '#d1d5db' }}>
+                  Отмена
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
