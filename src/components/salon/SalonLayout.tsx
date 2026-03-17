@@ -3,8 +3,9 @@ import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { getSalonUser, getSalonInfo, logoutSalon } from '@/lib/salon-api';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import { NAV_ITEMS } from '@/components/ui/shared';
 
-const navItems = [
+const cabinetNavItems = [
   { label: 'Главная', icon: 'LayoutDashboard', path: '/cabinet' },
   { label: 'Аналитика', icon: 'BarChart3', path: '/cabinet/analytics' },
   { label: 'Инструменты', icon: 'Calculator', path: '/cabinet/tools' },
@@ -26,14 +27,170 @@ const pageNames: Record<string, string> = {
   '/cabinet/profile': 'Профиль',
 };
 
+const PAGE_URLS: Record<string, string> = {
+  home: '/',
+  how: '/#how',
+  salons: '/#salons',
+  catalog: '/#catalog',
+  about: '/#about',
+  contacts: '/kontakty',
+  privacy: '/privacy',
+  offer: '/offer',
+};
+
+function CabinetNavbar({ salonName, userName, onLogout }: { salonName: string; userName: string; onLogout: () => void }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border shadow-lg shadow-black/20' : 'bg-background/95 backdrop-blur-xl border-b border-border'}`}>
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
+          <a href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Icon name="Waves" size={16} style={{ color: 'hsl(220, 30%, 6%)' }} />
+            </div>
+            <span className="font-display text-xl font-bold text-foreground">
+              Массо<span className="gradient-text">ПРО</span>
+            </span>
+          </a>
+
+          <div className="hidden lg:flex items-center gap-6">
+            {NAV_ITEMS.map(item => (
+              <a
+                key={item.id}
+                href={PAGE_URLS[item.id] || '/'}
+                className="nav-link font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden lg:flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold text-white" style={{ background: '#0da2e7' }}>
+                {salonName.charAt(0).toUpperCase()}
+              </div>
+              <div className="text-sm">
+                <p className="font-medium leading-tight" style={{ color: '#111827' }}>{salonName}</p>
+                <p className="text-xs leading-tight" style={{ color: '#9ca3af' }}>{userName}</p>
+              </div>
+            </div>
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg transition-colors hover:bg-red-50"
+              style={{ color: '#ef4444' }}
+            >
+              <Icon name="LogOut" size={15} />
+              Выйти
+            </button>
+          </div>
+
+          <button className="lg:hidden text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+            <Icon name={mobileOpen ? 'X' : 'Menu'} size={24} />
+          </button>
+        </div>
+      </div>
+
+      {mobileOpen && (
+        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border py-4">
+          <div className="container mx-auto px-4 sm:px-6 space-y-1">
+            {NAV_ITEMS.map(item => (
+              <a
+                key={item.id}
+                href={PAGE_URLS[item.id] || '/'}
+                className="block w-full text-left px-4 py-3 rounded-xl font-body text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+            <div className="pt-2 border-t border-border mt-2">
+              <div className="px-4 py-2">
+                <p className="text-sm font-medium" style={{ color: '#111827' }}>{salonName}</p>
+                <p className="text-xs" style={{ color: '#9ca3af' }}>{userName}</p>
+              </div>
+              <button
+                onClick={() => { setMobileOpen(false); onLogout(); }}
+                className="flex items-center gap-2 w-full px-4 py-3 rounded-xl text-sm transition-colors hover:bg-red-50"
+                style={{ color: '#ef4444' }}
+              >
+                <Icon name="LogOut" size={16} />
+                Выйти
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+function CabinetFooter() {
+  return (
+    <footer className="border-t border-border py-12 gradient-section mt-8">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center">
+                <Icon name="Waves" size={14} style={{ color: 'hsl(220, 30%, 6%)' }} />
+              </div>
+              <span className="font-display text-lg font-bold text-foreground">
+                Массо<span className="gradient-text">ПРО</span>
+              </span>
+            </div>
+            <p className="text-muted-foreground text-xs font-body max-w-xs leading-relaxed">
+              Профессиональный стандарт массажа для салонов и студий по всей России
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 md:gap-6">
+            {NAV_ITEMS.map(item => (
+              <a
+                key={item.id}
+                href={PAGE_URLS[item.id] || '/'}
+                className="text-muted-foreground hover:text-primary font-body text-xs transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-muted-foreground text-xs font-body">
+          <span>© 2026 MassoPRO. Все права защищены.<br className="sm:hidden" /> ИП Водопьянов С.Г. ОГРНИП 321508100047334</span>
+          <div className="flex gap-4">
+            <a href="/privacy" className="hover:text-primary transition-colors">Политика конфиденциальности</a>
+            <a href="/offer" className="hover:text-primary transition-colors">Публичная оферта</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 const SidebarContent = ({ salonName, userName, onLogout }: { salonName: string; userName: string; onLogout: () => void }) => (
   <div className="flex flex-col h-full" style={{ background: '#ffffff' }}>
     <div className="p-5 border-b" style={{ borderColor: '#e5e7eb' }}>
-      <h1 className="text-xl font-bold font-sans" style={{ color: '#000000' }}>МассоПро</h1>
-      <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>Личный кабинет</p>
+      <div className="flex items-center gap-2">
+        <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center">
+          <Icon name="Waves" size={14} style={{ color: 'hsl(220, 30%, 6%)' }} />
+        </div>
+        <span className="font-display text-lg font-bold text-foreground">
+          Массо<span className="gradient-text">ПРО</span>
+        </span>
+      </div>
+      <p className="text-xs mt-1" style={{ color: '#9ca3af' }}>Личный кабинет</p>
     </div>
     <nav className="flex-1 py-3 px-3 space-y-0.5 overflow-y-auto">
-      {navItems.map((item) => (
+      {cabinetNavItems.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
@@ -71,7 +228,7 @@ const SalonLayout = () => {
   const location = useLocation();
   const [userName, setUserName] = useState('');
   const [salonName, setSalonName] = useState('');
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const u = getSalonUser();
@@ -94,45 +251,44 @@ const SalonLayout = () => {
   if (!userName) return null;
 
   return (
-    <div className="flex min-h-screen font-sans" style={{ background: '#f8f9fa' }}>
-      <aside
-        className="hidden lg:flex lg:flex-col lg:w-[250px] lg:flex-shrink-0 border-r fixed inset-y-0 left-0 z-30"
-        style={{ borderColor: '#e5e7eb', background: '#ffffff' }}
-      >
-        <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
-      </aside>
+    <div className="min-h-screen font-sans" style={{ background: '#f8f9fa' }}>
+      <CabinetNavbar salonName={salonName} userName={userName} onLogout={handleLogout} />
 
-      <div
-        className="lg:hidden fixed top-0 left-0 right-0 z-30 h-14 flex items-center px-4 border-b"
-        style={{ background: '#ffffff', borderColor: '#e5e7eb' }}
-      >
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetTrigger asChild>
-            <button className="p-2 rounded-lg hover:bg-gray-100">
-              <Icon name="Menu" size={20} style={{ color: '#374151' }} />
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-[280px]" style={{ background: '#ffffff' }}>
-            <SheetTitle className="sr-only">Навигация</SheetTitle>
-            <div onClick={() => setMobileOpen(false)}>
-              <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
-            </div>
-          </SheetContent>
-        </Sheet>
-        <h1 className="ml-3 text-lg font-bold font-sans" style={{ color: '#000000' }}>МассоПро</h1>
-      </div>
-
-      <main className="flex-1 lg:ml-[250px] pt-14 lg:pt-0">
-        <div
-          className="hidden lg:flex items-center h-14 px-6 border-b"
-          style={{ background: '#ffffff', borderColor: '#e5e7eb' }}
+      <div className="flex pt-16">
+        <aside
+          className="hidden lg:flex lg:flex-col lg:w-[250px] lg:flex-shrink-0 border-r fixed top-16 bottom-0 left-0 z-20"
+          style={{ borderColor: '#e5e7eb', background: '#ffffff' }}
         >
-          <h2 className="text-lg font-semibold font-sans" style={{ color: '#111827' }}>{currentPage}</h2>
+          <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
+        </aside>
+
+        <div className="lg:hidden fixed top-16 left-0 right-0 z-20 h-12 flex items-center px-4 border-b" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+          <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
+            <SheetTrigger asChild>
+              <button className="p-2 rounded-lg hover:bg-gray-100">
+                <Icon name="Menu" size={20} style={{ color: '#374151' }} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-[280px]" style={{ background: '#ffffff' }}>
+              <SheetTitle className="sr-only">Навигация</SheetTitle>
+              <div onClick={() => setMobileSidebarOpen(false)}>
+                <SidebarContent salonName={salonName} userName={userName} onLogout={handleLogout} />
+              </div>
+            </SheetContent>
+          </Sheet>
+          <h2 className="ml-3 text-base font-semibold" style={{ color: '#111827' }}>{currentPage}</h2>
         </div>
-        <div className="p-4 lg:p-6">
-          <Outlet />
-        </div>
-      </main>
+
+        <main className="flex-1 lg:ml-[250px] pt-12 lg:pt-0 flex flex-col min-h-[calc(100vh-4rem)]">
+          <div className="hidden lg:flex items-center h-14 px-6 border-b" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+            <h2 className="text-lg font-semibold font-sans" style={{ color: '#111827' }}>{currentPage}</h2>
+          </div>
+          <div className="flex-1 p-4 lg:p-6">
+            <Outlet />
+          </div>
+          <CabinetFooter />
+        </main>
+      </div>
     </div>
   );
 };
