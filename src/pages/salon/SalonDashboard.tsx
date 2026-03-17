@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
-import { salonFetch } from '@/lib/salon-api';
+import { salonFetch, getSalonInfo, setSalonSession, getSalonUser } from '@/lib/salon-api';
 
 interface DashData {
   metrics: {
@@ -13,7 +13,7 @@ interface DashData {
   };
   training: { total: number; trained: number };
   posts: Array<{ id: number; title: string; body: string | null; category: string | null; link_url: string | null; created_at: string }>;
-  salon: { name: string; status: string; inspection_date?: string | null };
+  salon: { name: string; status: string; inspection_date?: string | null; full_access?: boolean };
 }
 
 const fmt = (n: number) => n.toLocaleString('ru-RU');
@@ -24,7 +24,17 @@ const SalonDashboard = () => {
 
   useEffect(() => {
     salonFetch('dashboard')
-      .then(setData)
+      .then((res) => {
+        setData(res);
+        if (res?.salon && typeof res.salon.full_access === 'boolean') {
+          const user = getSalonUser();
+          const info = getSalonInfo();
+          if (user && info && info.full_access !== res.salon.full_access) {
+            setSalonSession(user, { ...info, full_access: res.salon.full_access });
+            window.dispatchEvent(new Event('salon-access-updated'));
+          }
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);

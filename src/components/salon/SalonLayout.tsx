@@ -271,6 +271,11 @@ const SalonLayout = () => {
   const [fullAccess, setFullAccess] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
+  const syncFromStorage = () => {
+    const s = getSalonInfo();
+    if (s) setFullAccess(!!s.full_access);
+  };
+
   useEffect(() => {
     const u = getSalonUser();
     const s = getSalonInfo();
@@ -281,6 +286,9 @@ const SalonLayout = () => {
     setUserName(u.name || u.email);
     setSalonName(s.name);
     setFullAccess(!!s.full_access);
+
+    window.addEventListener('salon-access-updated', syncFromStorage);
+    return () => window.removeEventListener('salon-access-updated', syncFromStorage);
   }, [navigate]);
 
   const handleLogout = () => {
