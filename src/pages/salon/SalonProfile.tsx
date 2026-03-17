@@ -20,6 +20,30 @@ const TARIFF_LABELS: Record<string, string> = {
   full: 'Полный',
 };
 
+const Field = ({
+  label, field, type = 'text', editing, form, setForm,
+}: {
+  label: string; field: string; type?: string;
+  editing: boolean;
+  form: Record<string, string | number>;
+  setForm: React.Dispatch<React.SetStateAction<Record<string, string | number>>>;
+}) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs" style={{ color: '#6b7280' }}>{label}</Label>
+    {editing ? (
+      <Input
+        type={type}
+        value={form[field] ?? ''}
+        onChange={e => setForm(prev => ({ ...prev, [field]: type === 'number' ? Number(e.target.value) : e.target.value }))}
+        className="text-sm"
+        style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+      />
+    ) : (
+      <p className="text-sm font-medium py-2" style={{ color: '#111827' }}>{form[field] || '-'}</p>
+    )}
+  </div>
+);
+
 const SalonProfile = () => {
   const [salon, setSalon] = useState<Record<string, string | number | null>>({});
   const [settings, setSettings] = useState<Record<string, number>>({});
@@ -79,23 +103,6 @@ const SalonProfile = () => {
   };
 
   if (loading) return <div className="flex justify-center py-20"><Icon name="Loader2" size={32} className="animate-spin" style={{ color: '#0da2e7' }} /></div>;
-
-  const Field = ({ label, field, type = 'text' }: { label: string; field: string; type?: string }) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs" style={{ color: '#6b7280' }}>{label}</Label>
-      {editing ? (
-        <Input
-          type={type}
-          value={form[field] || ''}
-          onChange={e => setForm({ ...form, [field]: type === 'number' ? Number(e.target.value) : e.target.value })}
-          className="text-sm"
-          style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
-        />
-      ) : (
-        <p className="text-sm font-medium py-2" style={{ color: '#111827' }}>{form[field] || '-'}</p>
-      )}
-    </div>
-  );
 
   const currentTariffInfo = tariffs.find(t => t.name.toLowerCase() === currentTariff || t.name === currentTariff);
   const tariffLabel = currentTariff ? (TARIFF_LABELS[currentTariff] || currentTariff) : null;
@@ -190,25 +197,25 @@ const SalonProfile = () => {
       <div className="rounded-xl p-4 sm:p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Основная информация</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Название салона" field="name" />
-          <Field label="Город" field="city" />
-          <Field label="Владелец" field="owner_name" />
-          <Field label="Телефон" field="phone" />
-          <Field label="Email" field="email" />
-          <Field label="Техники (через запятую)" field="techniques" />
+          <Field label="Название салона" field="name" editing={editing} form={form} setForm={setForm} />
+          <Field label="Город" field="city" editing={editing} form={form} setForm={setForm} />
+          <Field label="Владелец" field="owner_name" editing={editing} form={form} setForm={setForm} />
+          <Field label="Телефон" field="phone" editing={editing} form={form} setForm={setForm} />
+          <Field label="Email" field="email" editing={editing} form={form} setForm={setForm} />
+          <Field label="Техники (через запятую)" field="techniques" editing={editing} form={form} setForm={setForm} />
         </div>
       </div>
 
       <div className="rounded-xl p-4 sm:p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Параметры для расчётов</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <Field label="Кол-во специалистов" field="specialists_count" type="number" />
-          <Field label="Клиентов в день" field="clients_per_day" type="number" />
-          <Field label="Средняя цена (руб.)" field="avg_price" type="number" />
-          <Field label="Рабочих дней" field="working_days" type="number" />
-          <Field label="Курс процедур" field="procedure_course" type="number" />
-          <Field label="Длительность (часы)" field="procedure_duration" type="number" />
-          <Field label="Рабочие часы" field="working_hours" type="number" />
+          <Field label="Кол-во специалистов" field="specialists_count" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Клиентов в день" field="clients_per_day" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Средняя цена (руб.)" field="avg_price" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Рабочих дней" field="working_days" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Курс процедур" field="procedure_course" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Длительность (часы)" field="procedure_duration" type="number" editing={editing} form={form} setForm={setForm} />
+          <Field label="Рабочие часы" field="working_hours" type="number" editing={editing} form={form} setForm={setForm} />
         </div>
       </div>
     </div>
