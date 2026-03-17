@@ -150,7 +150,7 @@ const AdminAccess = () => {
     })
       .then(r => r.json())
       .then((data) => {
-        if (data.access_record) {
+        if (data.access || data.access_record) {
           toast.success('Доступ выдан');
           setAddOpen(false);
           setNewAccess({ specialist_id: '', email: '', password: '' });
