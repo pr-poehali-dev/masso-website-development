@@ -55,7 +55,7 @@ const SalonTraining = () => {
           </div>
         </div>
         <a
-          href="https://dokdialog.ru"
+          href="https://school.brossok.ru/login"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium text-white mt-3"
