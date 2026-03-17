@@ -1,5 +1,7 @@
 import json
 import os
+import string
+import random
 from datetime import date, datetime
 from decimal import Decimal
 import psycopg2

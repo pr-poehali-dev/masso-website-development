@@ -1,0 +1,1 @@
+ALTER TABLE dok_dialog_access ADD COLUMN IF NOT EXISTS password VARCHAR(100);
