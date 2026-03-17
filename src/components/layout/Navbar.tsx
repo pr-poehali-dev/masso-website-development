@@ -35,7 +35,14 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
             ))}
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href="/cabinet/login"
+              className="inline-flex items-center gap-1.5 font-body font-medium text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Icon name="User" size={16} />
+              Кабинет
+            </a>
             <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Консультация</CTAButton>
           </div>
 
@@ -60,6 +67,12 @@ export function Navbar({ currentPage, mobileOpen, scrolled, onNavigate, onToggle
                 {item.label}
               </button>
             ))}
+            <a
+              href="/cabinet/login"
+              className="block w-full text-left px-4 py-3 rounded-xl font-body text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            >
+              Личный кабинет
+            </a>
             <div className="pt-3">
               <CTAButton onClick={() => { onNavigate("home"); setTimeout(() => document.getElementById("cta-form")?.scrollIntoView({ behavior: "smooth" }), 100); }}>Получить консультацию</CTAButton>
             </div>

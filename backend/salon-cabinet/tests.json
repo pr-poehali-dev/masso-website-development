@@ -1,0 +1,1 @@
+{"tests": [{"name": "Requires salon_id", "method": "GET", "path": "/?section=knowledge", "expectedStatus": 400}]}

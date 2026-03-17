@@ -14,6 +14,18 @@ import Kontakty from "./pages/Kontakty";
 import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
 
+// Salon cabinet imports
+import SalonLogin from "./pages/salon/SalonLogin";
+import SalonLayout from "./components/salon/SalonLayout";
+import SalonDashboard from "./pages/salon/SalonDashboard";
+import SalonAnalytics from "./pages/salon/SalonAnalytics";
+import SalonTools from "./pages/salon/SalonTools";
+import SalonSpecialists from "./pages/salon/SalonSpecialists";
+import SalonTraining from "./pages/salon/SalonTraining";
+import SalonKnowledge from "./pages/salon/SalonKnowledge";
+import SalonRating from "./pages/salon/SalonRating";
+import SalonProfile from "./pages/salon/SalonProfile";
+
 // Admin panel imports
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -46,6 +58,19 @@ const App = () => (
           <Route path="/kontakty" element={<Kontakty />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/offer" element={<Offer />} />
+
+          {/* Salon cabinet routes */}
+          <Route path="/cabinet/login" element={<SalonLogin />} />
+          <Route path="/cabinet" element={<SalonLayout />}>
+            <Route index element={<SalonDashboard />} />
+            <Route path="analytics" element={<SalonAnalytics />} />
+            <Route path="tools" element={<SalonTools />} />
+            <Route path="specialists" element={<SalonSpecialists />} />
+            <Route path="training" element={<SalonTraining />} />
+            <Route path="knowledge" element={<SalonKnowledge />} />
+            <Route path="rating" element={<SalonRating />} />
+            <Route path="profile" element={<SalonProfile />} />
+          </Route>
 
           {/* Admin panel routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
