@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET specialists list",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET with training filter",
+      "method": "GET",
+      "path": "/?training_status=added",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST create specialist without name",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "test@test.com"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "PUT update specialist without id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"name": "Test"},
+      "expectedStatus": 400
+    }
+  ]
+}

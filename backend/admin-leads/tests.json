@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET leads list",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET leads with status filter",
+      "method": "GET",
+      "path": "/?status=new",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST create lead without name",
+      "method": "POST",
+      "path": "/",
+      "body": {"phone": "+71234567890"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "PUT update lead without id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"name": "Test"},
+      "expectedStatus": 400
+    }
+  ]
+}

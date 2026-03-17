@@ -2,6 +2,9 @@ const API_URLS = {
   auth: 'https://functions.poehali.dev/d38ac2ec-0783-4820-a830-634807fb2c22',
   dashboard: 'https://functions.poehali.dev/0010e9a3-7f44-423f-acb8-8e0f74a77af8',
   salons: 'https://functions.poehali.dev/ce43779d-d06c-464a-bd6d-4e57e0ebc300',
+  leads: 'https://functions.poehali.dev/a579537c-e3a4-4397-8155-dd88bc1a2fd9',
+  specialists: 'https://functions.poehali.dev/6c30e659-c8be-4c63-942a-03dac1c456f5',
+  access: 'https://functions.poehali.dev/c0272ba8-c8f1-4d74-9845-0b8e1e6e8384',
 };
 
 export async function adminFetch(endpoint: keyof typeof API_URLS, options?: RequestInit) {

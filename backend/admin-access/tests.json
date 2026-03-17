@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET access list",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET with status filter",
+      "method": "GET",
+      "path": "/?status=issued",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST create access without email",
+      "method": "POST",
+      "path": "/",
+      "body": {"specialist_id": 1},
+      "expectedStatus": 400
+    },
+    {
+      "name": "PUT update access without id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"status": "activated"},
+      "expectedStatus": 400
+    }
+  ]
+}
