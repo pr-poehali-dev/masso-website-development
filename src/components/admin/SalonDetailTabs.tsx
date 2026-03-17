@@ -155,15 +155,17 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, onRatingUp
   const [localRating, setLocalRating] = React.useState(Number(rating));
 
   const total = specialists.length;
+  const offlineTrained = specialists.filter(s => s.training_status === 'offline_trained' || s.training_status === 'in_progress' || s.training_status === 'completed' || s.training_status === 'certified').length;
   const trained = specialists.filter(s => s.training_status === 'completed' || s.training_status === 'certified').length;
   const attested = specialists.filter(s => s.attestation_status === 'passed').length;
   const techList = techniques ? techniques.split(',').filter(t => t.trim()) : [];
   const techCount = techList.length;
 
+  const offlinePct = total > 0 ? Math.round(offlineTrained / total * 100) : 0;
   const trainedPct = total > 0 ? Math.round(trained / total * 100) : 0;
   const attestedPct = total > 0 ? Math.round(attested / total * 100) : 0;
   const techScore = Math.min(techCount * 20, 100);
-  const calcRating100 = (trainedPct + attestedPct + techScore) / 3;
+  const calcRating100 = offlinePct * 0.4 + trainedPct * 0.25 + attestedPct * 0.2 + techScore * 0.15;
   const calcRating5 = Math.min(Math.round(calcRating100 / 20 * 10) / 10, 5);
 
   const handleRecalc = async () => {
@@ -223,28 +225,37 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, onRatingUp
 
       <div className="pt-5">
         <h4 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Из чего складывается рейтинг</h4>
-        <div className="grid grid-cols-3 gap-4 mb-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          <div className="rounded-lg p-4 text-center border-2" style={{ background: '#fffbeb', borderColor: '#f59e0b' }}>
+            <p className="text-2xl font-bold" style={{ color: '#d97706' }}>{offlinePct}%</p>
+            <p className="text-xs mt-1 font-semibold" style={{ color: '#92400e' }}>Офлайн обучены</p>
+            <p className="text-[10px] mt-0.5" style={{ color: '#b45309' }}>{offlineTrained} из {total}</p>
+            <p className="text-[10px] mt-1 font-medium" style={{ color: '#d97706' }}>вес 40%</p>
+          </div>
           <div className="rounded-lg p-4 text-center" style={{ background: '#f0fdf4' }}>
             <p className="text-2xl font-bold" style={{ color: '#22c55e' }}>{trainedPct}%</p>
-            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Обучены</p>
+            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Онлайн обучены</p>
             <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{trained} из {total}</p>
+            <p className="text-[10px] mt-1 font-medium" style={{ color: '#22c55e' }}>вес 25%</p>
           </div>
           <div className="rounded-lg p-4 text-center" style={{ background: '#f5f3ff' }}>
             <p className="text-2xl font-bold" style={{ color: '#8b5cf6' }}>{attestedPct}%</p>
             <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Аттестованы</p>
             <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{attested} из {total}</p>
+            <p className="text-[10px] mt-1 font-medium" style={{ color: '#8b5cf6' }}>вес 20%</p>
           </div>
           <div className="rounded-lg p-4 text-center" style={{ background: '#eff6ff' }}>
             <p className="text-2xl font-bold" style={{ color: '#0da2e7' }}>{techCount}</p>
             <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Техники</p>
             <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>балл: {techScore}/100</p>
+            <p className="text-[10px] mt-1 font-medium" style={{ color: '#0da2e7' }}>вес 15%</p>
           </div>
         </div>
 
         <div className="rounded-lg p-4" style={{ background: '#f9fafb' }}>
           <p className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Формула расчёта:</p>
           <p className="text-sm font-mono" style={{ color: '#374151' }}>
-            ({trainedPct}% + {attestedPct}% + {techScore}) / 3 = <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating100.toFixed(1)}</span> из 100 → <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating5}</span> из 5
+            {offlinePct}%×0.4 + {trainedPct}%×0.25 + {attestedPct}%×0.2 + {techScore}×0.15 = <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating100.toFixed(1)}</span> из 100 → <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating5}</span> из 5
           </p>
         </div>
 

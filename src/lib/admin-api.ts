@@ -94,6 +94,7 @@ export function getLeadStatusColor(status: string): string {
 export function getTrainingStatusLabel(status: string): string {
   const map: Record<string, string> = {
     added: 'Добавлен',
+    offline_trained: 'Офлайн обучен',
     in_progress: 'Обучается',
     completed: 'Завершил',
     certified: 'Сертифицирован',
@@ -104,6 +105,7 @@ export function getTrainingStatusLabel(status: string): string {
 export function getTrainingStatusColor(status: string): string {
   const map: Record<string, string> = {
     added: 'bg-gray-100 text-gray-700 border-gray-300',
+    offline_trained: 'bg-amber-50 text-amber-700 border-amber-300',
     in_progress: 'bg-blue-50 text-blue-700 border-blue-300',
     completed: 'bg-green-50 text-green-700 border-green-300',
     certified: 'bg-purple-50 text-purple-700 border-purple-300',

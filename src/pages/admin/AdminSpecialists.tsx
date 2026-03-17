@@ -53,6 +53,7 @@ interface Salon {
 const TRAINING_STATUSES = [
   { value: 'all', label: 'Все статусы' },
   { value: 'added', label: 'Добавлен' },
+  { value: 'offline_trained', label: 'Офлайн обучен' },
   { value: 'in_progress', label: 'Обучается' },
   { value: 'completed', label: 'Завершил' },
   { value: 'certified', label: 'Сертифицирован' },

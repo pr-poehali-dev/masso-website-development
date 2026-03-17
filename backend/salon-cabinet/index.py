@@ -166,9 +166,11 @@ def handle_knowledge(cur, params):
 
 
 def handle_rating(cur, salon_id):
-    """Рейтинг салона: обучение, аттестация, техники."""
+    """Рейтинг салона: офлайн обучение (40%), онлайн (25%), аттестация (20%), техники (15%)."""
     cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
     total = cur.fetchone()["total"]
+    cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('offline_trained', 'in_progress', 'completed', 'certified')", (salon_id,))
+    offline = cur.fetchone()["cnt"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('completed', 'certified')", (salon_id,))
     trained = cur.fetchone()["cnt"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'", (salon_id,))
@@ -179,10 +181,11 @@ def handle_rating(cur, salon_id):
     techniques_str = salon.get("techniques") or "" if salon else ""
     techniques_count = len([t for t in techniques_str.split(",") if t.strip()]) if techniques_str else 0
 
+    offline_pct = (offline / total * 100) if total > 0 else 0
     trained_pct = (trained / total * 100) if total > 0 else 0
     attested_pct = (attested / total * 100) if total > 0 else 0
     tech_score = min(techniques_count * 20, 100)
-    rating = (trained_pct + attested_pct + tech_score) / 3
+    rating = offline_pct * 0.4 + trained_pct * 0.25 + attested_pct * 0.2 + tech_score * 0.15
     rating_5 = round(rating / 20, 1)
 
     status = "участник"
@@ -196,12 +199,14 @@ def handle_rating(cur, salon_id):
     return {
         "rating": rating_5,
         "rating_100": round(rating, 1),
+        "offline_pct": round(offline_pct, 1),
         "trained_pct": round(trained_pct, 1),
         "attested_pct": round(attested_pct, 1),
         "techniques_count": techniques_count,
         "tech_score": tech_score,
         "status": status,
         "total_specialists": total,
+        "offline_trained": offline,
         "trained": trained,
         "attested": attested,
     }

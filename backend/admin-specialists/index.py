@@ -153,7 +153,7 @@ def handle_post(cur, body):
 
 
 def recalc_salon_rating(cur, salon_id):
-    """Пересчёт рейтинга салона по формуле: (обученные% + аттестованные% + техники_балл) / 3."""
+    """Пересчёт рейтинга салона: офлайн×0.4 + онлайн×0.25 + аттестация×0.2 + техники×0.15."""
     if not salon_id:
         return
     cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
@@ -161,6 +161,11 @@ def recalc_salon_rating(cur, salon_id):
     if total == 0:
         cur.execute("UPDATE salons SET rating = 0 WHERE id = %s", (salon_id,))
         return
+    cur.execute(
+        "SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('offline_trained', 'in_progress', 'completed', 'certified')",
+        (salon_id,),
+    )
+    offline = cur.fetchone()["cnt"]
     cur.execute(
         "SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('completed', 'certified')",
         (salon_id,),
@@ -175,10 +180,12 @@ def recalc_salon_rating(cur, salon_id):
     salon = cur.fetchone()
     tech_str = (salon.get("techniques") or "") if salon else ""
     tech_count = len([t for t in tech_str.split(",") if t.strip()]) if tech_str else 0
+    offline_pct = offline / total * 100
     trained_pct = trained / total * 100
     attested_pct = attested / total * 100
     tech_score = min(tech_count * 20, 100)
-    rating_5 = round((trained_pct + attested_pct + tech_score) / 3 / 20, 1)
+    rating_100 = offline_pct * 0.4 + trained_pct * 0.25 + attested_pct * 0.2 + tech_score * 0.15
+    rating_5 = round(rating_100 / 20, 1)
     cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (min(rating_5, 5), salon_id))
 
 
