@@ -11,6 +11,7 @@ interface Tariff {
   id: number;
   name: string;
   price: number;
+  price_on_request: boolean;
   description: string | null;
   features: string | null;
   is_active: boolean;
@@ -24,7 +25,7 @@ const AdminCatalog = () => {
   const [editId, setEditId] = useState<number | null>(null);
   const [editData, setEditData] = useState<Partial<Tariff>>({});
   const [showAdd, setShowAdd] = useState(false);
-  const [newTariff, setNewTariff] = useState({ name: '', price: '', description: '', features: '' });
+  const [newTariff, setNewTariff] = useState({ name: '', price: '', description: '', features: '', price_on_request: false });
   const [saving, setSaving] = useState(false);
 
   const fetchTariffs = () => {
@@ -43,12 +44,12 @@ const AdminCatalog = () => {
     const res = await fetch(SETTINGS_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'create_tariff', name: newTariff.name, price: Number(newTariff.price) || 0, description: newTariff.description, features: newTariff.features }),
+      body: JSON.stringify({ action: 'create_tariff', name: newTariff.name, price: Number(newTariff.price) || 0, description: newTariff.description, features: newTariff.features, price_on_request: newTariff.price_on_request }),
     }).then(r => r.json());
     if (res.tariff) {
       setTariffs([...tariffs, res.tariff]);
       setShowAdd(false);
-      setNewTariff({ name: '', price: '', description: '', features: '' });
+      setNewTariff({ name: '', price: '', description: '', features: '', price_on_request: false });
       toast.success('Тариф создан');
     } else {
       toast.error(res.error || 'Ошибка');
@@ -118,7 +119,11 @@ const AdminCatalog = () => {
             </div>
             <div className="space-y-1">
               <Label className="text-xs" style={{ color: '#6b7280' }}>Цена (руб.)</Label>
-              <Input type="number" value={newTariff.price} onChange={e => setNewTariff({ ...newTariff, price: e.target.value })} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
+              <Input type="number" value={newTariff.price} onChange={e => setNewTariff({ ...newTariff, price: e.target.value })} disabled={newTariff.price_on_request} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
+              <label className="flex items-center gap-2 mt-1 cursor-pointer">
+                <input type="checkbox" checked={newTariff.price_on_request} onChange={e => setNewTariff({ ...newTariff, price_on_request: e.target.checked })} className="rounded" />
+                <span className="text-xs" style={{ color: '#6b7280' }}>По запросу</span>
+              </label>
             </div>
             <div className="space-y-1 md:col-span-2">
               <Label className="text-xs" style={{ color: '#6b7280' }}>Описание</Label>
@@ -157,7 +162,11 @@ const AdminCatalog = () => {
                   </div>
                   <div className="space-y-1">
                     <Label className="text-xs" style={{ color: '#6b7280' }}>Цена</Label>
-                    <Input type="number" value={editData.price || ''} onChange={e => setEditData({ ...editData, price: Number(e.target.value) })} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
+                    <Input type="number" value={editData.price || ''} onChange={e => setEditData({ ...editData, price: Number(e.target.value) })} disabled={!!editData.price_on_request} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
+                    <label className="flex items-center gap-2 mt-1 cursor-pointer">
+                      <input type="checkbox" checked={!!editData.price_on_request} onChange={e => setEditData({ ...editData, price_on_request: e.target.checked })} className="rounded" />
+                      <span className="text-xs" style={{ color: '#6b7280' }}>По запросу</span>
+                    </label>
                   </div>
                   <div className="space-y-1">
                     <Label className="text-xs" style={{ color: '#6b7280' }}>Описание</Label>
@@ -186,7 +195,7 @@ const AdminCatalog = () => {
                       </span>
                     </div>
                     <p className="text-xl font-bold" style={{ color: '#0da2e7' }}>
-                      {Number(tariff.price).toLocaleString('ru-RU')} <span className="text-sm font-normal">руб.</span>
+                      {tariff.price_on_request ? 'По запросу' : <>{Number(tariff.price).toLocaleString('ru-RU')} <span className="text-sm font-normal">руб.</span></>}
                     </p>
                   </div>
                   {tariff.description && <p className="text-sm mb-2" style={{ color: '#6b7280' }}>{tariff.description}</p>}
@@ -206,7 +215,7 @@ const AdminCatalog = () => {
                       <button onClick={() => handleToggle(tariff)} className="p-2 rounded-lg hover:bg-gray-50" title={tariff.is_active ? 'Деактивировать' : 'Активировать'}>
                         <Icon name={tariff.is_active ? 'EyeOff' : 'Eye'} size={16} style={{ color: '#6b7280' }} />
                       </button>
-                      <button onClick={() => { setEditId(tariff.id); setEditData({ name: tariff.name, price: tariff.price, description: tariff.description || '', features: tariff.features || '' }); }} className="p-2 rounded-lg hover:bg-gray-50">
+                      <button onClick={() => { setEditId(tariff.id); setEditData({ name: tariff.name, price: tariff.price, description: tariff.description || '', features: tariff.features || '', price_on_request: tariff.price_on_request }); }} className="p-2 rounded-lg hover:bg-gray-50">
                         <Icon name="Pencil" size={16} style={{ color: '#6b7280' }} />
                       </button>
                     </div>

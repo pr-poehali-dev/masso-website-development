@@ -245,6 +245,16 @@ def handle_profile(cur, salon_id, method, body):
     return {"error": "Method not supported"}
 
 
+def handle_tariffs(cur, salon_id):
+    """Тарифы: список активных тарифов и текущий тариф салона."""
+    cur.execute("SELECT * FROM tariffs WHERE is_active = TRUE ORDER BY price ASC")
+    tariffs = [dict(r) for r in cur.fetchall()]
+    cur.execute("SELECT tariff FROM salons WHERE id = %s", (salon_id,))
+    row = cur.fetchone()
+    current = row["tariff"] if row else None
+    return {"tariffs": tariffs, "current_tariff": current}
+
+
 def handle_diagnostics(cur, salon_id, method, body):
     """Диагностика салона: тест и результаты."""
     if method == "GET":
@@ -330,6 +340,7 @@ def handler(event: dict, context) -> dict:
         "rating": lambda: handle_rating(cur, salon_id),
         "profile": lambda: handle_profile(cur, salon_id, method, body_raw),
         "diagnostics": lambda: handle_diagnostics(cur, salon_id, method, body_raw),
+        "tariffs": lambda: handle_tariffs(cur, salon_id),
     }
 
     fn = handlers.get(section)

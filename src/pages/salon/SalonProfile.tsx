@@ -5,6 +5,21 @@ import { Label } from '@/components/ui/label';
 import { salonFetch, salonPut, getSalonInfo, setSalonSession, getSalonUser } from '@/lib/salon-api';
 import { toast } from 'sonner';
 
+interface TariffInfo {
+  id: number;
+  name: string;
+  price: number;
+  price_on_request: boolean;
+  description: string | null;
+  features: string | null;
+}
+
+const TARIFF_LABELS: Record<string, string> = {
+  basic: 'Базовый',
+  advanced: 'Расширенный',
+  full: 'Полный',
+};
+
 const SalonProfile = () => {
   const [salon, setSalon] = useState<Record<string, string | number | null>>({});
   const [settings, setSettings] = useState<Record<string, number>>({});
@@ -12,28 +27,34 @@ const SalonProfile = () => {
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<Record<string, string | number>>({});
+  const [tariffs, setTariffs] = useState<TariffInfo[]>([]);
+  const [currentTariff, setCurrentTariff] = useState<string | null>(null);
 
   useEffect(() => {
-    salonFetch('profile')
-      .then(res => {
-        setSalon(res.salon || {});
-        setSettings(res.settings || {});
-        setForm({
-          name: res.salon?.name || '',
-          city: res.salon?.city || '',
-          owner_name: res.salon?.owner_name || '',
-          phone: res.salon?.phone || '',
-          email: res.salon?.email || '',
-          techniques: res.salon?.techniques || '',
-          specialists_count: res.settings?.specialists_count || 1,
-          clients_per_day: res.settings?.clients_per_day || 4,
-          avg_price: res.settings?.avg_price || 3000,
-          working_days: res.settings?.working_days || 22,
-          procedure_course: res.settings?.procedure_course || 1,
-          procedure_duration: res.settings?.procedure_duration || 1.5,
-          working_hours: res.settings?.working_hours || 8,
-        });
-      })
+    Promise.all([
+      salonFetch('profile'),
+      salonFetch('tariffs'),
+    ]).then(([profileRes, tariffsRes]) => {
+      setSalon(profileRes.salon || {});
+      setSettings(profileRes.settings || {});
+      setCurrentTariff(profileRes.salon?.tariff || null);
+      setForm({
+        name: profileRes.salon?.name || '',
+        city: profileRes.salon?.city || '',
+        owner_name: profileRes.salon?.owner_name || '',
+        phone: profileRes.salon?.phone || '',
+        email: profileRes.salon?.email || '',
+        techniques: profileRes.salon?.techniques || '',
+        specialists_count: profileRes.settings?.specialists_count || 1,
+        clients_per_day: profileRes.settings?.clients_per_day || 4,
+        avg_price: profileRes.settings?.avg_price || 3000,
+        working_days: profileRes.settings?.working_days || 22,
+        procedure_course: profileRes.settings?.procedure_course || 1,
+        procedure_duration: profileRes.settings?.procedure_duration || 1.5,
+        working_hours: profileRes.settings?.working_hours || 8,
+      });
+      setTariffs(tariffsRes.tariffs || []);
+    })
       .catch(() => toast.error('Ошибка загрузки'))
       .finally(() => setLoading(false));
   }, []);
@@ -76,8 +97,78 @@ const SalonProfile = () => {
     </div>
   );
 
+  const currentTariffInfo = tariffs.find(t => t.name.toLowerCase() === currentTariff || t.name === currentTariff);
+  const tariffLabel = currentTariff ? (TARIFF_LABELS[currentTariff] || currentTariff) : null;
+
   return (
     <div className="space-y-6 max-w-3xl">
+      <div className="rounded-xl p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+        <div className="flex items-center gap-2 mb-4">
+          <Icon name="CreditCard" size={16} style={{ color: '#6b7280' }} />
+          <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Ваш тариф</h3>
+        </div>
+
+        {currentTariff ? (
+          <div className="flex items-center gap-3 p-4 rounded-lg" style={{ background: '#eff6ff' }}>
+            <div className="flex-1">
+              <p className="text-base font-semibold" style={{ color: '#1d4ed8' }}>
+                {currentTariffInfo?.name || tariffLabel}
+              </p>
+              {currentTariffInfo?.description && (
+                <p className="text-xs mt-0.5" style={{ color: '#3b82f6' }}>{currentTariffInfo.description}</p>
+              )}
+            </div>
+            <div className="text-right">
+              <p className="text-lg font-bold" style={{ color: '#0da2e7' }}>
+                {currentTariffInfo?.price_on_request
+                  ? 'По запросу'
+                  : currentTariffInfo
+                  ? `${Number(currentTariffInfo.price).toLocaleString('ru-RU')} ₽`
+                  : '—'}
+              </p>
+              <p className="text-xs" style={{ color: '#6b7280' }}>в год</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm" style={{ color: '#9ca3af' }}>Тариф не назначен. Обратитесь к менеджеру МассоПРО.</p>
+        )}
+
+        {tariffs.length > 0 && (
+          <div className="mt-5">
+            <p className="text-xs font-medium mb-3" style={{ color: '#6b7280' }}>Доступные тарифы</p>
+            <div className="space-y-2">
+              {tariffs.map(t => {
+                const isActive = t.name === currentTariffInfo?.name;
+                return (
+                  <div
+                    key={t.id}
+                    className="rounded-lg border p-3 flex items-center justify-between"
+                    style={{
+                      borderColor: isActive ? '#0da2e7' : '#e5e7eb',
+                      background: isActive ? '#f0f9ff' : '#fafafa',
+                    }}
+                  >
+                    <div className="flex items-center gap-2">
+                      {isActive && <Icon name="CheckCircle2" size={14} style={{ color: '#0da2e7' }} />}
+                      <div>
+                        <p className="text-sm font-medium" style={{ color: '#111827' }}>{t.name}</p>
+                        {t.description && <p className="text-xs" style={{ color: '#9ca3af' }}>{t.description}</p>}
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold" style={{ color: isActive ? '#0da2e7' : '#374151' }}>
+                      {t.price_on_request ? 'По запросу' : `${Number(t.price).toLocaleString('ru-RU')} ₽`}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-xs mt-3" style={{ color: '#9ca3af' }}>
+              Для смены тарифа обратитесь к вашему менеджеру МассоПРО.
+            </p>
+          </div>
+        )}
+      </div>
+
       <div className="flex items-center justify-between">
         <div />
         {editing ? (

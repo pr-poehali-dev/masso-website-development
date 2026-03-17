@@ -73,13 +73,14 @@ def handler(event: dict, context) -> dict:
             price = body.get("price", 0)
             description = body.get("description", "").strip()
             features = body.get("features", "").strip()
+            price_on_request = bool(body.get("price_on_request", False))
             if not name:
                 cur.close()
                 conn.close()
                 return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "Название обязательно"}}
             cur.execute(
-                "INSERT INTO tariffs (name, price, description, features) VALUES (%s, %s, %s, %s) RETURNING *",
-                (name, price, description or None, features or None),
+                "INSERT INTO tariffs (name, price, description, features, price_on_request) VALUES (%s, %s, %s, %s, %s) RETURNING *",
+                (name, price, description or None, features or None, price_on_request),
             )
             tariff = dict(cur.fetchone())
             cur.close()
@@ -130,7 +131,7 @@ def handler(event: dict, context) -> dict:
                 return {"statusCode": 400, "headers": CORS_HEADERS, "body": {"error": "ID обязателен"}}
             fields = []
             values = []
-            for f in ["name", "price", "description", "features", "is_active"]:
+            for f in ["name", "price", "description", "features", "is_active", "price_on_request"]:
                 if f in body:
                     fields.append(f"{f} = %s")
                     values.append(body[f])
