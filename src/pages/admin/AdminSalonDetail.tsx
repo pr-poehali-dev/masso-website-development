@@ -19,7 +19,6 @@ interface Specialist {
   email: string | null;
   experience_years: number;
   training_status: string;
-  attestation_status: string;
   created_at: string;
 }
 
@@ -52,6 +51,7 @@ interface SalonDetail {
   status: string;
   rating: number;
   is_published: boolean;
+  inspection_date: string | null;
   created_at: string;
   updated_at: string;
   specialists: Specialist[];
@@ -253,7 +253,9 @@ const AdminSalonDetail = () => {
             salonId={salon.id}
             specialists={salon.specialists}
             techniques={salon.techniques}
+            inspectionDate={salon.inspection_date}
             onRatingUpdate={(r) => setSalon({ ...salon, rating: r })}
+            onInspectionDateSave={(d) => setSalon({ ...salon, inspection_date: d || null })}
           />
         </TabsContent>
 

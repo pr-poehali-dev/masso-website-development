@@ -28,7 +28,6 @@ import {
   adminFetch,
   getTrainingStatusLabel,
   getTrainingStatusColor,
-  getAttestationColor,
   formatDate,
 } from '@/lib/admin-api';
 import { toast } from 'sonner';
@@ -41,7 +40,6 @@ interface Specialist {
   salon_name: string | null;
   experience_years: number;
   training_status: string;
-  attestation_status: string;
   created_at: string;
 }
 
@@ -59,12 +57,6 @@ const TRAINING_STATUSES = [
   { value: 'certified', label: 'Сертифицирован' },
 ];
 
-const ATTESTATION_MAP: Record<string, string> = {
-  none: 'Нет',
-  passed: 'Пройдена',
-  failed: 'Не пройдена',
-};
-
 const AdminSpecialists = () => {
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [total, setTotal] = useState(0);
@@ -75,7 +67,7 @@ const AdminSpecialists = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [addOpen, setAddOpen] = useState(false);
   const [salons, setSalons] = useState<Salon[]>([]);
-  const [newSpec, setNewSpec] = useState({ name: '', email: '', salon_id: '', experience_years: '0', training_status: 'added', attestation_status: 'none' });
+  const [newSpec, setNewSpec] = useState({ name: '', email: '', salon_id: '', experience_years: '0', training_status: 'added' });
   const [saving, setSaving] = useState(false);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
@@ -146,7 +138,6 @@ const AdminSpecialists = () => {
         salon_id: newSpec.salon_id ? Number(newSpec.salon_id) : null,
         experience_years: Number(newSpec.experience_years) || 0,
         training_status: newSpec.training_status,
-        attestation_status: newSpec.attestation_status,
       }),
     })
       .then(r => r.json())
@@ -154,7 +145,7 @@ const AdminSpecialists = () => {
         if (data.specialist) {
           toast.success('Специалист добавлен');
           setAddOpen(false);
-          setNewSpec({ name: '', email: '', salon_id: '', experience_years: '0', training_status: 'added', attestation_status: 'none' });
+          setNewSpec({ name: '', email: '', salon_id: '', experience_years: '0', training_status: 'added' });
           loadData();
         } else {
           toast.error(data.error || 'Ошибка');
@@ -244,31 +235,16 @@ const AdminSpecialists = () => {
                   style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-sm" style={{ color: '#374151' }}>Обучение</Label>
-                  <Select value={newSpec.training_status} onValueChange={(v) => setNewSpec(prev => ({ ...prev, training_status: v }))}>
-                    <SelectTrigger className="h-9 text-sm mt-1" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent style={{ background: '#ffffff' }}>
-                      {TRAINING_STATUSES.filter(s => s.value !== 'all').map(s => <SelectItem key={s.value} value={s.value} style={{ color: '#111827' }}>{s.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-sm" style={{ color: '#374151' }}>Аттестация</Label>
-                  <Select value={newSpec.attestation_status} onValueChange={(v) => setNewSpec(prev => ({ ...prev, attestation_status: v }))}>
-                    <SelectTrigger className="h-9 text-sm mt-1" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent style={{ background: '#ffffff' }}>
-                      <SelectItem value="none" style={{ color: '#111827' }}>Нет</SelectItem>
-                      <SelectItem value="passed" style={{ color: '#111827' }}>Пройдена</SelectItem>
-                      <SelectItem value="failed" style={{ color: '#111827' }}>Не пройдена</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div>
+                <Label className="text-sm" style={{ color: '#374151' }}>Обучение</Label>
+                <Select value={newSpec.training_status} onValueChange={(v) => setNewSpec(prev => ({ ...prev, training_status: v }))}>
+                  <SelectTrigger className="h-9 text-sm mt-1" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent style={{ background: '#ffffff' }}>
+                    {TRAINING_STATUSES.filter(s => s.value !== 'all').map(s => <SelectItem key={s.value} value={s.value} style={{ color: '#111827' }}>{s.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
               <button
                 onClick={handleAddSpecialist}
@@ -305,7 +281,6 @@ const AdminSpecialists = () => {
                 <TableHead className="text-xs font-semibold hidden lg:table-cell" style={{ color: '#6b7280' }}>Салон</TableHead>
                 <TableHead className="text-xs font-semibold hidden md:table-cell" style={{ color: '#6b7280' }}>Стаж</TableHead>
                 <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Обучение</TableHead>
-                <TableHead className="text-xs font-semibold hidden lg:table-cell" style={{ color: '#6b7280' }}>Аттестация</TableHead>
                 <TableHead className="text-xs font-semibold hidden md:table-cell" style={{ color: '#6b7280' }}>Дата</TableHead>
               </TableRow>
             </TableHeader>
@@ -341,30 +316,6 @@ const AdminSpecialists = () => {
                             </span>
                           </SelectItem>
                         ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    <Select
-                      value={spec.attestation_status}
-                      onValueChange={(v) => updateSpecialistStatus(spec.id, 'attestation_status', v)}
-                      disabled={updatingId === spec.id}
-                    >
-                      <SelectTrigger className="h-7 w-auto min-w-[110px] border-0 p-0 shadow-none focus:ring-0">
-                        <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor(spec.attestation_status)}`}>
-                          {ATTESTATION_MAP[spec.attestation_status] || spec.attestation_status}
-                        </span>
-                      </SelectTrigger>
-                      <SelectContent style={{ background: '#ffffff' }}>
-                        <SelectItem value="none" style={{ color: '#111827' }}>
-                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('none')}`}>Нет</span>
-                        </SelectItem>
-                        <SelectItem value="passed" style={{ color: '#111827' }}>
-                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('passed')}`}>Пройдена</span>
-                        </SelectItem>
-                        <SelectItem value="failed" style={{ color: '#111827' }}>
-                          <span className={`text-xs px-2 py-0.5 rounded-full border ${getAttestationColor('failed')}`}>Не пройдена</span>
-                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </TableCell>

@@ -46,9 +46,6 @@ def handle_dashboard(cur, salon_id):
     total_specs = cur.fetchone()["total"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('completed', 'certified')", (salon_id,))
     trained = cur.fetchone()["cnt"]
-    cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'", (salon_id,))
-    attested = cur.fetchone()["cnt"]
-
     s = settings or {}
     specs = int(s.get("specialists_count") or 1)
     cpd = int(s.get("clients_per_day") or 0)
@@ -86,7 +83,6 @@ def handle_dashboard(cur, salon_id):
         "training": {
             "total": total_specs,
             "trained": trained,
-            "attested": attested,
         },
         "posts": posts,
     }
@@ -143,7 +139,7 @@ def handle_specialists(cur, salon_id, method, body):
 def handle_training(cur, salon_id):
     """Обучение: статус специалистов в Док Диалог."""
     cur.execute("""
-        SELECT s.id, s.name, s.email, s.training_status, s.attestation_status,
+        SELECT s.id, s.name, s.email, s.training_status,
                d.status AS access_status, d.password AS access_password, d.issued_at, d.activated_at
         FROM specialists s
         LEFT JOIN dok_dialog_access d ON d.specialist_id = s.id AND d.salon_id = %s
@@ -166,27 +162,23 @@ def handle_knowledge(cur, params):
 
 
 def handle_rating(cur, salon_id):
-    """Рейтинг салона: офлайн 100% = 4.0, онлайн завершили 100% = +0.5, аттестация 100% = +0.5. Итого макс 5.0."""
+    """Рейтинг салона: офлайн 100% = 4.0, онлайн завершили 100% = +1.0. Итого макс 5.0."""
     cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
     total = cur.fetchone()["total"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('offline_trained', 'in_progress', 'completed', 'certified')", (salon_id,))
     offline = cur.fetchone()["cnt"]
     cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND training_status IN ('completed', 'certified')", (salon_id,))
     trained = cur.fetchone()["cnt"]
-    cur.execute("SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'", (salon_id,))
-    attested = cur.fetchone()["cnt"]
 
     if total == 0:
-        offline_pct = trained_pct = attested_pct = 0.0
+        offline_pct = trained_pct = 0.0
     else:
         offline_pct = offline / total * 100
         trained_pct = trained / total * 100
-        attested_pct = attested / total * 100
 
-    # Офлайн 100% -> 4.0 баллов (80% шкалы)
-    # Онлайн завершено 100% -> +0.5 (10%)
-    # Аттестация 100% -> +0.5 (10%)
-    rating_5 = (offline_pct / 100 * 4.0) + (trained_pct / 100 * 0.5) + (attested_pct / 100 * 0.5)
+    # Офлайн 100% -> 4.0 баллов
+    # Онлайн завершено 100% -> +1.0
+    rating_5 = (offline_pct / 100 * 4.0) + (trained_pct / 100 * 1.0)
     rating_5 = round(min(rating_5, 5.0), 1)
     rating_100 = round(rating_5 * 20, 1)
 
@@ -205,12 +197,10 @@ def handle_rating(cur, salon_id):
         "rating_100": rating_100,
         "offline_pct": round(offline_pct, 1),
         "trained_pct": round(trained_pct, 1),
-        "attested_pct": round(attested_pct, 1),
         "status": status,
         "total_specialists": total,
         "offline_trained": offline,
         "trained": trained,
-        "attested": attested,
     }
 
 

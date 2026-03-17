@@ -24,7 +24,6 @@ interface Specialist {
   email: string | null;
   experience_years: number;
   training_status: string;
-  attestation_status: string;
   created_at: string;
 }
 
@@ -69,7 +68,6 @@ export const SpecialistsTab = ({ specialists }: SpecialistsTabProps) => (
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Email</TableHead>
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Стаж</TableHead>
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Обучение</TableHead>
-            <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Аттестация</TableHead>
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Дата</TableHead>
           </TableRow>
         </TableHeader>
@@ -85,7 +83,6 @@ export const SpecialistsTab = ({ specialists }: SpecialistsTabProps) => (
                   {getTrainingStatusLabel(spec.training_status)}
                 </span>
               </TableCell>
-              <TableCell className="text-sm" style={{ color: '#6b7280' }}>{spec.attestation_status}</TableCell>
               <TableCell className="text-sm" style={{ color: '#9ca3af' }}>{formatDate(spec.created_at)}</TableCell>
             </TableRow>
           ))}
@@ -147,26 +144,27 @@ interface RatingTabProps {
   salonId: number;
   specialists: Specialist[];
   techniques: string | null;
+  inspectionDate: string | null;
   onRatingUpdate: (newRating: number) => void;
+  onInspectionDateSave: (date: string) => void;
 }
 
-export const RatingTab = ({ rating, salonId, specialists, techniques, onRatingUpdate }: RatingTabProps) => {
+export const RatingTab = ({ rating, salonId, specialists, techniques, inspectionDate, onRatingUpdate, onInspectionDateSave }: RatingTabProps) => {
   const [recalculating, setRecalculating] = React.useState(false);
   const [localRating, setLocalRating] = React.useState(Number(rating));
+  const [editingDate, setEditingDate] = React.useState(false);
+  const [dateInput, setDateInput] = React.useState(inspectionDate ? inspectionDate.slice(0, 10) : '');
+  const [savingDate, setSavingDate] = React.useState(false);
 
   const total = specialists.length;
-  const offlineTrained = specialists.filter(s => s.training_status === 'offline_trained' || s.training_status === 'in_progress' || s.training_status === 'completed' || s.training_status === 'certified').length;
-  const trained = specialists.filter(s => s.training_status === 'completed' || s.training_status === 'certified').length;
-  const attested = specialists.filter(s => s.attestation_status === 'passed').length;
-  const techList = techniques ? techniques.split(',').filter(t => t.trim()) : [];
-  const techCount = techList.length;
+  const offlineTrained = specialists.filter(s => ['offline_trained', 'in_progress', 'completed', 'certified'].includes(s.training_status)).length;
+  const trained = specialists.filter(s => ['completed', 'certified'].includes(s.training_status)).length;
 
   const offlinePct = total > 0 ? Math.round(offlineTrained / total * 100) : 0;
   const trainedPct = total > 0 ? Math.round(trained / total * 100) : 0;
-  const attestedPct = total > 0 ? Math.round(attested / total * 100) : 0;
-  const techScore = Math.min(techCount * 20, 100);
-  const calcRating100 = offlinePct * 0.4 + trainedPct * 0.25 + attestedPct * 0.2 + techScore * 0.15;
-  const calcRating5 = Math.min(Math.round(calcRating100 / 20 * 10) / 10, 5);
+  const calcRating5 = Math.min(Math.round((offlinePct / 100 * 4.0 + trainedPct / 100 * 1.0) * 10) / 10, 5);
+
+  const techList = techniques ? techniques.split(',').filter(t => t.trim()) : [];
 
   const handleRecalc = async () => {
     setRecalculating(true);
@@ -180,102 +178,161 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, onRatingUp
         setLocalRating(Number(data.rating));
         onRatingUpdate(Number(data.rating));
       }
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
     setRecalculating(false);
   };
+
+  const handleSaveDate = async () => {
+    setSavingDate(true);
+    try {
+      const res = await fetch('https://functions.poehali.dev/ce43779d-d06c-464a-bd6d-4e57e0ebc300', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: salonId, inspection_date: dateInput || null }),
+      });
+      const data = await res.json();
+      if (data.salon) {
+        onInspectionDateSave(dateInput);
+        setEditingDate(false);
+      }
+    } catch { /* ignore */ }
+    setSavingDate(false);
+  };
+
+  const nextInspection = inspectionDate ? new Date(new Date(inspectionDate).setFullYear(new Date(inspectionDate).getFullYear() + 1)) : null;
+  const daysLeft = nextInspection ? Math.ceil((nextInspection.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null;
+  const inspectionStatus = daysLeft === null ? 'none' : daysLeft < 0 ? 'overdue' : daysLeft <= 60 ? 'soon' : 'ok';
 
   const displayRating = localRating || calcRating5;
 
   return (
-    <div
-      className="rounded-xl border p-6 mt-4"
-      style={{ background: '#ffffff', borderColor: '#e5e7eb' }}
-    >
-      <div className="text-center pb-6 border-b" style={{ borderColor: '#f3f4f6' }}>
-        <div
-          className="text-5xl font-bold font-sans mb-2"
-          style={{ color: '#0da2e7' }}
-        >
-          {displayRating}
-        </div>
-        <p className="text-sm" style={{ color: '#6b7280' }}>
-          из 5.0
-        </p>
-        <div className="flex items-center justify-center gap-1 mt-3">
-          {Array.from({ length: 5 }, (_, i) => (
-            <Icon
-              key={i}
-              name="Star"
-              size={24}
-              style={{ color: i < Math.round(displayRating) ? '#f59e0b' : '#e5e7eb' }}
-            />
-          ))}
-        </div>
-        <button
-          onClick={handleRecalc}
-          disabled={recalculating}
-          className="mt-4 h-8 px-4 rounded-lg text-xs font-medium border disabled:opacity-50"
-          style={{ color: '#0da2e7', borderColor: '#0da2e7' }}
-        >
-          {recalculating ? 'Пересчёт...' : 'Пересчитать рейтинг'}
-        </button>
-      </div>
-
-      <div className="pt-5">
-        <h4 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Из чего складывается рейтинг</h4>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-          <div className="rounded-lg p-4 text-center border-2" style={{ background: '#fffbeb', borderColor: '#f59e0b' }}>
-            <p className="text-2xl font-bold" style={{ color: '#d97706' }}>{offlinePct}%</p>
-            <p className="text-xs mt-1 font-semibold" style={{ color: '#92400e' }}>Офлайн обучены</p>
-            <p className="text-[10px] mt-0.5" style={{ color: '#b45309' }}>{offlineTrained} из {total}</p>
-            <p className="text-[10px] mt-1 font-medium" style={{ color: '#d97706' }}>вес 40%</p>
+    <div className="space-y-4 mt-4">
+      <div className="rounded-xl border p-6" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+        <div className="text-center pb-6 border-b" style={{ borderColor: '#f3f4f6' }}>
+          <div className="text-5xl font-bold font-sans mb-2" style={{ color: '#0da2e7' }}>{displayRating}</div>
+          <p className="text-sm" style={{ color: '#6b7280' }}>из 5.0</p>
+          <div className="flex items-center justify-center gap-1 mt-3">
+            {Array.from({ length: 5 }, (_, i) => (
+              <Icon key={i} name="Star" size={24} style={{ color: i < Math.round(displayRating) ? '#f59e0b' : '#e5e7eb' }} />
+            ))}
           </div>
-          <div className="rounded-lg p-4 text-center" style={{ background: '#f0fdf4' }}>
-            <p className="text-2xl font-bold" style={{ color: '#22c55e' }}>{trainedPct}%</p>
-            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Онлайн обучены</p>
-            <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{trained} из {total}</p>
-            <p className="text-[10px] mt-1 font-medium" style={{ color: '#22c55e' }}>вес 25%</p>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ background: '#f5f3ff' }}>
-            <p className="text-2xl font-bold" style={{ color: '#8b5cf6' }}>{attestedPct}%</p>
-            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Аттестованы</p>
-            <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{attested} из {total}</p>
-            <p className="text-[10px] mt-1 font-medium" style={{ color: '#8b5cf6' }}>вес 20%</p>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ background: '#eff6ff' }}>
-            <p className="text-2xl font-bold" style={{ color: '#0da2e7' }}>{techCount}</p>
-            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Техники</p>
-            <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>балл: {techScore}/100</p>
-            <p className="text-[10px] mt-1 font-medium" style={{ color: '#0da2e7' }}>вес 15%</p>
-          </div>
+          <button
+            onClick={handleRecalc}
+            disabled={recalculating}
+            className="mt-4 h-8 px-4 rounded-lg text-xs font-medium border disabled:opacity-50"
+            style={{ color: '#0da2e7', borderColor: '#0da2e7' }}
+          >
+            {recalculating ? 'Пересчёт...' : 'Пересчитать рейтинг'}
+          </button>
         </div>
 
-        <div className="rounded-lg p-4" style={{ background: '#f9fafb' }}>
-          <p className="text-xs font-medium mb-2" style={{ color: '#6b7280' }}>Формула расчёта:</p>
-          <p className="text-sm font-mono" style={{ color: '#374151' }}>
-            {offlinePct}%×0.4 + {trainedPct}%×0.25 + {attestedPct}%×0.2 + {techScore}×0.15 = <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating100.toFixed(1)}</span> из 100 → <span className="font-bold" style={{ color: '#0da2e7' }}>{calcRating5}</span> из 5
-          </p>
-        </div>
-
-        {techList.length > 0 && (
-          <div className="mt-4">
-            <p className="text-xs mb-2" style={{ color: '#6b7280' }}>Техники салона:</p>
-            <div className="flex flex-wrap gap-1.5">
-              {techList.map((t, i) => (
-                <span key={i} className="text-xs px-2 py-1 rounded-md" style={{ background: '#eff6ff', color: '#0da2e7' }}>
-                  {t.trim()}
-                </span>
-              ))}
+        <div className="pt-5">
+          <h4 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Из чего складывается рейтинг</h4>
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="rounded-lg p-4 text-center border-2" style={{ background: '#fffbeb', borderColor: '#f59e0b' }}>
+              <p className="text-2xl font-bold" style={{ color: '#d97706' }}>{offlinePct}%</p>
+              <p className="text-xs mt-1 font-semibold" style={{ color: '#92400e' }}>Офлайн обучены</p>
+              <p className="text-[10px] mt-0.5" style={{ color: '#b45309' }}>{offlineTrained} из {total}</p>
+              <p className="text-[10px] mt-1 font-medium" style={{ color: '#d97706' }}>100% → 4.0 ★</p>
+            </div>
+            <div className="rounded-lg p-4 text-center" style={{ background: '#f0fdf4' }}>
+              <p className="text-2xl font-bold" style={{ color: '#22c55e' }}>{trainedPct}%</p>
+              <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Онлайн обучены</p>
+              <p className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{trained} из {total}</p>
+              <p className="text-[10px] mt-1 font-medium" style={{ color: '#22c55e' }}>100% → +1.0 ★</p>
             </div>
           </div>
+
+          {techList.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs mb-2" style={{ color: '#6b7280' }}>Техники салона:</p>
+              <div className="flex flex-wrap gap-1.5">
+                {techList.map((t, i) => (
+                  <span key={i} className="text-xs px-2 py-1 rounded-md" style={{ background: '#eff6ff', color: '#0da2e7' }}>{t.trim()}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {total === 0 && (
+            <p className="text-xs" style={{ color: '#f59e0b' }}>У салона нет специалистов — рейтинг будет 0 до их добавления</p>
+          )}
+        </div>
+      </div>
+
+      <div className="rounded-xl border p-6" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Icon name="ClipboardCheck" size={18} style={{ color: '#6b7280' }} />
+            <h4 className="text-sm font-semibold" style={{ color: '#111827' }}>Проверка персонала</h4>
+          </div>
+          {!editingDate && (
+            <button
+              onClick={() => setEditingDate(true)}
+              className="text-xs px-3 h-7 rounded-lg border"
+              style={{ color: '#0da2e7', borderColor: '#0da2e7' }}
+            >
+              {inspectionDate ? 'Изменить дату' : 'Указать дату'}
+            </button>
+          )}
+        </div>
+
+        {inspectionDate ? (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs" style={{ color: '#6b7280' }}>Последняя проверка:</p>
+              <p className="text-sm font-medium" style={{ color: '#111827' }}>
+                {new Date(inspectionDate).toLocaleDateString('ru-RU')}
+              </p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-xs" style={{ color: '#6b7280' }}>Следующая проверка:</p>
+              <p className="text-sm font-medium" style={{ color: '#111827' }}>
+                {nextInspection?.toLocaleDateString('ru-RU')}
+              </p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-xs" style={{ color: '#6b7280' }}>Статус:</p>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{
+                background: inspectionStatus === 'ok' ? '#f0fdf4' : inspectionStatus === 'soon' ? '#fffbeb' : '#fef2f2',
+                color: inspectionStatus === 'ok' ? '#16a34a' : inspectionStatus === 'soon' ? '#d97706' : '#dc2626',
+              }}>
+                {inspectionStatus === 'ok' ? `Через ${daysLeft} дней` : inspectionStatus === 'soon' ? `Скоро — через ${daysLeft} дн.` : 'Просрочена'}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm" style={{ color: '#9ca3af' }}>Дата проверки не указана</p>
         )}
 
-        {total === 0 && (
-          <p className="text-xs mt-4" style={{ color: '#f59e0b' }}>
-            У салона нет специалистов — рейтинг будет 0 до их добавления
-          </p>
+        {editingDate && (
+          <div className="mt-4 pt-4 border-t flex items-end gap-2" style={{ borderColor: '#f3f4f6' }}>
+            <div className="flex-1">
+              <p className="text-xs mb-1" style={{ color: '#6b7280' }}>Дата выездной проверки</p>
+              <input
+                type="date"
+                value={dateInput}
+                onChange={(e) => setDateInput(e.target.value)}
+                className="w-full h-9 rounded-lg border px-3 text-sm"
+                style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+              />
+            </div>
+            <button
+              onClick={handleSaveDate}
+              disabled={savingDate}
+              className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+              style={{ background: '#0da2e7' }}
+            >
+              {savingDate ? '...' : 'Сохранить'}
+            </button>
+            <button
+              onClick={() => setEditingDate(false)}
+              className="h-9 px-3 rounded-lg text-sm border"
+              style={{ borderColor: '#d1d5db', color: '#6b7280' }}
+            >
+              Отмена
+            </button>
+          </div>
         )}
       </div>
     </div>

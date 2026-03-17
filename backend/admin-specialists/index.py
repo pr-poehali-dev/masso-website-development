@@ -15,7 +15,7 @@ CORS_HEADERS = {
 
 ALLOWED_SPECIALIST_FIELDS = {
     "name", "email", "salon_id", "experience_years",
-    "training_status", "attestation_status",
+    "training_status",
 }
 
 
@@ -86,7 +86,7 @@ def handle_get_list(cur, params):
     # Fetch specialists with salon name
     list_sql = (
         f"SELECT sp.id, sp.name, sp.email, sp.salon_id, s.name AS salon_name, "
-        f"sp.experience_years, sp.training_status, sp.attestation_status, sp.created_at "
+        f"sp.experience_years, sp.training_status, sp.created_at "
         f"FROM specialists sp "
         f"LEFT JOIN salons s ON s.id = sp.salon_id "
         f"{where_clause} "
@@ -153,7 +153,7 @@ def handle_post(cur, body):
 
 
 def recalc_salon_rating(cur, salon_id):
-    """Пересчёт рейтинга салона: офлайн×0.4 + онлайн×0.25 + аттестация×0.2 + техники×0.15."""
+    """Пересчёт рейтинга салона: офлайн 100%=4.0, онлайн 100%=+0.5, техники учитываются в индексе."""
     if not salon_id:
         return
     cur.execute("SELECT COUNT(*) AS total FROM specialists WHERE salon_id = %s", (salon_id,))
@@ -171,22 +171,11 @@ def recalc_salon_rating(cur, salon_id):
         (salon_id,),
     )
     trained = cur.fetchone()["cnt"]
-    cur.execute(
-        "SELECT COUNT(*) AS cnt FROM specialists WHERE salon_id = %s AND attestation_status = 'passed'",
-        (salon_id,),
-    )
-    attested = cur.fetchone()["cnt"]
-    cur.execute("SELECT techniques FROM salons WHERE id = %s", (salon_id,))
-    salon = cur.fetchone()
-    tech_str = (salon.get("techniques") or "") if salon else ""
-    tech_count = len([t for t in tech_str.split(",") if t.strip()]) if tech_str else 0
     offline_pct = offline / total * 100
     trained_pct = trained / total * 100
-    attested_pct = attested / total * 100
-    tech_score = min(tech_count * 20, 100)
-    rating_100 = offline_pct * 0.4 + trained_pct * 0.25 + attested_pct * 0.2 + tech_score * 0.15
-    rating_5 = round(rating_100 / 20, 1)
-    cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (min(rating_5, 5), salon_id))
+    rating_5 = (offline_pct / 100 * 4.0) + (trained_pct / 100 * 1.0)
+    rating_5 = round(min(rating_5, 5.0), 1)
+    cur.execute("UPDATE salons SET rating = %s WHERE id = %s", (rating_5, salon_id))
 
 
 def handle_put(cur, body):
@@ -195,7 +184,7 @@ def handle_put(cur, body):
     if not specialist_id:
         return respond(400, {"error": "id специалиста обязателен"})
 
-    status_changed = "training_status" in body or "attestation_status" in body
+    status_changed = "training_status" in body
 
     updates = []
     values = []

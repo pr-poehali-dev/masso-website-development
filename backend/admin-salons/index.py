@@ -16,7 +16,7 @@ CORS_HEADERS = {
 ALLOWED_SALON_FIELDS = {
     "name", "city", "owner_name", "phone", "email",
     "description", "techniques", "tariff", "status",
-    "rating", "is_published",
+    "rating", "is_published", "inspection_date",
 }
 
 
@@ -110,7 +110,7 @@ def handle_get_single(cur, salon_id):
         return respond(404, {"error": "Салон не найден"})
 
     cur.execute(
-        "SELECT id, name, email, experience_years, training_status, attestation_status, created_at "
+        "SELECT id, name, email, experience_years, training_status, created_at "
         "FROM specialists WHERE salon_id = %s ORDER BY created_at DESC",
         (salon_id,),
     )

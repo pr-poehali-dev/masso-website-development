@@ -7,12 +7,10 @@ interface RatingData {
   rating_100: number;
   offline_pct: number;
   trained_pct: number;
-  attested_pct: number;
   status: string;
   total_specialists: number;
   offline_trained: number;
   trained: number;
-  attested: number;
 }
 
 const statusStyles: Record<string, { color: string; bg: string }> = {
@@ -24,8 +22,7 @@ const statusStyles: Record<string, { color: string; bg: string }> = {
 
 const STEPS = [
   { key: 'offline', label: 'Офлайн обучение', max: 4.0, description: '100% специалистов прошли офлайн обучение → 4.0 ★' },
-  { key: 'online',  label: 'Онлайн обучение', max: 4.5, description: '100% завершили онлайн курс → +0.5 ★ (итого 4.5)' },
-  { key: 'attest',  label: 'Аттестация',       max: 5.0, description: '100% аттестованы → +0.5 ★ (итого 5.0)' },
+  { key: 'online',  label: 'Онлайн обучение', max: 5.0, description: '100% завершили онлайн курс → +1.0 ★ (итого 5.0)' },
 ];
 
 const SalonRating = () => {
@@ -101,18 +98,9 @@ const SalonRating = () => {
               pct: data.trained_pct,
               count: data.trained,
               total: data.total_specialists,
-              reward: '→ +0.5 ★ (итого 4.5)',
+              reward: '→ +1.0 ★ (итого 5.0)',
               color: '#0da2e7',
               done: data.trained_pct >= 100,
-            },
-            {
-              label: 'Аттестация пройдена',
-              pct: data.attested_pct,
-              count: data.attested,
-              total: data.total_specialists,
-              reward: '→ +0.5 ★ (итого 5.0)',
-              color: '#8b5cf6',
-              done: data.attested_pct >= 100,
             },
           ].map((step, i) => (
             <div key={i}>
@@ -150,11 +138,10 @@ const SalonRating = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {[
           { label: 'Офлайн обучены', value: `${data.offline_trained}/${data.total_specialists}`, sub: `${data.offline_pct}%`, color: '#f59e0b' },
           { label: 'Онлайн завершили', value: `${data.trained}/${data.total_specialists}`, sub: `${data.trained_pct}%`, color: '#0da2e7' },
-          { label: 'Аттестованы', value: `${data.attested}/${data.total_specialists}`, sub: `${data.attested_pct}%`, color: '#8b5cf6' },
         ].map((c, i) => (
           <div key={i} className="rounded-xl p-4 text-center" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <p className="text-2xl font-bold" style={{ color: c.color }}>{c.value}</p>
