@@ -11,6 +11,7 @@ const SalonLogin = () => {
   const [tab, setTab] = useState<'login' | 'register'>('login');
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ email: '', password: '', salon_name: '', owner_name: '', city: '', phone: '' });
+  const [agreed, setAgreed] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +19,12 @@ const SalonLogin = () => {
     const body = tab === 'register'
       ? { action: 'register', ...form }
       : { action: 'login', email: form.email, password: form.password };
+
+    if (tab === 'register' && !agreed) {
+      toast.error('Необходимо принять политику конфиденциальности и оферту');
+      setLoading(false);
+      return;
+    }
 
     const res = await salonAuth(body);
 
@@ -131,9 +138,34 @@ const SalonLogin = () => {
               />
             </div>
 
+            {tab === 'register' && (
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <div className="relative mt-0.5 flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={agreed}
+                    onChange={e => setAgreed(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div
+                    className="w-4 h-4 rounded border flex items-center justify-center transition-colors"
+                    style={{ background: agreed ? '#0da2e7' : '#ffffff', borderColor: agreed ? '#0da2e7' : '#d1d5db' }}
+                  >
+                    {agreed && <Icon name="Check" size={10} style={{ color: '#ffffff' }} />}
+                  </div>
+                </div>
+                <span className="text-xs leading-relaxed" style={{ color: '#6b7280' }}>
+                  Я принимаю{' '}
+                  <a href="/privacy" target="_blank" className="underline hover:opacity-80" style={{ color: '#0da2e7' }}>политику конфиденциальности</a>
+                  {' '}и{' '}
+                  <a href="/offer" target="_blank" className="underline hover:opacity-80" style={{ color: '#0da2e7' }}>условия оферты</a>
+                </span>
+              </label>
+            )}
+
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (tab === 'register' && !agreed)}
               className="w-full h-11 rounded-lg text-sm font-semibold text-white disabled:opacity-50 transition-opacity"
               style={{ background: '#0da2e7' }}
             >
