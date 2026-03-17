@@ -1,3 +1,6 @@
 {
+  "admin-salons": "https://functions.poehali.dev/ce43779d-d06c-464a-bd6d-4e57e0ebc300",
+  "admin-dashboard": "https://functions.poehali.dev/0010e9a3-7f44-423f-acb8-8e0f74a77af8",
+  "admin-auth": "https://functions.poehali.dev/d38ac2ec-0783-4820-a830-634807fb2c22",
   "send-contact": "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1"
 }

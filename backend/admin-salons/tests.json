@@ -1,0 +1,55 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET list salons",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET list with search filter",
+      "method": "GET",
+      "path": "/?search=test",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET list with status filter",
+      "method": "GET",
+      "path": "/?status=new",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET single salon not found",
+      "method": "GET",
+      "path": "/?id=999999",
+      "expectedStatus": 404
+    },
+    {
+      "name": "POST create salon without name",
+      "method": "POST",
+      "path": "/",
+      "body": {"city": "Moscow"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "PUT update salon without id",
+      "method": "PUT",
+      "path": "/",
+      "body": {"name": "Updated"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "PUT update nonexistent salon",
+      "method": "PUT",
+      "path": "/",
+      "body": {"id": 999999, "name": "Ghost"},
+      "expectedStatus": 404
+    }
+  ]
+}
