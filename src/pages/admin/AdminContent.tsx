@@ -24,11 +24,109 @@ interface Post {
   updated_at: string;
 }
 
+interface FormState {
+  title: string;
+  body: string;
+  category: string;
+  status: string;
+  is_pinned: boolean;
+}
+
 const statusLabels: Record<string, string> = { draft: 'Черновик', published: 'Опубликован' };
 const statusColors: Record<string, string> = {
   draft: 'bg-gray-100 text-gray-700 border-gray-300',
   published: 'bg-green-50 text-green-700 border-green-300',
 };
+
+interface PostFormProps {
+  form: FormState;
+  saving: boolean;
+  submitLabel: string;
+  onChange: (form: FormState) => void;
+  onSubmit: () => void;
+  onCancel: () => void;
+}
+
+const PostForm = ({ form, saving, submitLabel, onChange, onSubmit, onCancel }: PostFormProps) => (
+  <div className="rounded-xl border p-5 mb-4" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="space-y-1 md:col-span-2">
+        <Label className="text-xs" style={{ color: '#6b7280' }}>Заголовок</Label>
+        <Input
+          value={form.title}
+          onChange={e => onChange({ ...form, title: e.target.value })}
+          className="text-sm"
+          style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+        />
+      </div>
+      <div className="space-y-1 md:col-span-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-xs" style={{ color: '#6b7280' }}>Текст</Label>
+          <span className="text-xs" style={{ color: form.body.length > 500 ? '#ef4444' : '#9ca3af' }}>
+            {form.body.length}/500
+          </span>
+        </div>
+        <textarea
+          value={form.body}
+          onChange={e => onChange({ ...form, body: e.target.value.slice(0, 500) })}
+          rows={5}
+          className="flex w-full rounded-md border px-3 py-2 text-sm"
+          style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+        />
+      </div>
+      <div className="space-y-1">
+        <Label className="text-xs" style={{ color: '#6b7280' }}>Категория</Label>
+        <Input
+          value={form.category}
+          onChange={e => onChange({ ...form, category: e.target.value })}
+          className="text-sm"
+          placeholder="Например: Обучение"
+          style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
+        />
+      </div>
+      <div className="space-y-1">
+        <Label className="text-xs" style={{ color: '#6b7280' }}>Статус</Label>
+        <Select value={form.status} onValueChange={v => onChange({ ...form, status: v })}>
+          <SelectTrigger className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent style={{ background: '#ffffff' }}>
+            <SelectItem value="draft" style={{ color: '#111827' }}>Черновик</SelectItem>
+            <SelectItem value="published" style={{ color: '#111827' }}>Опубликован</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={form.is_pinned}
+          onChange={e => onChange({ ...form, is_pinned: e.target.checked })}
+          className="rounded"
+        />
+        <Label className="text-xs" style={{ color: '#6b7280' }}>Закрепить</Label>
+      </div>
+    </div>
+    <div className="flex gap-2 mt-4">
+      <button
+        onClick={onSubmit}
+        disabled={saving}
+        className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+        style={{ background: '#0da2e7' }}
+      >
+        {submitLabel}
+      </button>
+      <button
+        onClick={onCancel}
+        className="h-9 px-4 rounded-lg text-sm font-medium border"
+        style={{ color: '#6b7280', borderColor: '#d1d5db' }}
+      >
+        Отмена
+      </button>
+    </div>
+  </div>
+);
+
+const EMPTY_FORM: FormState = { title: '', body: '', category: '', status: 'draft', is_pinned: false };
 
 const AdminContent = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -40,7 +138,7 @@ const AdminContent = () => {
   const [editPost, setEditPost] = useState<Post | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ title: '', body: '', category: '', status: 'draft', is_pinned: false });
+  const [form, setForm] = useState<FormState>({ ...EMPTY_FORM });
 
   const fetchPosts = (p = page) => {
     setLoading(true);
@@ -50,29 +148,26 @@ const AdminContent = () => {
     const url = `https://functions.poehali.dev/d1f87f5a-f858-49a7-ae65-c2f11fdcdd21?${params}`;
     fetch(url, { headers: { 'Content-Type': 'application/json' } })
       .then(r => r.json())
-      .then(res => {
-        setPosts(res.posts || []);
-        setTotal(res.total || 0);
-      })
+      .then(res => { setPosts(res.posts || []); setTotal(res.total || 0); })
       .catch(() => toast.error('Ошибка загрузки'))
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { fetchPosts(1); setPage(1); }, [search, filterStatus]);
-  useEffect(() => { fetchPosts(); }, [page]);
+  useEffect(() => { fetchPosts(page); }, [page, filterStatus]);
 
   const handleAdd = async () => {
     if (!form.title.trim()) { toast.error('Заголовок обязателен'); return; }
     setSaving(true);
     const user = getAdminUser();
-    const res = await adminFetch('content', {
+    const res = await fetch('https://functions.poehali.dev/d1f87f5a-f858-49a7-ae65-c2f11fdcdd21', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, author_id: user?.id }),
-    });
+    }).then(r => r.json());
     if (res.post) {
-      toast.success('Пост создан');
+      toast.success('Создан');
       setShowAdd(false);
-      setForm({ title: '', body: '', category: '', status: 'draft', is_pinned: false });
+      setForm({ ...EMPTY_FORM });
       fetchPosts(1);
     } else {
       toast.error(res.error || 'Ошибка');
@@ -83,12 +178,13 @@ const AdminContent = () => {
   const handleUpdate = async () => {
     if (!editPost) return;
     setSaving(true);
-    const res = await adminFetch('content', {
+    const res = await fetch('https://functions.poehali.dev/d1f87f5a-f858-49a7-ae65-c2f11fdcdd21', {
       method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: editPost.id, ...form }),
-    });
+    }).then(r => r.json());
     if (res.post) {
-      toast.success('Обновлено');
+      toast.success('Сохранено');
       setEditPost(null);
       fetchPosts();
     } else {
@@ -113,49 +209,6 @@ const AdminContent = () => {
 
   const totalPages = Math.ceil(total / 15);
 
-  const PostForm = ({ onSubmit, submitLabel }: { onSubmit: () => void; submitLabel: string }) => (
-    <div className="rounded-xl border p-5 mb-4" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div className="space-y-1 md:col-span-2">
-          <Label className="text-xs" style={{ color: '#6b7280' }}>Заголовок</Label>
-          <Input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
-        </div>
-        <div className="space-y-1 md:col-span-2">
-          <Label className="text-xs" style={{ color: '#6b7280' }}>Текст</Label>
-          <textarea value={form.body} onChange={e => setForm({ ...form, body: e.target.value })} rows={5} className="flex w-full rounded-md border px-3 py-2 text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
-        </div>
-        <div className="space-y-1">
-          <Label className="text-xs" style={{ color: '#6b7280' }}>Категория</Label>
-          <Input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }} />
-        </div>
-        <div className="space-y-1">
-          <Label className="text-xs" style={{ color: '#6b7280' }}>Статус</Label>
-          <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
-            <SelectTrigger className="text-sm" style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent style={{ background: '#ffffff' }}>
-              <SelectItem value="draft" style={{ color: '#111827' }}>Черновик</SelectItem>
-              <SelectItem value="published" style={{ color: '#111827' }}>Опубликован</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" checked={form.is_pinned} onChange={e => setForm({ ...form, is_pinned: e.target.checked })} className="rounded" />
-          <Label className="text-xs" style={{ color: '#6b7280' }}>Закрепить</Label>
-        </div>
-      </div>
-      <div className="flex gap-2 mt-4">
-        <button onClick={onSubmit} disabled={saving} className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
-          {submitLabel}
-        </button>
-        <button onClick={() => { setShowAdd(false); setEditPost(null); }} className="h-9 px-4 rounded-lg text-sm font-medium border" style={{ color: '#6b7280', borderColor: '#d1d5db' }}>
-          Отмена
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -164,6 +217,7 @@ const AdminContent = () => {
             placeholder="Поиск..."
             value={search}
             onChange={e => setSearch(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && fetchPosts(1)}
             className="w-48 text-sm"
             style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
           />
@@ -179,7 +233,7 @@ const AdminContent = () => {
           </Select>
         </div>
         <button
-          onClick={() => { setShowAdd(true); setEditPost(null); setForm({ title: '', body: '', category: '', status: 'draft', is_pinned: false }); }}
+          onClick={() => { setShowAdd(true); setEditPost(null); setForm({ ...EMPTY_FORM }); }}
           className="flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-medium text-white"
           style={{ background: '#0da2e7' }}
         >
@@ -188,8 +242,26 @@ const AdminContent = () => {
         </button>
       </div>
 
-      {showAdd && <PostForm onSubmit={handleAdd} submitLabel="Создать" />}
-      {editPost && <PostForm onSubmit={handleUpdate} submitLabel="Сохранить" />}
+      {showAdd && (
+        <PostForm
+          form={form}
+          saving={saving}
+          submitLabel="Создать"
+          onChange={setForm}
+          onSubmit={handleAdd}
+          onCancel={() => setShowAdd(false)}
+        />
+      )}
+      {editPost && (
+        <PostForm
+          form={form}
+          saving={saving}
+          submitLabel="Сохранить"
+          onChange={setForm}
+          onSubmit={handleUpdate}
+          onCancel={() => setEditPost(null)}
+        />
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -212,7 +284,7 @@ const AdminContent = () => {
                     {statusLabels[post.status] || post.status}
                   </span>
                   {post.category && (
-                    <span className="text-xs px-2 py-0.5 rounded" style={{ background: '#f3f4f6', color: '#6b7280' }}>{post.category}</span>
+                    <span className="text-xs px-2 py-0.5 rounded" style={{ background: '#eff6ff', color: '#0da2e7' }}>{post.category}</span>
                   )}
                 </div>
                 {post.body && <p className="text-sm line-clamp-2" style={{ color: '#6b7280' }}>{post.body}</p>}
