@@ -248,7 +248,13 @@ const AdminSalonDetail = () => {
         </TabsContent>
 
         <TabsContent value="rating">
-          <RatingTab rating={salon.rating} />
+          <RatingTab
+            rating={salon.rating}
+            salonId={salon.id}
+            specialists={salon.specialists}
+            techniques={salon.techniques}
+            onRatingUpdate={(r) => setSalon({ ...salon, rating: r })}
+          />
         </TabsContent>
 
         <TabsContent value="comments">
