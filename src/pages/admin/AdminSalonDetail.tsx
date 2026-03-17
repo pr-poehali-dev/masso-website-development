@@ -207,9 +207,9 @@ const AdminSalonDetail = () => {
       />
 
       <Tabs defaultValue="info">
-        <div className="overflow-x-auto -mx-1 px-1">
+        <div className="overflow-x-auto -mx-4 px-4 pb-1">
         <TabsList
-          className="rounded-lg p-1 w-max"
+          className="rounded-lg p-1 w-max flex-nowrap"
           style={{ background: '#f3f4f6' }}
         >
           <TabsTrigger
