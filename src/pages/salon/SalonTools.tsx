@@ -17,7 +17,7 @@ const IncomeCalculator = () => {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {[
           { label: 'Специалистов', key: 'specialists', min: 1, max: 50 },
           { label: 'Клиентов в день', key: 'clients', min: 1, max: 30 },
@@ -39,7 +39,7 @@ const IncomeCalculator = () => {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl p-4 text-center" style={{ background: '#f0fdf4' }}>
           <p className="text-xs mb-1" style={{ color: '#6b7280' }}>Оборот</p>
           <p className="text-xl font-bold" style={{ color: '#22c55e' }}>{fmt(revenue)} руб.</p>
@@ -64,7 +64,7 @@ const LoadCalculator = () => {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: 'Клиентов в день', key: 'clients' },
           { label: 'Длительность (часы)', key: 'duration' },
@@ -104,7 +104,7 @@ const ForecastCalculator = () => {
 
   return (
     <div className="space-y-5">
-      <div className="space-y-1.5 max-w-xs">
+      <div className="space-y-1.5 w-full max-w-xs">
         <Label className="text-xs" style={{ color: '#6b7280' }}>Текущий оборот (руб./мес.)</Label>
         <Input
           type="number"
@@ -114,7 +114,7 @@ const ForecastCalculator = () => {
           style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
         />
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {forecasts.map(f => (
           <div key={f.months} className="rounded-xl p-5 text-center" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <p className="text-xs mb-2" style={{ color: '#6b7280' }}>{f.label}</p>
@@ -167,7 +167,7 @@ const DiagnosticTest = () => {
         </div>
       </div>
 
-      <button onClick={handleSubmit} disabled={loading} className="h-10 px-6 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
+      <button onClick={handleSubmit} disabled={loading} className="w-full h-10 px-6 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
         {loading ? 'Расчёт...' : 'Пройти диагностику'}
       </button>
 
@@ -191,16 +191,16 @@ const DiagnosticTest = () => {
 const SalonTools = () => (
   <Tabs defaultValue="calculator">
     <TabsList className="rounded-lg p-1 flex-wrap" style={{ background: '#f3f4f6' }}>
-      <TabsTrigger value="calculator" className="rounded-md text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
+      <TabsTrigger value="calculator" className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
         <Icon name="Calculator" size={14} className="mr-1.5" /> Калькулятор
       </TabsTrigger>
-      <TabsTrigger value="load" className="rounded-md text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
+      <TabsTrigger value="load" className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
         <Icon name="Activity" size={14} className="mr-1.5" /> Загрузка
       </TabsTrigger>
-      <TabsTrigger value="forecast" className="rounded-md text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
+      <TabsTrigger value="forecast" className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
         <Icon name="TrendingUp" size={14} className="mr-1.5" /> Прогноз
       </TabsTrigger>
-      <TabsTrigger value="diagnostics" className="rounded-md text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
+      <TabsTrigger value="diagnostics" className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm" style={{ color: '#6b7280' }}>
         <Icon name="Stethoscope" size={14} className="mr-1.5" /> Диагностика
       </TabsTrigger>
     </TabsList>
@@ -212,7 +212,7 @@ const SalonTools = () => (
       { val: 'diagnostics', title: 'Диагностика салона', desc: 'Пройдите тест и получите рекомендации', comp: <DiagnosticTest /> },
     ].map(tab => (
       <TabsContent key={tab.val} value={tab.val}>
-        <div className="rounded-xl p-6 mt-4" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+        <div className="rounded-xl p-4 sm:p-6 mt-4" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
           <h3 className="text-base font-semibold mb-1" style={{ color: '#111827' }}>{tab.title}</h3>
           <p className="text-xs mb-5" style={{ color: '#9ca3af' }}>{tab.desc}</p>
           {tab.comp}

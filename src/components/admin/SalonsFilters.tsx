@@ -76,7 +76,7 @@ const SalonsFilters = ({
     </div>
     <button
       onClick={onAddClick}
-      className="h-10 px-4 rounded-lg text-sm font-semibold text-white flex items-center gap-2 flex-shrink-0"
+      className="h-10 px-4 rounded-lg text-sm font-semibold text-white flex items-center gap-2 flex-shrink-0 w-full sm:w-auto justify-center"
       style={{ background: '#0da2e7' }}
       onMouseEnter={(e) => (e.currentTarget.style.background = '#0b8dcc')}
       onMouseLeave={(e) => (e.currentTarget.style.background = '#0da2e7')}

@@ -45,7 +45,7 @@ const SalonRating = () => {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <div className="rounded-2xl p-8 text-center" style={{ background: '#ffffff', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-2xl p-5 sm:p-8 text-center" style={{ background: '#ffffff', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
         <div className="relative w-36 h-36 mx-auto mb-4">
           <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
             <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f3f4f6" strokeWidth="2.5" />
@@ -80,7 +80,7 @@ const SalonRating = () => {
         </span>
       </div>
 
-      <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+      <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Путь к максимальному рейтингу</h3>
         <div className="space-y-4">
           {[
@@ -104,7 +104,7 @@ const SalonRating = () => {
             },
           ].map((step, i) => (
             <div key={i}>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between flex-wrap gap-2 mb-1.5">
                 <div className="flex items-center gap-2">
                   <Icon
                     name={step.done ? 'CheckCircle2' : 'Circle'}
@@ -138,7 +138,7 @@ const SalonRating = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4">
         {[
           { label: 'Офлайн обучены', value: `${data.offline_trained}/${data.total_specialists}`, sub: `${data.offline_pct}%`, color: '#f59e0b' },
           { label: 'Онлайн завершили', value: `${data.trained}/${data.total_specialists}`, sub: `${data.trained_pct}%`, color: '#0da2e7' },

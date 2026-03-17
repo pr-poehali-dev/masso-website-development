@@ -76,7 +76,7 @@ const SalonKnowledge = () => {
               style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}
               onClick={() => setOpenId(openId === article.id ? null : article.id)}
             >
-              <div className="p-5 flex items-center justify-between gap-3">
+              <div className="p-4 sm:p-5 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#f0f9ff' }}>
                     <Icon name={categoryIcons[article.category] || 'FileText'} size={18} style={{ color: '#0da2e7' }} />
@@ -96,8 +96,8 @@ const SalonKnowledge = () => {
                 />
               </div>
               {openId === article.id && article.body && (
-                <div className="px-5 pb-5 pt-0 border-t" style={{ borderColor: '#f3f4f6' }}>
-                  <p className="text-sm leading-relaxed pt-4 whitespace-pre-line" style={{ color: '#374151' }}>{article.body}</p>
+                <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 border-t" style={{ borderColor: '#f3f4f6' }}>
+                  <p className="text-sm leading-relaxed pt-4 whitespace-pre-line break-words" style={{ color: '#374151' }}>{article.body}</p>
                 </div>
               )}
             </div>

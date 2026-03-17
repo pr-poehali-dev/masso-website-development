@@ -45,7 +45,7 @@ const SalonAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-1 sm:gap-2">
         {periods.map(p => (
           <button
             key={p.value}
@@ -66,7 +66,7 @@ const SalonAnalytics = () => {
         <div className="flex justify-center py-12"><Icon name="Loader2" size={28} className="animate-spin" style={{ color: '#0da2e7' }} /></div>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
             {[
               { label: 'Оборот', value: `${fmt(Math.round(totalRevenue))} руб.`, color: '#22c55e' },
               { label: 'Средний чек', value: `${fmt(Math.round(avgCheck))} руб.`, color: '#0da2e7' },
@@ -81,7 +81,7 @@ const SalonAnalytics = () => {
             ))}
           </div>
 
-          <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+          <div className="rounded-xl p-4 sm:p-5 overflow-hidden" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <h3 className="text-sm font-semibold mb-3" style={{ color: '#111827' }}>Доход по периодам</h3>
             {metrics.length === 0 ? (
               <p className="text-sm text-center py-8" style={{ color: '#9ca3af' }}>Нет данных за выбранный период. Данные появятся после начала работы.</p>
@@ -103,7 +103,7 @@ const SalonAnalytics = () => {
           </div>
 
           {settings && (
-            <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+            <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
               <h3 className="text-sm font-semibold mb-3" style={{ color: '#111827' }}>Текущие параметры</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                 <div><span style={{ color: '#6b7280' }}>Специалистов:</span> <span className="font-medium" style={{ color: '#111827' }}>{settings.specialists_count}</span></div>

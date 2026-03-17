@@ -60,7 +60,8 @@ export const SpecialistsTab = ({ specialists }: SpecialistsTabProps) => (
         </p>
       </div>
     ) : (
-      <Table>
+      <div className="overflow-x-auto">
+      <Table className="min-w-[550px]">
         <TableHeader>
           <TableRow style={{ borderColor: '#e5e7eb' }}>
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>ID</TableHead>
@@ -88,6 +89,7 @@ export const SpecialistsTab = ({ specialists }: SpecialistsTabProps) => (
           ))}
         </TableBody>
       </Table>
+      </div>
     )}
   </div>
 );
@@ -109,7 +111,8 @@ export const AccessTab = ({ accessList }: AccessTabProps) => (
         </p>
       </div>
     ) : (
-      <Table>
+      <div className="overflow-x-auto">
+      <Table className="min-w-[500px]">
         <TableHeader>
           <TableRow style={{ borderColor: '#e5e7eb' }}>
             <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>ID</TableHead>
@@ -135,6 +138,7 @@ export const AccessTab = ({ accessList }: AccessTabProps) => (
           ))}
         </TableBody>
       </Table>
+      </div>
     )}
   </div>
 );
@@ -207,7 +211,7 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, inspection
 
   return (
     <div className="space-y-4 mt-4">
-      <div className="rounded-xl border p-6" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
+      <div className="rounded-xl border p-4 sm:p-6" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
         <div className="text-center pb-6 border-b" style={{ borderColor: '#f3f4f6' }}>
           <div className="text-5xl font-bold font-sans mb-2" style={{ color: '#0da2e7' }}>{displayRating}</div>
           <p className="text-sm" style={{ color: '#6b7280' }}>из 5.0</p>
@@ -362,7 +366,7 @@ export const CommentsTab = ({
       <Label className="text-sm mb-2 block" style={{ color: '#6b7280' }}>
         Добавить комментарий
       </Label>
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <textarea
           value={newComment}
           onChange={(e) => onNewCommentChange(e.target.value)}
@@ -374,7 +378,7 @@ export const CommentsTab = ({
         <button
           onClick={onAddComment}
           disabled={addingComment || !newComment.trim()}
-          className="self-end h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+          className="self-end sm:self-end h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50"
           style={{ background: '#0da2e7' }}
         >
           Отправить

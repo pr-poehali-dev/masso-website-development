@@ -63,7 +63,7 @@ const AddSalonDialog = ({
           Добавить салон
         </DialogTitle>
       </DialogHeader>
-      <div className="space-y-4 py-2 max-h-[60vh] overflow-y-auto">
+      <div className="space-y-4 py-2 max-h-[55vh] sm:max-h-[60vh] overflow-y-auto">
         <div className="space-y-1.5">
           <Label className="text-sm" style={{ color: '#374151' }}>Название *</Label>
           <Input
@@ -74,7 +74,7 @@ const AddSalonDialog = ({
             style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
           />
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label className="text-sm" style={{ color: '#374151' }}>Город</Label>
             <Input
@@ -96,7 +96,7 @@ const AddSalonDialog = ({
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label className="text-sm" style={{ color: '#374151' }}>Телефон</Label>
             <Input
@@ -118,7 +118,7 @@ const AddSalonDialog = ({
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1.5">
             <Label className="text-sm" style={{ color: '#374151' }}>Тариф</Label>
             <Select

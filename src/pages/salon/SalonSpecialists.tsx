@@ -70,7 +70,7 @@ const SalonSpecialists = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <p className="text-sm" style={{ color: '#6b7280' }}>{specs.length} специалистов</p>
         <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-medium text-white" style={{ background: '#0da2e7' }}>
           <Icon name="Plus" size={16} /> Добавить
@@ -78,7 +78,7 @@ const SalonSpecialists = () => {
       </div>
 
       {showAdd && (
-        <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+        <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label className="text-xs" style={{ color: '#6b7280' }}>Имя</Label>
@@ -104,14 +104,14 @@ const SalonSpecialists = () => {
       ) : (
         <div className="space-y-2">
           {specs.map(s => (
-            <div key={s.id} className="rounded-xl p-4 flex items-center justify-between gap-3" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+            <div key={s.id} className="rounded-xl p-4 flex items-center justify-between flex-wrap gap-y-2 gap-x-3" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0" style={{ background: '#0da2e7' }}>
                   {s.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-medium" style={{ color: '#111827' }}>{s.name}</p>
-                  <p className="text-xs" style={{ color: '#9ca3af' }}>{s.email || 'email не указан'}</p>
+                  <p className="text-xs truncate" style={{ color: '#9ca3af' }}>{s.email || 'email не указан'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">

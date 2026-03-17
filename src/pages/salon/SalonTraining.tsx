@@ -47,7 +47,7 @@ const SalonTraining = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <div className="flex items-center gap-3 mb-2">
           <Icon name="GraduationCap" size={24} style={{ color: '#0da2e7' }} />
           <div>
@@ -77,15 +77,15 @@ const SalonTraining = () => {
           {specs.map(s => {
             const si = getStatusIcon(s.training_status);
             return (
-              <div key={s.id} className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-                <div className="flex items-start justify-between gap-3">
+              <div key={s.id} className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+                <div className="flex items-start justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold text-white flex-shrink-0" style={{ background: si.color }}>
                       {s.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-medium" style={{ color: '#111827' }}>{s.name}</p>
-                      <p className="text-xs" style={{ color: '#9ca3af' }}>{s.email || '-'}</p>
+                      <p className="text-xs truncate" style={{ color: '#9ca3af' }}>{s.email || '-'}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -103,7 +103,7 @@ const SalonTraining = () => {
                     {s.access_password && (
                       <div className="flex items-center gap-1.5 justify-end mt-1">
                         <Icon name="KeyRound" size={12} style={{ color: '#f59e0b' }} />
-                        <span className="text-xs font-mono font-medium" style={{ color: '#111827' }}>{s.access_password}</span>
+                        <span className="text-xs font-mono font-medium break-all" style={{ color: '#111827' }}>{s.access_password}</span>
                       </div>
                     )}
                   </div>

@@ -67,7 +67,8 @@ const SalonsTable = ({
           </p>
         </div>
       ) : (
-        <Table>
+        <div className="overflow-x-auto">
+        <Table className="min-w-[700px]">
           <TableHeader>
             <TableRow style={{ borderColor: '#e5e7eb' }}>
               <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>ID</TableHead>
@@ -126,6 +127,7 @@ const SalonsTable = ({
             ))}
           </TableBody>
         </Table>
+        </div>
       )}
     </div>
 
@@ -134,7 +136,7 @@ const SalonsTable = ({
         <p className="text-sm" style={{ color: '#6b7280' }}>
           Всего: {total}
         </p>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 flex-wrap gap-y-2">
           <button
             onClick={() => onPageChange(Math.max(1, page - 1))}
             disabled={page <= 1}

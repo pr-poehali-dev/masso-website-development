@@ -102,7 +102,7 @@ const SalonProfile = () => {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="rounded-xl p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-xl p-4 sm:p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <div className="flex items-center gap-2 mb-4">
           <Icon name="CreditCard" size={16} style={{ color: '#6b7280' }} />
           <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Ваш тариф</h3>
@@ -169,10 +169,10 @@ const SalonProfile = () => {
         )}
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <div />
         {editing ? (
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button onClick={handleSave} disabled={saving} className="h-9 px-4 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: '#0da2e7' }}>
               Сохранить
             </button>
@@ -187,9 +187,9 @@ const SalonProfile = () => {
         )}
       </div>
 
-      <div className="rounded-xl p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-xl p-4 sm:p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Основная информация</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Название салона" field="name" />
           <Field label="Город" field="city" />
           <Field label="Владелец" field="owner_name" />
@@ -199,9 +199,9 @@ const SalonProfile = () => {
         </div>
       </div>
 
-      <div className="rounded-xl p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-xl p-4 sm:p-6" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Параметры для расчётов</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Field label="Кол-во специалистов" field="specialists_count" type="number" />
           <Field label="Клиентов в день" field="clients_per_day" type="number" />
           <Field label="Средняя цена (руб.)" field="avg_price" type="number" />

@@ -55,7 +55,7 @@ const SalonInfoTab = ({ editing, editData, onFieldChange, salon }: SalonInfoTabP
 
   return (
     <div
-      className="rounded-xl border p-6 mt-4"
+      className="rounded-xl border p-4 sm:p-6 mt-4"
       style={{ background: '#ffffff', borderColor: '#e5e7eb' }}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -192,7 +192,7 @@ const SalonInfoTab = ({ editing, editData, onFieldChange, salon }: SalonInfoTabP
         </div>
       </div>
       <div
-        className="mt-5 pt-4 border-t flex items-center gap-4 text-xs"
+        className="mt-5 pt-4 border-t flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-xs"
         style={{ borderColor: '#f3f4f6', color: '#9ca3af' }}
       >
         <span>Создан: {formatDateTime(salon.created_at)}</span>

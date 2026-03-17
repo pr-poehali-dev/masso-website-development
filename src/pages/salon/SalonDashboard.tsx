@@ -37,7 +37,7 @@ const SalonDashboard = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl p-6 text-center" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+      <div className="rounded-2xl p-4 sm:p-6 text-center" style={{ background: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
         <p className="text-sm font-medium mb-2" style={{ color: '#6b7280' }}>Индекс развития</p>
         <div className="relative w-32 h-32 mx-auto mb-3">
           <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
@@ -51,14 +51,14 @@ const SalonDashboard = () => {
         <p className="text-xs" style={{ color: '#9ca3af' }}>из 100</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {[
           { icon: 'Banknote', label: 'Текущий оборот', value: `${fmt(m.revenue)} руб.`, color: '#22c55e' },
           { icon: 'TrendingUp', label: 'Потенциальный оборот', value: `${fmt(m.potential)} руб.`, color: '#0da2e7' },
           { icon: 'TrendingDown', label: 'Потерянный доход', value: `${fmt(m.lost_income)} руб.`, color: '#ef4444' },
           { icon: 'Activity', label: 'Загрузка специалистов', value: `${m.specialist_load}%`, color: '#8b5cf6' },
         ].map((card, i) => (
-          <div key={i} className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+          <div key={i} className="rounded-xl p-3 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${card.color}12` }}>
               <Icon name={card.icon} size={20} style={{ color: card.color }} />
             </div>
@@ -68,7 +68,7 @@ const SalonDashboard = () => {
         ))}
       </div>
 
-      <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+      <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: '#111827' }}>Статус обучения</h3>
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
@@ -89,7 +89,7 @@ const SalonDashboard = () => {
         const isOverdue = daysLeft !== null && daysLeft < 0;
         const isSoon = daysLeft !== null && daysLeft >= 0 && daysLeft <= 60;
         return (
-          <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+          <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Icon name="ClipboardCheck" size={16} style={{ color: '#6b7280' }} />
               <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Проверка персонала</h3>
@@ -118,7 +118,7 @@ const SalonDashboard = () => {
       })()}
 
       {data.posts.length > 0 && (
-        <div className="rounded-xl p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+        <div className="rounded-xl p-4 sm:p-5" style={{ background: '#ffffff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
           <div className="flex items-center gap-2 mb-4">
             <Icon name="Newspaper" size={16} style={{ color: '#0da2e7' }} />
             <h3 className="text-sm font-semibold" style={{ color: '#111827' }}>Новости и материалы</h3>
@@ -126,7 +126,7 @@ const SalonDashboard = () => {
           <div className="space-y-3">
             {data.posts.map(post => (
               <div key={post.id} className="rounded-lg p-4 border" style={{ background: '#f9fafb', borderColor: '#f3f4f6' }}>
-                <div className="flex items-start justify-between gap-2 mb-1.5">
+                <div className="flex items-start justify-between flex-wrap gap-2 mb-1.5">
                   <p className="text-sm font-semibold leading-snug" style={{ color: '#111827' }}>{post.title}</p>
                   {post.category && (
                     <span className="flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: '#eff6ff', color: '#0da2e7' }}>

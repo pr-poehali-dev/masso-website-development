@@ -263,7 +263,8 @@ const AdminAccess = () => {
             <p className="text-sm mt-3" style={{ color: '#9ca3af' }}>Нет доступов</p>
           </div>
         ) : (
-          <Table>
+          <div className="overflow-x-auto">
+          <Table className="min-w-[650px]">
             <TableHeader>
               <TableRow style={{ borderColor: '#e5e7eb' }}>
                 <TableHead className="text-xs font-semibold" style={{ color: '#6b7280' }}>Специалист</TableHead>
@@ -307,6 +308,7 @@ const AdminAccess = () => {
               ))}
             </TableBody>
           </Table>
+          </div>
         )}
       </div>
 

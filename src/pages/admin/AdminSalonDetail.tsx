@@ -207,46 +207,48 @@ const AdminSalonDetail = () => {
       />
 
       <Tabs defaultValue="info">
+        <div className="overflow-x-auto -mx-1 px-1">
         <TabsList
-          className="rounded-lg p-1"
+          className="rounded-lg p-1 w-max"
           style={{ background: '#f3f4f6' }}
         >
           <TabsTrigger
             value="info"
-            className="rounded-md text-sm data-[state=active]:shadow-sm"
+            className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm"
             style={{ color: '#6b7280' }}
           >
             Информация
           </TabsTrigger>
           <TabsTrigger
             value="specialists"
-            className="rounded-md text-sm data-[state=active]:shadow-sm"
+            className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm"
             style={{ color: '#6b7280' }}
           >
             Специалисты ({salon.specialists.length})
           </TabsTrigger>
           <TabsTrigger
             value="access"
-            className="rounded-md text-sm data-[state=active]:shadow-sm"
+            className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm"
             style={{ color: '#6b7280' }}
           >
             Доступы ({salon.access_list.length})
           </TabsTrigger>
           <TabsTrigger
             value="rating"
-            className="rounded-md text-sm data-[state=active]:shadow-sm"
+            className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm"
             style={{ color: '#6b7280' }}
           >
             Рейтинг
           </TabsTrigger>
           <TabsTrigger
             value="comments"
-            className="rounded-md text-sm data-[state=active]:shadow-sm"
+            className="rounded-md text-xs sm:text-sm data-[state=active]:shadow-sm"
             style={{ color: '#6b7280' }}
           >
             Комментарии ({salon.comments.length})
           </TabsTrigger>
         </TabsList>
+        </div>
 
         <TabsContent value="info">
           <SalonInfoTab
