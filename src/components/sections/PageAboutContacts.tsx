@@ -85,6 +85,35 @@ export function PageAbout({ onNavigate }: { onNavigate: (p: Page) => void }) {
                 </div>
               </div>
             </AnimatedSection>
+
+            <AnimatedSection>
+              <div className="gradient-card rounded-3xl p-4 sm:p-6 md:p-8 glow-card mt-4 md:mt-6">
+                <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-2">Отзывы</div>
+                <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground mb-6">Видеоотзывы специалистов после обучения</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  {[
+                    "o4aLwoPaNMNsPmRU517kdr",
+                    "7on4nVofXbcgkDmWbjaZvH",
+                    "jWics1Kq1BrrtcFK25Vmgu",
+                    "vk9wa3fBfxQZwMbRvN9YJG",
+                    "sCFSxwbdZSjobWC3KKzDmj",
+                    "7on4nVofXbcgkDmWbjaZvH",
+                  ].map((id, i) => (
+                    <div key={i} className="rounded-2xl overflow-hidden" style={{ background: '#0a0a0f' }}>
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                        <iframe
+                          src={`https://kinescope.io/embed/${id}`}
+                          className="absolute inset-0 w-full h-full"
+                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; web-share"
+                          frameBorder="0"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
