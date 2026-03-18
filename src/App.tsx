@@ -24,6 +24,8 @@ import SalonTraining from "./pages/salon/SalonTraining";
 import SalonKnowledge from "./pages/salon/SalonKnowledge";
 import SalonRating from "./pages/salon/SalonRating";
 import SalonProfile from "./pages/salon/SalonProfile";
+import SalonWidgets from "./pages/salon/SalonWidgets";
+import SalonPublicPage from "./pages/SalonPublicPage";
 
 // Admin panel imports
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -68,6 +70,7 @@ const App = () => (
             <Route path="knowledge" element={<SalonKnowledge />} />
             <Route path="rating" element={<SalonRating />} />
             <Route path="profile" element={<SalonProfile />} />
+            <Route path="widgets" element={<SalonWidgets />} />
           </Route>
 
           {/* Admin panel routes */}
@@ -85,6 +88,9 @@ const App = () => (
             <Route path="catalog" element={<AdminCatalog />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
+
+          {/* Public salon page */}
+          <Route path="/catalog/:id" element={<SalonPublicPage />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

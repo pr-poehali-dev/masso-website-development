@@ -18,6 +18,7 @@ const FULL_NAV_ITEMS = [
   { label: 'Обучение', icon: 'GraduationCap', path: '/cabinet/training' },
   { label: 'База знаний', icon: 'BookOpen', path: '/cabinet/knowledge' },
   { label: 'Рейтинг', icon: 'Star', path: '/cabinet/rating' },
+  { label: 'Виджеты', icon: 'Code2', path: '/cabinet/widgets' },
   { label: 'Профиль', icon: 'Building2', path: '/cabinet/profile' },
 ];
 
@@ -68,6 +69,7 @@ const pageNames: Record<string, string> = {
   '/cabinet/training': 'Обучение',
   '/cabinet/knowledge': 'База знаний',
   '/cabinet/rating': 'Рейтинг',
+  '/cabinet/widgets': 'Виджеты для сайта',
   '/cabinet/profile': 'Профиль',
 };
 
