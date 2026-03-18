@@ -33,7 +33,7 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
   const half = rating - filled >= 0.25;
   return (
     <div
-      className="rounded-2xl p-4 flex flex-col gap-3 max-w-[280px]"
+      className="rounded-2xl p-4 flex flex-col gap-3 w-full max-w-[280px]"
       style={{
         background: '#ffffff',
         border: '1px solid #e5e7eb',
@@ -72,7 +72,7 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
   const half = rating - filled >= 0.25;
   return (
     <div
-      className="rounded-2xl p-4 flex flex-col gap-3 max-w-[280px]"
+      className="rounded-2xl p-4 flex flex-col gap-3 w-full max-w-[280px]"
       style={{
         background: 'linear-gradient(135deg, hsl(220,25%,10%) 0%, hsl(220,25%,7%) 100%)',
         border: '1px solid hsla(185,85%,45%,0.25)',
@@ -238,7 +238,7 @@ const SalonWidgets = () => {
           <h4 className="text-sm font-semibold" style={{ color: '#111827' }}>Светлая тема</h4>
         </div>
 
-        <div className="mb-5 flex justify-center p-6 rounded-xl" style={{ background: '#f3f4f6' }}>
+        <div className="mb-5 flex justify-center p-4 sm:p-6 rounded-xl" style={{ background: '#f3f4f6' }}>
           <WidgetPreviewLight salonName={salonName} rating={rating} city={city} />
         </div>
 
@@ -254,7 +254,7 @@ const SalonWidgets = () => {
           <h4 className="text-sm font-semibold" style={{ color: '#111827' }}>Тёмная тема</h4>
         </div>
 
-        <div className="mb-5 flex justify-center p-6 rounded-xl" style={{ background: '#111827' }}>
+        <div className="mb-5 flex justify-center p-4 sm:p-6 rounded-xl" style={{ background: '#111827' }}>
           <WidgetPreviewDark salonName={salonName} rating={rating} city={city} />
         </div>
 
