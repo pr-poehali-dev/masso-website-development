@@ -243,6 +243,17 @@ const SalonWidgets = () => {
         </div>
 
         <CodeBlock code={lightCode} onCopy={() => copy(lightCode, setCopiedLight)} copied={copiedLight} />
+        <button
+          onClick={() => copy(lightCode, setCopiedLight)}
+          className="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"
+          style={{
+            background: copiedLight ? '#22c55e' : '#0da2e7',
+            color: '#ffffff',
+          }}
+        >
+          <Icon name={copiedLight ? 'Check' : 'Copy'} size={15} />
+          {copiedLight ? 'Код скопирован!' : 'Скопировать код'}
+        </button>
       </div>
 
       {/* Тёмный виджет */}
@@ -259,6 +270,17 @@ const SalonWidgets = () => {
         </div>
 
         <CodeBlock code={darkCode} onCopy={() => copy(darkCode, setCopiedDark)} copied={copiedDark} />
+        <button
+          onClick={() => copy(darkCode, setCopiedDark)}
+          className="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"
+          style={{
+            background: copiedDark ? '#22c55e' : '#0da2e7',
+            color: '#ffffff',
+          }}
+        >
+          <Icon name={copiedDark ? 'Check' : 'Copy'} size={15} />
+          {copiedDark ? 'Код скопирован!' : 'Скопировать код'}
+        </button>
       </div>
 
       <div className="rounded-xl p-4" style={{ background: '#fffbeb', border: '1px solid #fde68a' }}>
