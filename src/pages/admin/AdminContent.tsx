@@ -299,7 +299,7 @@ const AdminContent = () => {
                     <span className="text-xs px-2 py-0.5 rounded" style={{ background: '#eff6ff', color: '#0da2e7' }}>{post.category}</span>
                   )}
                 </div>
-                {post.body && <p className="text-sm line-clamp-2" style={{ color: '#6b7280' }}>{post.body}</p>}
+                {post.body && <p className="text-sm whitespace-pre-line" style={{ color: '#6b7280' }}>{post.body}</p>}
                 {post.link_url && (
                   <a href={post.link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs mt-1" style={{ color: '#0da2e7' }}>
                     <Icon name="ExternalLink" size={12} />
