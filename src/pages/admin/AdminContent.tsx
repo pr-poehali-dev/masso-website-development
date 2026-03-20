@@ -64,13 +64,13 @@ const PostForm = ({ form, saving, submitLabel, onChange, onSubmit, onCancel }: P
       <div className="space-y-1 md:col-span-2">
         <div className="flex items-center justify-between">
           <Label className="text-xs" style={{ color: '#6b7280' }}>Текст</Label>
-          <span className="text-xs" style={{ color: form.body.length > 500 ? '#ef4444' : '#9ca3af' }}>
-            {form.body.length}/500
+          <span className="text-xs" style={{ color: form.body.length > 1500 ? '#ef4444' : '#9ca3af' }}>
+            {form.body.length}/1500
           </span>
         </div>
         <textarea
           value={form.body}
-          onChange={e => onChange({ ...form, body: e.target.value.slice(0, 500) })}
+          onChange={e => onChange({ ...form, body: e.target.value.slice(0, 1500) })}
           rows={5}
           className="flex w-full rounded-md border px-3 py-2 text-sm"
           style={{ background: '#ffffff', borderColor: '#d1d5db', color: '#111827' }}
