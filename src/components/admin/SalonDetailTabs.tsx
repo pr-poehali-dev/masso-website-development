@@ -160,6 +160,10 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, inspection
   const [dateInput, setDateInput] = React.useState(inspectionDate ? inspectionDate.slice(0, 10) : '');
   const [savingDate, setSavingDate] = React.useState(false);
 
+  React.useEffect(() => {
+    setDateInput(inspectionDate ? inspectionDate.slice(0, 10) : '');
+  }, [inspectionDate]);
+
   const total = specialists.length;
   const offlineTrained = specialists.filter(s => ['offline_trained', 'in_progress', 'completed', 'certified'].includes(s.training_status)).length;
   const trained = specialists.filter(s => ['completed', 'certified'].includes(s.training_status)).length;
