@@ -41,6 +41,7 @@ import AdminTools from "./pages/admin/AdminTools";
 import AdminContent from "./pages/admin/AdminContent";
 import AdminCatalog from "./pages/admin/AdminCatalog";
 import AdminSettings from "./pages/admin/AdminSettings";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <CookieBanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
