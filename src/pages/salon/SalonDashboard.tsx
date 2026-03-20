@@ -145,7 +145,7 @@ const SalonDashboard = () => {
                   )}
                 </div>
                 {post.body && (
-                  <p className="text-xs line-clamp-2 mb-2" style={{ color: '#6b7280' }}>{post.body}</p>
+                  <p className="text-xs whitespace-pre-line mb-2" style={{ color: '#6b7280' }}>{post.body}</p>
                 )}
                 <div className="flex items-center justify-between">
                   <p className="text-xs" style={{ color: '#d1d5db' }}>
