@@ -50,6 +50,18 @@
       "path": "/",
       "body": {"id": 999999, "name": "Ghost"},
       "expectedStatus": 404
+    },
+    {
+      "name": "DELETE salon without id",
+      "method": "DELETE",
+      "path": "/",
+      "expectedStatus": 400
+    },
+    {
+      "name": "DELETE nonexistent salon",
+      "method": "DELETE",
+      "path": "/?id=999999",
+      "expectedStatus": 404
     }
   ]
 }

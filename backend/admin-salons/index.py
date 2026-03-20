@@ -169,6 +169,20 @@ def handle_post(cur, body):
     return respond(201, {"salon": salon})
 
 
+def handle_delete(cur, params):
+    """Удаление салона по id."""
+    salon_id = params.get("id")
+    if not salon_id:
+        return respond(400, {"error": "id салона обязателен"})
+
+    cur.execute("DELETE FROM salons WHERE id = %s RETURNING id", (int(salon_id),))
+    row = cur.fetchone()
+    if not row:
+        return respond(404, {"error": "Салон не найден"})
+
+    return respond(200, {"deleted_id": row["id"]})
+
+
 def handle_put(cur, body):
     """Обновление салона по id. Обновляются только переданные поля."""
     salon_id = body.get("id")
@@ -221,6 +235,8 @@ def handler(event: dict, context) -> dict:
     elif method == "PUT":
         body = json.loads(event.get("body") or "{}")
         result = handle_put(cur, body)
+    elif method == "DELETE":
+        result = handle_delete(cur, params)
     else:
         result = respond(405, {"error": "Метод не поддерживается"})
 

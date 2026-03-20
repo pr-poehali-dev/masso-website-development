@@ -97,6 +97,22 @@ const AdminSalons = () => {
     setPage(1);
   };
 
+  const handleDeleteSalon = async (id: number) => {
+    try {
+      const url = `https://functions.poehali.dev/ce43779d-d06c-464a-bd6d-4e57e0ebc300?id=${id}`;
+      const res = await fetch(url, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.deleted_id) {
+        toast.success('Салон удалён');
+        fetchSalons();
+      } else {
+        toast.error(data.error || 'Ошибка удаления');
+      }
+    } catch {
+      toast.error('Ошибка соединения');
+    }
+  };
+
   const handleAddSalon = async () => {
     if (!newSalon.name.trim()) {
       toast.error('Название салона обязательно');
@@ -141,6 +157,7 @@ const AdminSalons = () => {
         pages={pages}
         onRowClick={(id) => navigate(`/admin/salons/${id}`)}
         onPageChange={setPage}
+        onDelete={handleDeleteSalon}
       />
 
       <AddSalonDialog
