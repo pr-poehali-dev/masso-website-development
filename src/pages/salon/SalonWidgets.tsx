@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { getSalonInfo, getSalonUser, salonFetch } from '@/lib/salon-api';
 
-const BASE_URL = window.location.origin;
+const BASE_URL = 'https://massopro.ru';
 
 function CodeBlock({ code, onCopy, copied }: { code: string; onCopy: () => void; copied: boolean }) {
   return (
