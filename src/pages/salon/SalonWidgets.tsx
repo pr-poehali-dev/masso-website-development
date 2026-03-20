@@ -71,7 +71,6 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
           </div>
         </div>
         <div className="flex items-center gap-2" style={{ background: 'rgba(13,162,231,0.06)', borderRadius: 10, padding: '6px 10px' }}>
-          <img src={CERT_ICON} alt="cert" style={{ width: 18, height: 18, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }} />
           <span style={{ fontSize: 11, fontWeight: 600, color: '#0da2e7', letterSpacing: '0.01em' }}>Сертифицировано МассоПРО</span>
         </div>
       </div>
@@ -118,7 +117,6 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
           </div>
         </div>
         <div className="flex items-center gap-2" style={{ background: 'rgba(13,210,231,0.07)', border: '1px solid rgba(13,210,231,0.12)', borderRadius: 10, padding: '6px 10px' }}>
-          <img src={CERT_ICON} alt="cert" style={{ width: 18, height: 18, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }} />
           <span style={{ fontSize: 11, fontWeight: 600, color: '#0dd2e7', letterSpacing: '0.01em' }}>Сертифицировано МассоПРО</span>
         </div>
       </div>
@@ -151,8 +149,6 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
       <span style="font-size:11px;color:#94a3b8;">/5</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;background:rgba(13,162,231,0.06);border-radius:10px;padding:6px 10px;">
-      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg"
-           alt="cert" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
       <span style="font-size:11px;font-weight:600;color:#0da2e7;letter-spacing:0.01em;">Сертифицировано МассоПРО</span>
     </div>
   </div>
@@ -184,8 +180,6 @@ function generateDarkCode(salonId: number, salonName: string, rating: number, ci
       <span style="font-size:11px;color:rgba(13,210,231,0.5);">/5</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;background:rgba(13,210,231,0.07);border:1px solid rgba(13,210,231,0.12);border-radius:10px;padding:6px 10px;">
-      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg"
-           alt="cert" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
       <span style="font-size:11px;font-weight:600;color:#0dd2e7;letter-spacing:0.01em;">Сертифицировано МассоПРО</span>
     </div>
   </div>
