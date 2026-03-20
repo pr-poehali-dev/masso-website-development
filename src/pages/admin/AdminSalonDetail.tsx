@@ -138,6 +138,21 @@ const AdminSalonDetail = () => {
     }
   };
 
+  const handlePublishChange = async (value: boolean) => {
+    try {
+      const data = await adminFetch('salons', {
+        method: 'PUT',
+        body: JSON.stringify({ id: Number(id), is_published: value }),
+      });
+      if (data.salon) {
+        toast.success(value ? 'Салон опубликован' : 'Салон снят с публикации');
+        setSalon({ ...salon!, is_published: value });
+      }
+    } catch {
+      toast.error('Ошибка изменения публикации');
+    }
+  };
+
   const handleFullAccessChange = async (value: boolean) => {
     try {
       const data = await adminFetch('salons', {
@@ -256,6 +271,7 @@ const AdminSalonDetail = () => {
             editData={editData}
             onFieldChange={handleFieldChange}
             salon={salon}
+            onPublishChange={handlePublishChange}
           />
         </TabsContent>
 

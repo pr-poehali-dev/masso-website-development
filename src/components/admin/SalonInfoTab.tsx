@@ -24,6 +24,7 @@ interface SalonInfoTabProps {
   editing: boolean;
   editData: Record<string, string | undefined>;
   onFieldChange: (field: string, value: string) => void;
+  onPublishChange?: (value: boolean) => void;
   salon: {
     name: string;
     city: string | null;
@@ -39,7 +40,7 @@ interface SalonInfoTabProps {
   };
 }
 
-const SalonInfoTab = ({ editing, editData, onFieldChange, salon }: SalonInfoTabProps) => {
+const SalonInfoTab = ({ editing, editData, onFieldChange, salon, onPublishChange }: SalonInfoTabProps) => {
   const [tariffs, setTariffs] = useState<Tariff[]>([]);
 
   useEffect(() => {
@@ -197,7 +198,26 @@ const SalonInfoTab = ({ editing, editData, onFieldChange, salon }: SalonInfoTabP
       >
         <span>Создан: {formatDateTime(salon.created_at)}</span>
         <span>Обновлен: {formatDateTime(salon.updated_at)}</span>
-        <span>Опубликован: {salon.is_published ? 'Да' : 'Нет'}</span>
+        <button
+          onClick={() => onPublishChange?.(!salon.is_published)}
+          className="flex items-center gap-2 px-3 py-1 rounded-lg border transition-all"
+          style={{
+            background: salon.is_published ? '#f0fdf4' : '#f9fafb',
+            borderColor: salon.is_published ? '#86efac' : '#d1d5db',
+            color: salon.is_published ? '#16a34a' : '#6b7280',
+          }}
+        >
+          <span
+            className="inline-block w-7 h-4 rounded-full relative transition-all"
+            style={{ background: salon.is_published ? '#22c55e' : '#d1d5db' }}
+          >
+            <span
+              className="absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all"
+              style={{ left: salon.is_published ? '14px' : '2px' }}
+            />
+          </span>
+          Опубликован: {salon.is_published ? 'Да' : 'Нет'}
+        </button>
       </div>
     </div>
   );
