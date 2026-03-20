@@ -151,9 +151,10 @@ interface RatingTabProps {
   inspectionDate: string | null;
   onRatingUpdate: (newRating: number) => void;
   onInspectionDateSave: (date: string) => void;
+  onRefresh?: () => void;
 }
 
-export const RatingTab = ({ rating, salonId, specialists, techniques, inspectionDate, onRatingUpdate, onInspectionDateSave }: RatingTabProps) => {
+export const RatingTab = ({ rating, salonId, specialists, techniques, inspectionDate, onRatingUpdate, onInspectionDateSave, onRefresh }: RatingTabProps) => {
   const [recalculating, setRecalculating] = React.useState(false);
   const [localRating, setLocalRating] = React.useState(Number(rating));
   const [editingDate, setEditingDate] = React.useState(false);
@@ -287,7 +288,10 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, inspection
                         body: JSON.stringify({ id: salonId, inspection_date: null }),
                       });
                       const data = await res.json();
-                      if (data.salon) onInspectionDateSave('');
+                      if (data.salon) {
+                        onInspectionDateSave('');
+                        onRefresh?.();
+                      }
                     } catch { /* ignore */ }
                     setSavingDate(false);
                   }}

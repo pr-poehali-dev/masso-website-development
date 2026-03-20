@@ -276,6 +276,7 @@ const AdminSalonDetail = () => {
             inspectionDate={salon.inspection_date}
             onRatingUpdate={(r) => setSalon({ ...salon, rating: r })}
             onInspectionDateSave={(d) => setSalon({ ...salon, inspection_date: d || null })}
+            onRefresh={fetchSalon}
           />
         </TabsContent>
 
