@@ -29,8 +29,8 @@ function CodeBlock({ code, onCopy, copied }: { code: string; onCopy: () => void;
 }
 
 const CERT_ICON = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg';
-const LOGO_DARK = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg';
-const LOGO_LIGHT = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg';
+const LOGO_DARK = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png';
+const LOGO_LIGHT = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png';
 
 function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; rating: number; city: string }) {
   const filled = Math.floor(rating);
@@ -137,7 +137,7 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
           overflow:hidden;">
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
-      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png"
            alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(13,162,231,0.2);">
       <div style="min-width:0;flex:1;">
         <p style="margin:0;font-size:13px;font-weight:700;color:#0f172a;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
@@ -170,7 +170,7 @@ function generateDarkCode(salonId: number, salonName: string, rating: number, ci
           overflow:hidden;">
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
-      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png"
            alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 12px rgba(13,210,231,0.25);">
       <div style="min-width:0;flex:1;">
         <p style="margin:0;font-size:13px;font-weight:700;color:#f8fafc;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
