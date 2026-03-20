@@ -43,7 +43,7 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
     >
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <div>
           <p className="text-xs font-semibold leading-tight" style={{ color: '#111827' }}>{salonName}</p>
@@ -82,7 +82,7 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
     >
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <div>
           <p className="text-xs font-semibold leading-tight" style={{ color: '#f9fafb' }}>{salonName}</p>
@@ -114,7 +114,7 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
           box-shadow:0 4px 20px rgba(0,0,0,0.08);text-decoration:none;
           font-family:system-ui,sans-serif;max-width:280px;">
   <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
+    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
          alt="МассоПРО" style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;">
     <div>
       <p style="margin:0;font-size:12px;font-weight:600;color:#111827;">${salonName}</p>
@@ -142,7 +142,7 @@ function generateDarkCode(salonId: number, salonName: string, rating: number, ci
           box-shadow:0 4px 20px rgba(0,0,0,0.3);text-decoration:none;
           font-family:system-ui,sans-serif;max-width:280px;">
   <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
+    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
          alt="МассоПРО" style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;">
     <div>
       <p style="margin:0;font-size:12px;font-weight:600;color:#f9fafb;">${salonName}</p>
