@@ -39,7 +39,7 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
     <div
       className="flex flex-col w-full max-w-[300px]"
       style={{
-        background: 'linear-gradient(160deg, #f8fafc 0%, #f0f7ff 100%)',
+        background: '#ffffff',
         border: '1px solid #e2eaf5',
         borderRadius: 20,
         boxShadow: '0 8px 32px rgba(13,162,231,0.10), 0 1px 4px rgba(0,0,0,0.06)',
@@ -50,8 +50,8 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
 
       <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-3">
-          <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 8px rgba(13,162,231,0.2)' }}>
-            <img src={LOGO_DARK} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ width: 44, height: 44, flexShrink: 0 }}>
+            <img src={LOGO_DARK} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{salonName}</p>
@@ -97,8 +97,8 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
 
       <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-3">
-          <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 12px rgba(13,210,231,0.25)' }}>
-            <img src={LOGO_LIGHT} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ width: 44, height: 44, flexShrink: 0, background: '#fff', borderRadius: '50%' }}>
+            <img src={LOGO_LIGHT} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{salonName}</p>
@@ -138,7 +138,7 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
       <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png"
-           alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(13,162,231,0.2);">
+           alt="МассоПРО" style="width:44px;height:44px;object-fit:contain;flex-shrink:0;">
       <div style="min-width:0;flex:1;">
         <p style="margin:0;font-size:13px;font-weight:700;color:#0f172a;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
         ${city ? `<p style="margin:2px 0 0;font-size:11px;color:#64748b;">${city}</p>` : ''}
@@ -171,7 +171,7 @@ function generateDarkCode(salonId: number, salonName: string, rating: number, ci
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
       <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/bucket/59ee2a21-9d72-4798-89a9-280f70bcac0b.png"
-           alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 12px rgba(13,210,231,0.25);">
+           alt="МассоПРО" style="width:44px;height:44px;object-fit:contain;flex-shrink:0;background:#fff;border-radius:50%;">
       <div style="min-width:0;flex:1;">
         <p style="margin:0;font-size:13px;font-weight:700;color:#f8fafc;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
         ${city ? `<p style="margin:2px 0 0;font-size:11px;color:#0dd2e7;opacity:0.8;">${city}</p>` : ''}
