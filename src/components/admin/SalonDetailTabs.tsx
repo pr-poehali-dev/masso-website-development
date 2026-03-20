@@ -271,13 +271,37 @@ export const RatingTab = ({ rating, salonId, specialists, techniques, inspection
             <h4 className="text-sm font-semibold" style={{ color: '#111827' }}>Проверка персонала</h4>
           </div>
           {!editingDate && (
-            <button
-              onClick={() => setEditingDate(true)}
-              className="text-xs px-3 h-7 rounded-lg border"
-              style={{ color: '#0da2e7', borderColor: '#0da2e7' }}
-            >
-              {inspectionDate ? 'Изменить дату' : 'Указать дату'}
-            </button>
+            <div className="flex items-center gap-2">
+              {inspectionDate && (
+                <button
+                  onClick={async () => {
+                    setSavingDate(true);
+                    try {
+                      const res = await fetch('https://functions.poehali.dev/ce43779d-d06c-464a-bd6d-4e57e0ebc300', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: salonId, inspection_date: null }),
+                      });
+                      const data = await res.json();
+                      if (data.salon) onInspectionDateSave('');
+                    } catch { /* ignore */ }
+                    setSavingDate(false);
+                  }}
+                  disabled={savingDate}
+                  className="text-xs px-3 h-7 rounded-lg border disabled:opacity-50"
+                  style={{ color: '#dc2626', borderColor: '#dc2626' }}
+                >
+                  Убрать
+                </button>
+              )}
+              <button
+                onClick={() => setEditingDate(true)}
+                className="text-xs px-3 h-7 rounded-lg border"
+                style={{ color: '#0da2e7', borderColor: '#0da2e7' }}
+              >
+                {inspectionDate ? 'Изменить дату' : 'Указать дату'}
+              </button>
+            </div>
           )}
         </div>
 
