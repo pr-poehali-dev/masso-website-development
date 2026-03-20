@@ -28,40 +28,52 @@ function CodeBlock({ code, onCopy, copied }: { code: string; onCopy: () => void;
   );
 }
 
+const CERT_ICON = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg';
+const LOGO_DARK = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg';
+const LOGO_LIGHT = 'https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg';
+
 function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; rating: number; city: string }) {
   const filled = Math.floor(rating);
   const half = rating - filled >= 0.25;
   return (
     <div
-      className="rounded-2xl p-4 flex flex-col gap-3 w-full max-w-[280px]"
+      className="flex flex-col w-full max-w-[300px]"
       style={{
-        background: '#ffffff',
-        border: '1px solid #e5e7eb',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        background: 'linear-gradient(160deg, #f8fafc 0%, #f0f7ff 100%)',
+        border: '1px solid #e2eaf5',
+        borderRadius: 20,
+        boxShadow: '0 8px 32px rgba(13,162,231,0.10), 0 1px 4px rgba(0,0,0,0.06)',
         fontFamily: 'system-ui, sans-serif',
+        overflow: 'hidden',
       }}
     >
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div style={{ height: 4, background: 'linear-gradient(90deg, #0da2e7, #06b6d4, #00daa8)' }} />
+      <div className="flex flex-col gap-3 p-4">
+        <div className="flex items-center gap-3">
+          <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 8px rgba(13,162,231,0.2)' }}>
+            <img src={LOGO_DARK} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{salonName}</p>
+            {city && <p style={{ margin: 0, fontSize: 11, color: '#64748b', marginTop: 1 }}>{city}</p>}
+          </div>
         </div>
-        <div>
-          <p className="text-xs font-semibold leading-tight" style={{ color: '#111827' }}>{salonName}</p>
-          {city && <p className="text-[11px]" style={{ color: '#9ca3af' }}>{city}</p>}
+        <div style={{ height: 1, background: 'linear-gradient(90deg, #e2eaf5, transparent)' }} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {Array.from({ length: 5 }, (_, i) => (
+                <span key={i} style={{ fontSize: 15, color: (i < filled || (i === filled && half)) ? '#f59e0b' : '#e2e8f0' }}>★</span>
+              ))}
+            </div>
+            <span style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', marginLeft: 2 }}>{rating.toFixed(1)}</span>
+            <span style={{ fontSize: 11, color: '#94a3b8' }}>/5</span>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span key={i} style={{ fontSize: 14, color: (i < filled || (i === filled && half)) ? '#f59e0b' : '#e5e7eb' }}>★</span>
-          ))}
+        <div className="flex items-center gap-2" style={{ background: 'rgba(13,162,231,0.06)', borderRadius: 10, padding: '6px 10px' }}>
+          <img src={CERT_ICON} alt="cert" style={{ width: 18, height: 18, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }} />
+          <span style={{ fontSize: 11, fontWeight: 600, color: '#0da2e7', letterSpacing: '0.01em' }}>Сертифицировано МассоПРО</span>
         </div>
-        <span className="text-sm font-bold" style={{ color: '#111827' }}>{rating.toFixed(1)}</span>
-        <span className="text-xs" style={{ color: '#9ca3af' }}>/ 5.0</span>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <span style={{ fontSize: 12 }}>✅</span>
-        <span className="text-[11px] font-medium" style={{ color: '#0da2e7' }}>Сертифицировано МассоПРО</span>
       </div>
     </div>
   );
@@ -72,35 +84,43 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
   const half = rating - filled >= 0.25;
   return (
     <div
-      className="rounded-2xl p-4 flex flex-col gap-3 w-full max-w-[280px]"
+      className="flex flex-col w-full max-w-[300px]"
       style={{
-        background: 'linear-gradient(135deg, hsl(220,25%,10%) 0%, hsl(220,25%,7%) 100%)',
-        border: '1px solid hsla(185,85%,45%,0.25)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+        background: 'linear-gradient(160deg, #0d1520 0%, #0a1018 100%)',
+        border: '1px solid rgba(13,210,231,0.18)',
+        borderRadius: 20,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(13,210,231,0.06)',
         fontFamily: 'system-ui, sans-serif',
+        overflow: 'hidden',
       }}
     >
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-          <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg" alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div style={{ height: 4, background: 'linear-gradient(90deg, #0dd2e7, #06b6d4, #00daa8)' }} />
+      <div className="flex flex-col gap-3 p-4">
+        <div className="flex items-center gap-3">
+          <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 12px rgba(13,210,231,0.25)' }}>
+            <img src={LOGO_LIGHT} alt="МассоПРО" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{salonName}</p>
+            {city && <p style={{ margin: 0, fontSize: 11, color: '#0dd2e7', marginTop: 1, opacity: 0.8 }}>{city}</p>}
+          </div>
         </div>
-        <div>
-          <p className="text-xs font-semibold leading-tight" style={{ color: '#f9fafb' }}>{salonName}</p>
-          {city && <p className="text-[11px]" style={{ color: 'hsl(185,85%,55%)' }}>{city}</p>}
+        <div style={{ height: 1, background: 'linear-gradient(90deg, rgba(13,210,231,0.2), transparent)' }} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {Array.from({ length: 5 }, (_, i) => (
+                <span key={i} style={{ fontSize: 15, color: (i < filled || (i === filled && half)) ? '#f59e0b' : 'rgba(13,210,231,0.15)' }}>★</span>
+              ))}
+            </div>
+            <span style={{ fontSize: 15, fontWeight: 800, color: '#f8fafc', marginLeft: 2 }}>{rating.toFixed(1)}</span>
+            <span style={{ fontSize: 11, color: 'rgba(13,210,231,0.5)' }}>/5</span>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span key={i} style={{ fontSize: 14, color: (i < filled || (i === filled && half)) ? '#f59e0b' : 'hsla(185,85%,45%,0.25)' }}>★</span>
-          ))}
+        <div className="flex items-center gap-2" style={{ background: 'rgba(13,210,231,0.07)', border: '1px solid rgba(13,210,231,0.12)', borderRadius: 10, padding: '6px 10px' }}>
+          <img src={CERT_ICON} alt="cert" style={{ width: 18, height: 18, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }} />
+          <span style={{ fontSize: 11, fontWeight: 600, color: '#0dd2e7', letterSpacing: '0.01em' }}>Сертифицировано МассоПРО</span>
         </div>
-        <span className="text-sm font-bold" style={{ color: '#f9fafb' }}>{rating.toFixed(1)}</span>
-        <span className="text-xs" style={{ color: 'hsl(185,85%,55%)' }}>/ 5.0</span>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <span style={{ fontSize: 12 }}>✅</span>
-        <span className="text-[11px] font-medium" style={{ color: 'hsl(185,85%,55%)' }}>Сертифицировано МассоПРО</span>
       </div>
     </div>
   );
@@ -109,26 +129,33 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
 function generateLightCode(salonId: number, salonName: string, rating: number, city: string, url: string) {
   return `<!-- Виджет МассоПРО (светлая тема) -->
 <a href="${url}/catalog/${salonId}" target="_blank" rel="noopener"
-   style="display:inline-flex;flex-direction:column;gap:12px;padding:16px;
-          background:#fff;border:1px solid #e5e7eb;border-radius:16px;
-          box-shadow:0 4px 20px rgba(0,0,0,0.08);text-decoration:none;
-          font-family:system-ui,sans-serif;max-width:280px;">
-  <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
-         alt="МассоПРО" style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;">
-    <div>
-      <p style="margin:0;font-size:12px;font-weight:600;color:#111827;">${salonName}</p>
-      ${city ? `<p style="margin:0;font-size:11px;color:#9ca3af;">${city}</p>` : ''}
+   style="display:inline-flex;flex-direction:column;text-decoration:none;
+          font-family:system-ui,sans-serif;max-width:300px;width:100%;
+          background:linear-gradient(160deg,#f8fafc 0%,#f0f7ff 100%);
+          border:1px solid #e2eaf5;border-radius:20px;
+          box-shadow:0 8px 32px rgba(13,162,231,0.10),0 1px 4px rgba(0,0,0,0.06);
+          overflow:hidden;">
+  <div style="height:4px;background:linear-gradient(90deg,#0da2e7,#06b6d4,#00daa8);"></div>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
+           alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(13,162,231,0.2);">
+      <div style="min-width:0;flex:1;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:#0f172a;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
+        ${city ? `<p style="margin:2px 0 0;font-size:11px;color:#64748b;">${city}</p>` : ''}
+      </div>
     </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;">
-    <span style="font-size:14px;letter-spacing:1px;color:#f59e0b;">${'★'.repeat(Math.round(rating))}${'☆'.repeat(5 - Math.round(rating))}</span>
-    <span style="font-size:14px;font-weight:700;color:#111827;">${rating.toFixed(1)}</span>
-    <span style="font-size:12px;color:#9ca3af;">/ 5.0</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:6px;">
-    <span style="font-size:12px;">✅</span>
-    <span style="font-size:11px;font-weight:500;color:#0da2e7;">Сертифицировано МассоПРО</span>
+    <div style="height:1px;background:linear-gradient(90deg,#e2eaf5,transparent);"></div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:15px;letter-spacing:1px;color:#f59e0b;">${'★'.repeat(Math.round(rating))}${'☆'.repeat(5 - Math.round(rating))}</span>
+      <span style="font-size:15px;font-weight:800;color:#0f172a;">${rating.toFixed(1)}</span>
+      <span style="font-size:11px;color:#94a3b8;">/5</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(13,162,231,0.06);border-radius:10px;padding:6px 10px;">
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg"
+           alt="cert" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
+      <span style="font-size:11px;font-weight:600;color:#0da2e7;letter-spacing:0.01em;">Сертифицировано МассоПРО</span>
+    </div>
   </div>
 </a>`;
 }
@@ -136,27 +163,33 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
 function generateDarkCode(salonId: number, salonName: string, rating: number, city: string, url: string) {
   return `<!-- Виджет МассоПРО (тёмная тема) -->
 <a href="${url}/catalog/${salonId}" target="_blank" rel="noopener"
-   style="display:inline-flex;flex-direction:column;gap:12px;padding:16px;
-          background:linear-gradient(135deg,#141928 0%,#0e1320 100%);
-          border:1px solid rgba(13,210,231,0.25);border-radius:16px;
-          box-shadow:0 4px 20px rgba(0,0,0,0.3);text-decoration:none;
-          font-family:system-ui,sans-serif;max-width:280px;">
-  <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
-         alt="МассоПРО" style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;">
-    <div>
-      <p style="margin:0;font-size:12px;font-weight:600;color:#f9fafb;">${salonName}</p>
-      ${city ? `<p style="margin:0;font-size:11px;color:#0dd2e7;">${city}</p>` : ''}
+   style="display:inline-flex;flex-direction:column;text-decoration:none;
+          font-family:system-ui,sans-serif;max-width:300px;width:100%;
+          background:linear-gradient(160deg,#0d1520 0%,#0a1018 100%);
+          border:1px solid rgba(13,210,231,0.18);border-radius:20px;
+          box-shadow:0 8px 32px rgba(0,0,0,0.4),0 0 0 1px rgba(13,210,231,0.06);
+          overflow:hidden;">
+  <div style="height:4px;background:linear-gradient(90deg,#0dd2e7,#06b6d4,#00daa8);"></div>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
+           alt="МассоПРО" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 12px rgba(13,210,231,0.25);">
+      <div style="min-width:0;flex:1;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:#f8fafc;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${salonName}</p>
+        ${city ? `<p style="margin:2px 0 0;font-size:11px;color:#0dd2e7;opacity:0.8;">${city}</p>` : ''}
+      </div>
     </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;">
-    <span style="font-size:14px;letter-spacing:1px;color:#f59e0b;">${'★'.repeat(Math.round(rating))}${'☆'.repeat(5 - Math.round(rating))}</span>
-    <span style="font-size:14px;font-weight:700;color:#f9fafb;">${rating.toFixed(1)}</span>
-    <span style="font-size:12px;color:#0dd2e7;">/ 5.0</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:6px;">
-    <span style="font-size:12px;">✅</span>
-    <span style="font-size:11px;font-weight:500;color:#0dd2e7;">Сертифицировано МассоПРО</span>
+    <div style="height:1px;background:linear-gradient(90deg,rgba(13,210,231,0.2),transparent);"></div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:15px;letter-spacing:1px;color:#f59e0b;">${'★'.repeat(Math.round(rating))}${'☆'.repeat(5 - Math.round(rating))}</span>
+      <span style="font-size:15px;font-weight:800;color:#f8fafc;">${rating.toFixed(1)}</span>
+      <span style="font-size:11px;color:rgba(13,210,231,0.5);">/5</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(13,210,231,0.07);border:1px solid rgba(13,210,231,0.12);border-radius:10px;padding:6px 10px;">
+      <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/ce846262-abc8-40a6-a7bd-4f3c029ee2df.jpg"
+           alt="cert" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
+      <span style="font-size:11px;font-weight:600;color:#0dd2e7;letter-spacing:0.01em;">Сертифицировано МассоПРО</span>
+    </div>
   </div>
 </a>`;
 }
