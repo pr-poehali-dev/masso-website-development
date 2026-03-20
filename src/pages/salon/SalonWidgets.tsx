@@ -47,7 +47,7 @@ function WidgetPreviewLight({ salonName, rating, city }: { salonName: string; ra
         overflow: 'hidden',
       }}
     >
-      <div style={{ height: 4, background: 'linear-gradient(90deg, #0da2e7, #06b6d4, #00daa8)' }} />
+
       <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-3">
           <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 8px rgba(13,162,231,0.2)' }}>
@@ -94,7 +94,7 @@ function WidgetPreviewDark({ salonName, rating, city }: { salonName: string; rat
         overflow: 'hidden',
       }}
     >
-      <div style={{ height: 4, background: 'linear-gradient(90deg, #0dd2e7, #06b6d4, #00daa8)' }} />
+
       <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-3">
           <div style={{ width: 44, height: 44, borderRadius: 14, overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 12px rgba(13,210,231,0.25)' }}>
@@ -135,7 +135,6 @@ function generateLightCode(salonId: number, salonName: string, rating: number, c
           border:1px solid #e2eaf5;border-radius:20px;
           box-shadow:0 8px 32px rgba(13,162,231,0.10),0 1px 4px rgba(0,0,0,0.06);
           overflow:hidden;">
-  <div style="height:4px;background:linear-gradient(90deg,#0da2e7,#06b6d4,#00daa8);"></div>
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
       <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/e2e8ddb9-fb75-459a-84ab-7b0e7867fad9.jpg"
@@ -169,7 +168,6 @@ function generateDarkCode(salonId: number, salonName: string, rating: number, ci
           border:1px solid rgba(13,210,231,0.18);border-radius:20px;
           box-shadow:0 8px 32px rgba(0,0,0,0.4),0 0 0 1px rgba(13,210,231,0.06);
           overflow:hidden;">
-  <div style="height:4px;background:linear-gradient(90deg,#0dd2e7,#06b6d4,#00daa8);"></div>
   <div style="display:flex;flex-direction:column;gap:12px;padding:16px;">
     <div style="display:flex;align-items:center;gap:12px;">
       <img src="https://cdn.poehali.dev/projects/08a371f8-54a3-463b-ba90-37bf9bcbd421/files/5e29a734-782f-42a5-9119-c5310a1e6b78.jpg"
