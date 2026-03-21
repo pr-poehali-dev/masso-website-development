@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Presentation from "./pages/Presentation";
 import NotFound from "./pages/NotFound";
+import NotFoundPage from "./pages/NotFoundPage";
 import Tarify from "./pages/Tarify";
 import Partnery from "./pages/Partnery";
 import Kontakty from "./pages/Kontakty";
@@ -95,7 +96,7 @@ const App = () => (
           <Route path="/catalog/:id" element={<SalonPublicPage />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
