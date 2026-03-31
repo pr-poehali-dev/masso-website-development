@@ -112,11 +112,11 @@ function AnalysisForm() {
 
   if (sent) {
     return (
-      <div className="text-center py-12 px-4">
-        <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6">
-          <Icon name="Check" size={32} style={{ color: "hsl(220, 30%, 6%)" }} />
+      <div className="text-center py-10 px-4">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-5">
+          <Icon name="Check" size={28} style={{ color: "hsl(220, 30%, 6%)" }} />
         </div>
-        <h3 className="font-display text-3xl font-bold text-foreground mb-4">Заявка принята!</h3>
+        <h3 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-3">Заявка принята!</h3>
         <p className="text-muted-foreground font-body text-sm leading-relaxed max-w-md mx-auto">
           Мы бесплатно рассчитаем потенциал вашего салона и свяжемся с вами в течение рабочего дня.
         </p>
@@ -125,7 +125,7 @@ function AnalysisForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Название салона *</label>
@@ -150,13 +150,13 @@ function AnalysisForm() {
           <input className={inputCls} placeholder="salon@example.com" value={form.email} onChange={set("email")} type="email" />
         </div>
       </div>
-      <div className="pt-2">
-        <div className="flex items-center gap-3 mb-4">
+      <div className="pt-1">
+        <div className="flex items-center gap-3 mb-3">
           <div className="h-px flex-1 bg-border" />
-          <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider">Показатели салона</span>
+          <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">Показатели салона</span>
           <div className="h-px flex-1 bg-border" />
         </div>
-        <p className="text-sm font-body text-muted-foreground mb-5 leading-relaxed">
+        <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
           Заполните те поля, которые знаете — мы <span className="text-primary font-semibold">бесплатно рассчитаем и проанализируем</span>, что можем вам предложить.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -172,11 +172,11 @@ function AnalysisForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full relative inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-8 py-4 text-base font-semibold transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-6 py-4 text-sm sm:text-base font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
         style={{ color: "hsl(220, 30%, 6%)" }}
       >
         {loading ? "Отправляем..." : "Получить бесплатный расчёт"}
-        {!loading && <Icon name="ArrowRight" size={18} style={{ color: "hsl(220, 30%, 6%)" }} />}
+        {!loading && <Icon name="ArrowRight" size={16} style={{ color: "hsl(220, 30%, 6%)" }} />}
       </button>
     </form>
   );
@@ -187,31 +187,31 @@ export default function ExtendedPackage() {
     <SimpleLayout>
       <div className="min-h-screen">
         {/* Hero */}
-        <section className="relative py-20 md:py-28 overflow-hidden gradient-hero">
+        <section className="relative py-14 sm:py-20 md:py-28 overflow-hidden gradient-hero">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
-            <div className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute top-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute bottom-1/4 left-1/4 w-48 sm:w-64 h-48 sm:h-64 rounded-full bg-primary/5 blur-3xl" />
           </div>
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <FadeIn>
               <div className="max-w-3xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-body font-semibold uppercase tracking-widest mb-6">
-                  <Icon name="Star" size={14} />
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5 sm:mb-6">
+                  <Icon name="Star" size={13} />
                   Пакет «Расширенный» · Рекомендуем
                 </div>
-                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
+                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-4 sm:mb-6">
                   Полное внедрение за <span className="gradient-text">10 рабочих</span> дней
                 </h1>
-                <p className="text-muted-foreground font-body text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+                <p className="text-muted-foreground font-body text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-7 sm:mb-8">
                   Расширенный пакет МассоПРО — глубокое внедрение стандартов, обучение продажам и три месяца поддержки. Наш самый популярный выбор.
                 </p>
                 <a
                   href="#form"
-                  className="inline-flex items-center gap-2 font-body gradient-bg rounded-full px-8 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center gap-2 font-body gradient-bg rounded-full px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
                   style={{ color: "hsl(220, 30%, 6%)" }}
                 >
                   Получить бесплатный расчёт
-                  <Icon name="ArrowDown" size={18} style={{ color: "hsl(220, 30%, 6%)" }} />
+                  <Icon name="ArrowDown" size={16} style={{ color: "hsl(220, 30%, 6%)" }} />
                 </a>
               </div>
             </FadeIn>
@@ -219,13 +219,13 @@ export default function ExtendedPackage() {
         </section>
 
         {/* Launch timeline */}
-        <section className="py-16 md:py-20 gradient-section">
+        <section className="py-12 sm:py-16 md:py-20 gradient-section">
           <div className="container mx-auto px-4 sm:px-6">
-            <FadeIn className="text-center mb-12">
+            <FadeIn className="text-center mb-8 sm:mb-12">
               <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Запуск</div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground">До 10 рабочих дней</h2>
+              <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground">До 10 рабочих дней</h2>
             </FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
               {[
                 { day: "День 1–2", title: "Аудит", desc: "Анализ текущих показателей, знакомство с командой" },
                 { day: "День 3–5", title: "Обучение", desc: "Офлайн-тренинг мастеров, подключение к платформе" },
@@ -233,10 +233,10 @@ export default function ExtendedPackage() {
                 { day: "День 9–10", title: "Запуск", desc: "Протоколы, чат с экспертами, активация поддержки" },
               ].map((step, i) => (
                 <FadeIn key={i} delay={i * 100} className="h-full">
-                  <div className="gradient-card rounded-2xl p-5 glow-card text-center h-full flex flex-col">
-                    <div className="inline-block gradient-bg rounded-full px-3 py-1 text-xs font-body font-bold mb-3" style={{ color: "hsl(220, 30%, 6%)" }}>{step.day}</div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground text-sm font-body leading-relaxed flex-1">{step.desc}</p>
+                  <div className="gradient-card rounded-2xl p-4 sm:p-5 glow-card text-center h-full flex flex-col">
+                    <div className="inline-block gradient-bg rounded-full px-2 sm:px-3 py-1 text-xs font-body font-bold mb-2 sm:mb-3" style={{ color: "hsl(220, 30%, 6%)" }}>{step.day}</div>
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-foreground mb-1.5 sm:mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground text-xs sm:text-sm font-body leading-relaxed flex-1">{step.desc}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -245,21 +245,21 @@ export default function ExtendedPackage() {
         </section>
 
         {/* Features */}
-        <section className="py-16 md:py-24">
+        <section className="py-12 sm:py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6">
-            <FadeIn className="text-center mb-12">
+            <FadeIn className="text-center mb-8 sm:mb-12">
               <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Состав пакета</div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground">Что входит в Расширенный</h2>
+              <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground">Что входит в Расширенный</h2>
             </FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-4xl mx-auto">
               {FEATURES.map((f, i) => (
                 <FadeIn key={i} delay={i * 80}>
-                  <div className="gradient-card rounded-2xl p-6 md:p-8 glow-card h-full flex gap-5">
-                    <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center shrink-0">
-                      <Icon name={f.icon} fallback="Star" size={22} style={{ color: "hsl(220, 30%, 6%)" }} />
+                  <div className="gradient-card rounded-2xl p-5 sm:p-6 md:p-8 glow-card h-full flex gap-4 sm:gap-5">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl gradient-bg flex items-center justify-center shrink-0">
+                      <Icon name={f.icon} fallback="Star" size={20} style={{ color: "hsl(220, 30%, 6%)" }} />
                     </div>
                     <div>
-                      <h3 className="font-body font-semibold text-foreground mb-2 text-base">{f.title}</h3>
+                      <h3 className="font-body font-semibold text-foreground mb-1.5 sm:mb-2 text-sm sm:text-base">{f.title}</h3>
                       <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
                     </div>
                   </div>
@@ -270,18 +270,18 @@ export default function ExtendedPackage() {
         </section>
 
         {/* Form */}
-        <section id="form" className="py-16 md:py-24 gradient-section">
+        <section id="form" className="py-12 sm:py-16 md:py-24 gradient-section">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-2xl mx-auto">
-              <FadeIn className="text-center mb-10">
+              <FadeIn className="text-center mb-8 sm:mb-10">
                 <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Бесплатно</div>
-                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">Рассчитаем потенциал вашего салона</h2>
+                <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Рассчитаем потенциал вашего салона</h2>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
                   Заполните форму — мы проанализируем показатели и покажем, что именно Расширенный пакет даст конкретно вашему бизнесу.
                 </p>
               </FadeIn>
               <FadeIn delay={150}>
-                <div className="gradient-card rounded-3xl p-6 md:p-10 glow-card">
+                <div className="gradient-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 glow-card">
                   <AnalysisForm />
                 </div>
               </FadeIn>
