@@ -14,6 +14,8 @@ import Kontakty from "./pages/Kontakty";
 import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
 import BasicPackage from "./pages/BasicPackage";
+import ExtendedPackage from "./pages/ExtendedPackage";
+import FullPackage from "./pages/FullPackage";
 
 // Salon cabinet imports
 import SalonLogin from "./pages/salon/SalonLogin";
@@ -63,6 +65,8 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/offer" element={<Offer />} />
           <Route path="/basic-package" element={<BasicPackage />} />
+          <Route path="/extended-package" element={<ExtendedPackage />} />
+          <Route path="/full-package" element={<FullPackage />} />
 
           {/* Salon cabinet routes */}
           <Route path="/cabinet/login" element={<SalonLogin />} />
