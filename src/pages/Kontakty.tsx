@@ -50,7 +50,7 @@ function ContactCard({
         href={href ?? "#"}
         target={href?.startsWith("http") ? "_blank" : undefined}
         rel="noopener noreferrer"
-        style={{ textDecoration: "none", display: "block" }}
+        style={{ textDecoration: "none", display: "block", height: "100%" }}
       >
         <div
           style={{
@@ -190,7 +190,9 @@ export default function Kontakty() {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
           gap: 20px;
+          align-items: stretch;
         }
+        .k-cards-grid > * { height: 100%; }
         .k-form-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
