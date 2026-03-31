@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import SimpleLayout from "@/components/layout/SimpleLayout";
 import Icon from "@/components/ui/icon";
 
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -26,8 +26,8 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(32px)",
-        transition: `opacity 0.8s ease ${delay}ms, transform 0.8s ease ${delay}ms`,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
       }}
     >
       {children}
@@ -36,53 +36,29 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
 }
 
 const FEATURES = [
-  {
-    icon: "Layers",
-    title: "Всё из Расширенного пакета",
-    desc: "Обучение мастеров, онлайн-курсы, полная библиотека протоколов, тренинг продаж, вебинары и закрытый чат с экспертами.",
-  },
-  {
-    icon: "TrendingUp",
-    title: "Обучение техникам продаж +25% конверсии",
-    desc: "Расширенный курс для всей сети: единые скрипты продаж, работа с возражениями, повышение среднего чека в каждом салоне.",
-  },
-  {
-    icon: "Award",
-    title: "Официальная сертификация",
-    desc: "Каждый мастер сети проходит аттестацию и получает официальный сертификат МассоПРО. Документальное подтверждение квалификации.",
-  },
-  {
-    icon: "BadgeCheck",
-    title: "Знак качества МассоПРО",
-    desc: "Официальный знак на всех точках сети — физический и цифровой. Доверие клиентов с первого взгляда.",
-  },
-  {
-    icon: "MapPin",
-    title: "Размещение в каталоге студий",
-    desc: "Все точки сети получают страницы в каталоге МассоПРО с рейтингом, отзывами и возможностью онлайн-записи.",
-  },
-  {
-    icon: "Clock",
-    title: "Поддержка 6 месяцев",
-    desc: "Полгода персонального сопровождения: плановые проверки стандартов, коррекция работы мастеров, консультации руководства.",
-  },
+  { icon: "Layers", title: "Всё из Расширенного пакета", desc: "Обучение мастеров, онлайн-курсы, протоколы, тренинг продаж, вебинары и закрытый чат с экспертами." },
+  { icon: "TrendingUp", title: "Продажи +25% для всей сети", desc: "Единые скрипты продаж, работа с возражениями, повышение среднего чека в каждом салоне сети." },
+  { icon: "Award", title: "Официальная сертификация", desc: "Каждый мастер проходит аттестацию и получает официальный сертификат МассоПРО." },
+  { icon: "BadgeCheck", title: "Знак качества МассоПРО", desc: "Официальный знак на всех точках сети — физический и цифровой. Доверие с первого взгляда." },
+  { icon: "MapPin", title: "Размещение в каталоге студий", desc: "Все точки сети в каталоге МассоПРО с рейтингом, отзывами и возможностью онлайн-записи." },
+  { icon: "Clock", title: "Поддержка 6 месяцев", desc: "Полгода сопровождения: плановые проверки стандартов, коррекция мастеров, консультации руководства." },
 ];
 
 const METRICS = [
-  { label: "Количество мастеров", key: "masters", placeholder: "например, 5" },
-  { label: "Рабочих дней в месяц", key: "workDays", placeholder: "например, 22" },
-  { label: "Макс. клиентов в день на 1 мастера", key: "maxClients", placeholder: "например, 8" },
-  { label: "Факт. клиентов в день на 1 мастера", key: "factClients", placeholder: "например, 5" },
-  { label: "Средний чек (₽)", key: "avgCheck", placeholder: "например, 3500" },
-  { label: "Всего клиентов в месяц", key: "totalClients", placeholder: "например, 550" },
-  { label: "Процент возврата (%)", key: "returnRate", placeholder: "например, 40" },
-  { label: "Целевой средний чек (₽)", key: "targetCheck", placeholder: "например, 4500" },
-  { label: "Плановая загрузка (%)", key: "plannedLoad", placeholder: "например, 80" },
-  { label: "Новые мастера (+)", key: "newMasters", placeholder: "например, 2" },
-  { label: "Рост клиентов за счёт ускорения (%)", key: "clientGrowth", placeholder: "например, 15" },
+  { label: "Мастеров", key: "masters", placeholder: "5" },
+  { label: "Рабочих дней в месяц", key: "workDays", placeholder: "22" },
+  { label: "Макс. клиентов/день на мастера", key: "maxClients", placeholder: "8" },
+  { label: "Факт. клиентов/день на мастера", key: "factClients", placeholder: "5" },
+  { label: "Средний чек, ₽", key: "avgCheck", placeholder: "3500" },
+  { label: "Клиентов в месяц всего", key: "totalClients", placeholder: "550" },
+  { label: "Возврат клиентов, %", key: "returnRate", placeholder: "40" },
+  { label: "Целевой средний чек, ₽", key: "targetCheck", placeholder: "4500" },
+  { label: "Плановая загрузка, %", key: "plannedLoad", placeholder: "80" },
+  { label: "Новые мастера (+)", key: "newMasters", placeholder: "2" },
+  { label: "Рост клиентов от ускорения, %", key: "clientGrowth", placeholder: "15" },
 ];
 
-type FormData = { salonName: string; city: string; contactName: string; phone: string; email: string; salonsCount: string; citiesCount: string; [key: string]: string };
+type FormData = { [key: string]: string };
 
 function AnalysisForm() {
   const [form, setForm] = useState<FormData>({
@@ -109,85 +85,88 @@ function AnalysisForm() {
     finally { setLoading(false); }
   };
 
-  const inputCls = "w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors";
+  const inputCls = "w-full bg-secondary border border-border rounded-xl px-3 py-3 text-sm font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors";
+  const labelCls = "block text-xs font-body font-semibold text-muted-foreground mb-1.5";
 
   if (sent) {
     return (
-      <div className="text-center py-10 px-4">
-        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-5">
-          <Icon name="Check" size={28} style={{ color: "hsl(220, 30%, 6%)" }} />
+      <div className="text-center py-8 px-4">
+        <div className="w-14 h-14 rounded-full gradient-bg flex items-center justify-center mx-auto mb-4">
+          <Icon name="Check" size={26} style={{ color: "hsl(220, 30%, 6%)" }} />
         </div>
-        <h3 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-3">Заявка принята!</h3>
-        <p className="text-muted-foreground font-body text-sm leading-relaxed max-w-md mx-auto">
-          Мы бесплатно рассчитаем план внедрения для вашей сети и свяжемся с вами в течение рабочего дня.
+        <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">Заявка принята!</h3>
+        <p className="text-muted-foreground font-body text-sm leading-relaxed">
+          Свяжемся с вами в течение рабочего дня.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Название сети / салона *</label>
+          <label className={labelCls}>Название сети / салона *</label>
           <input className={inputCls} placeholder="Сеть студий «...»" value={form.salonName} onChange={set("salonName")} />
         </div>
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Город (головной офис) *</label>
+          <label className={labelCls}>Город (головной офис)</label>
           <input className={inputCls} placeholder="Москва" value={form.city} onChange={set("city")} />
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Количество салонов в сети</label>
-          <input className={inputCls} placeholder="например, 5" value={form.salonsCount} onChange={set("salonsCount")} />
+          <label className={labelCls}>Салонов в сети</label>
+          <input className={inputCls} placeholder="5" value={form.salonsCount} onChange={set("salonsCount")} />
         </div>
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Количество городов присутствия</label>
-          <input className={inputCls} placeholder="например, 3" value={form.citiesCount} onChange={set("citiesCount")} />
+          <label className={labelCls}>Городов присутствия</label>
+          <input className={inputCls} placeholder="3" value={form.citiesCount} onChange={set("citiesCount")} />
         </div>
       </div>
       <div>
-        <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Контактное лицо</label>
+        <label className={labelCls}>Контактное лицо</label>
         <input className={inputCls} placeholder="Имя и фамилия" value={form.contactName} onChange={set("contactName")} />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Телефон *</label>
+          <label className={labelCls}>Телефон *</label>
           <input className={inputCls} placeholder="+7 (___) ___-__-__" value={form.phone} onChange={set("phone")} type="tel" />
         </div>
         <div>
-          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Email *</label>
+          <label className={labelCls}>Email *</label>
           <input className={inputCls} placeholder="network@example.com" value={form.email} onChange={set("email")} type="email" />
         </div>
       </div>
-      <div className="pt-1">
-        <div className="flex items-center gap-3 mb-3">
+
+      <div className="pt-2">
+        <div className="flex items-center gap-2 mb-3">
           <div className="h-px flex-1 bg-border" />
-          <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">Показатели (на 1 салон)</span>
+          <span className="text-xs font-body font-semibold text-muted-foreground">Показатели (на 1 салон)</span>
           <div className="h-px flex-1 bg-border" />
         </div>
-        <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
-          Заполните те поля, которые знаете — мы <span className="text-primary font-semibold">бесплатно рассчитаем и проанализируем</span>, что можем предложить вашей сети.
+        <p className="text-xs font-body text-muted-foreground mb-3 leading-relaxed">
+          Заполните что знаете — мы <span className="text-primary font-semibold">бесплатно рассчитаем</span>, что сеть получит от внедрения.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           {METRICS.map(m => (
             <div key={m.key}>
-              <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">{m.label}</label>
+              <label className={labelCls}>{m.label}</label>
               <input className={inputCls} placeholder={m.placeholder} value={form[m.key]} onChange={set(m.key)} />
             </div>
           ))}
         </div>
       </div>
+
       {error && <p className="text-destructive text-sm font-body">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="w-full inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-6 py-4 text-sm sm:text-base font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
         style={{ color: "hsl(220, 30%, 6%)" }}
       >
-        {loading ? "Отправляем..." : "Получить бесплатный расчёт"}
-        {!loading && <Icon name="ArrowRight" size={16} style={{ color: "hsl(220, 30%, 6%)" }} />}
+        {loading ? "Отправляем..." : "Рассчитать сроки и стоимость"}
+        {!loading && <Icon name="ArrowRight" size={15} style={{ color: "hsl(220, 30%, 6%)" }} />}
       </button>
     </form>
   );
@@ -197,27 +176,28 @@ export default function FullPackage() {
   return (
     <SimpleLayout>
       <div className="min-h-screen">
+
         {/* Hero */}
-        <section className="relative py-14 sm:py-20 md:py-28 overflow-hidden gradient-hero">
+        <section className="relative py-12 sm:py-20 md:py-28 overflow-hidden gradient-hero">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-primary/5 blur-3xl" />
-            <div className="absolute bottom-1/4 left-1/4 w-48 sm:w-64 h-48 sm:h-64 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute top-1/3 right-1/4 w-56 sm:w-96 h-56 sm:h-96 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute bottom-1/4 left-1/4 w-40 sm:w-64 h-40 sm:h-64 rounded-full bg-primary/5 blur-3xl" />
           </div>
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <FadeIn>
               <div className="max-w-3xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-body font-semibold uppercase tracking-widest mb-5 sm:mb-6">
-                  <Icon name="Crown" size={13} />
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-body font-semibold uppercase tracking-widest mb-4 sm:mb-6">
+                  <Icon name="Crown" size={12} />
                   Пакет «Полный» · Максимум
                 </div>
                 <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-4 sm:mb-6">
                   Внедрение для сети — <span className="gradient-text">от 15 рабочих</span> дней
                 </h1>
-                <p className="text-muted-foreground font-body text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-3 sm:mb-4">
-                  Полный пакет МассоПРО — для салонов-сетей и многофилиальных студий. Единый стандарт качества, сертификация и полгода поддержки по всем точкам.
+                <p className="text-muted-foreground font-body text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto mb-2 sm:mb-4 px-2">
+                  Для сетей и многофилиальных студий. Единый стандарт, сертификация и полгода поддержки по всем точкам.
                 </p>
-                <p className="text-primary font-body text-sm font-semibold mb-7 sm:mb-8">
-                  Сроки зависят от количества салонов и городов присутствия
+                <p className="text-primary font-body text-xs sm:text-sm font-semibold mb-6 sm:mb-8">
+                  Сроки зависят от числа салонов и городов присутствия
                 </p>
                 <a
                   href="#form"
@@ -225,7 +205,7 @@ export default function FullPackage() {
                   style={{ color: "hsl(220, 30%, 6%)" }}
                 >
                   Рассчитать сроки и стоимость
-                  <Icon name="ArrowDown" size={16} style={{ color: "hsl(220, 30%, 6%)" }} />
+                  <Icon name="ArrowDown" size={15} style={{ color: "hsl(220, 30%, 6%)" }} />
                 </a>
               </div>
             </FadeIn>
@@ -233,27 +213,27 @@ export default function FullPackage() {
         </section>
 
         {/* Timeline */}
-        <section className="py-12 sm:py-16 md:py-20 gradient-section">
+        <section className="py-10 sm:py-16 md:py-20 gradient-section">
           <div className="container mx-auto px-4 sm:px-6">
-            <FadeIn className="text-center mb-8 sm:mb-10">
-              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Запуск</div>
-              <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground mb-3">От 15 рабочих дней</h2>
-              <p className="text-muted-foreground font-body text-sm max-w-lg mx-auto">
-                Точный срок рассчитывается индивидуально — в зависимости от числа салонов в сети и географии присутствия
-              </p>
+            <FadeIn className="text-center mb-7 sm:mb-10">
+              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-2">Запуск</div>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">От 15 рабочих дней</h2>
+              <p className="text-muted-foreground font-body text-xs sm:text-sm max-w-sm mx-auto">Срок рассчитывается индивидуально — по числу салонов и географии</p>
             </FadeIn>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-5xl mx-auto">
               {[
-                { day: "День 1–3", title: "Аудит сети", desc: "Анализ всех точек, показателей, команды и текущих стандартов" },
-                { day: "День 4–8", title: "Обучение", desc: "Офлайн-тренинги на каждой точке сети, онлайн-платформа" },
-                { day: "День 9–12", title: "Стандарты", desc: "Тренинг продаж, протоколы, единый стандарт для всей сети" },
-                { day: "День 13–15+", title: "Сертификация", desc: "Аттестация мастеров, знак качества, каталог, запуск поддержки" },
+                { day: "1–3", title: "Аудит сети", desc: "Анализ всех точек, показателей и команды" },
+                { day: "4–8", title: "Обучение", desc: "Тренинги на каждой точке + онлайн-платформа" },
+                { day: "9–12", title: "Стандарты", desc: "Продажи, протоколы, единый стандарт сети" },
+                { day: "13–15+", title: "Сертификация", desc: "Аттестация, знак качества, каталог, поддержка" },
               ].map((step, i) => (
-                <FadeIn key={i} delay={i * 100} className="h-full">
-                  <div className="gradient-card rounded-2xl p-4 sm:p-5 glow-card text-center h-full flex flex-col">
-                    <div className="inline-block gradient-bg rounded-full px-2 sm:px-3 py-1 text-xs font-body font-bold mb-2 sm:mb-3" style={{ color: "hsl(220, 30%, 6%)" }}>{step.day}</div>
-                    <h3 className="font-display text-base sm:text-xl font-bold text-foreground mb-1.5 sm:mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground text-xs sm:text-sm font-body leading-relaxed flex-1">{step.desc}</p>
+                <FadeIn key={i} delay={i * 80} className="h-full">
+                  <div className="gradient-card rounded-xl sm:rounded-2xl p-3 sm:p-5 glow-card text-center h-full flex flex-col">
+                    <div className="inline-block gradient-bg rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-xs font-body font-bold mb-2" style={{ color: "hsl(220, 30%, 6%)" }}>
+                      <span className="hidden sm:inline">День </span>{step.day}
+                    </div>
+                    <h3 className="font-display text-xs sm:text-lg md:text-xl font-bold text-foreground mb-1 sm:mb-2 leading-tight">{step.title}</h3>
+                    <p className="text-muted-foreground text-xs font-body leading-relaxed flex-1 hidden sm:block">{step.desc}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -262,22 +242,22 @@ export default function FullPackage() {
         </section>
 
         {/* Features */}
-        <section className="py-12 sm:py-16 md:py-24">
+        <section className="py-10 sm:py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6">
-            <FadeIn className="text-center mb-8 sm:mb-12">
-              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Состав пакета</div>
-              <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground">Что входит в Полный</h2>
+            <FadeIn className="text-center mb-7 sm:mb-10">
+              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-2">Состав пакета</div>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Что входит в Полный</h2>
             </FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-5 max-w-4xl mx-auto">
               {FEATURES.map((f, i) => (
-                <FadeIn key={i} delay={i * 80}>
-                  <div className="gradient-card rounded-2xl p-5 sm:p-6 md:p-8 glow-card h-full flex gap-4 sm:gap-5">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl gradient-bg flex items-center justify-center shrink-0">
-                      <Icon name={f.icon} fallback="Star" size={20} style={{ color: "hsl(220, 30%, 6%)" }} />
+                <FadeIn key={i} delay={i * 70}>
+                  <div className="gradient-card rounded-2xl p-4 sm:p-6 md:p-8 glow-card h-full flex gap-3 sm:gap-5">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl gradient-bg flex items-center justify-center shrink-0">
+                      <Icon name={f.icon} fallback="Star" size={18} style={{ color: "hsl(220, 30%, 6%)" }} />
                     </div>
-                    <div>
-                      <h3 className="font-body font-semibold text-foreground mb-1.5 sm:mb-2 text-sm sm:text-base">{f.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+                    <div className="min-w-0">
+                      <h3 className="font-body font-semibold text-foreground mb-1 sm:mb-2 text-sm">{f.title}</h3>
+                      <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{f.desc}</p>
                     </div>
                   </div>
                 </FadeIn>
@@ -287,24 +267,25 @@ export default function FullPackage() {
         </section>
 
         {/* Form */}
-        <section id="form" className="py-12 sm:py-16 md:py-24 gradient-section">
+        <section id="form" className="py-10 sm:py-16 md:py-24 gradient-section">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-2xl mx-auto">
-              <FadeIn className="text-center mb-8 sm:mb-10">
-                <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Бесплатно</div>
-                <h2 className="font-display text-2xl sm:text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">Рассчитаем план для вашей сети</h2>
+              <FadeIn className="text-center mb-6 sm:mb-10">
+                <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-2">Бесплатно</div>
+                <h2 className="font-display text-xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 sm:mb-4">Рассчитаем план для вашей сети</h2>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Укажите масштаб сети и показатели — мы <span className="text-primary font-semibold">бесплатно рассчитаем сроки, план внедрения и проанализируем</span>, что можем вам предложить.
+                  Укажите масштаб сети и показатели — <span className="text-primary font-semibold">бесплатно рассчитаем сроки и план внедрения</span>.
                 </p>
               </FadeIn>
-              <FadeIn delay={150}>
-                <div className="gradient-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 glow-card">
+              <FadeIn delay={120}>
+                <div className="gradient-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 glow-card">
                   <AnalysisForm />
                 </div>
               </FadeIn>
             </div>
           </div>
         </section>
+
       </div>
     </SimpleLayout>
   );

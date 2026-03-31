@@ -58,7 +58,8 @@ function SimpleNavbar() {
             </a>
             <a
               href="/#cta-form"
-              className="inline-flex items-center h-9 px-4 rounded-xl text-sm font-semibold gradient-bg text-foreground hover:opacity-90 transition-opacity"
+              className="inline-flex items-center h-9 px-4 rounded-xl text-sm font-semibold gradient-bg hover:opacity-90 transition-opacity"
+              style={{ color: "hsl(220, 30%, 6%)" }}
             >
               Консультация
             </a>
