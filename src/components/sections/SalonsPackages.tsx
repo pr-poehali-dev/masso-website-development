@@ -19,6 +19,7 @@ export function SalonsPackages({ onCta }: { onCta: () => void }) {
               subtitle: "Старт",
               features: ["Офлайн-обучение мастеров", "Доступ к онлайн-курсам", "Базовые протоколы процедур", "Техподдержка в течение месяца"],
               accent: false,
+              detailUrl: "/basic-package",
             },
             {
               name: "Расширенный",
@@ -55,8 +56,8 @@ export function SalonsPackages({ onCta }: { onCta: () => void }) {
                   ))}
                 </ul>
                 <a
-                  href="/presentation"
-                  target="_blank"
+                  href={"detailUrl" in pkg ? (pkg as { detailUrl: string }).detailUrl : "/presentation"}
+                  target={"detailUrl" in pkg ? undefined : "_blank"}
                   rel="noopener noreferrer"
                   className="w-full rounded-xl py-3 text-sm font-body font-semibold transition-all duration-300 text-center block"
                   style={pkg.accent
@@ -64,7 +65,7 @@ export function SalonsPackages({ onCta }: { onCta: () => void }) {
                     : { border: "1px solid hsl(185,85%,45%,0.4)", color: "hsl(185, 85%, 45%)" }
                   }
                 >
-                  Выбрать пакет
+                  {"detailUrl" in pkg ? "Подробнее" : "Выбрать пакет"}
                 </a>
               </div>
             </AnimatedSection>

@@ -13,6 +13,7 @@ import Partnery from "./pages/Partnery";
 import Kontakty from "./pages/Kontakty";
 import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
+import BasicPackage from "./pages/BasicPackage";
 
 // Salon cabinet imports
 import SalonLogin from "./pages/salon/SalonLogin";
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/kontakty" element={<Kontakty />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/offer" element={<Offer />} />
+          <Route path="/basic-package" element={<BasicPackage />} />
 
           {/* Salon cabinet routes */}
           <Route path="/cabinet/login" element={<SalonLogin />} />

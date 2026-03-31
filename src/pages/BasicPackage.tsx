@@ -1,0 +1,302 @@
+import { useState, useRef, useEffect } from "react";
+import SimpleLayout from "@/components/layout/SimpleLayout";
+import Icon from "@/components/ui/icon";
+
+function useInView(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const { ref, visible } = useInView();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(32px)",
+        transition: `opacity 0.8s ease ${delay}ms, transform 0.8s ease ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+const FEATURES = [
+  {
+    icon: "GraduationCap",
+    title: "Офлайн-обучение мастеров",
+    desc: "Выездной тренер МассоПРО проводит живые занятия с вашими специалистами прямо в салоне. Практические навыки — с первого дня.",
+  },
+  {
+    icon: "MonitorPlay",
+    title: "Доступ к онлайн-курсам",
+    desc: "Закрытая база видеоуроков, техник и методик. Мастера учатся в удобное время, повторяют материал без ограничений.",
+  },
+  {
+    icon: "FileText",
+    title: "Базовые протоколы процедур",
+    desc: "Готовые пошаговые инструкции для ключевых видов массажа. Единый стандарт качества — для каждого специалиста.",
+  },
+  {
+    icon: "HeadphonesIcon",
+    title: "Техподдержка в течение месяца",
+    desc: "Персональный куратор отвечает на вопросы мастеров и администрации в течение 30 дней после запуска.",
+  },
+];
+
+const METRICS = [
+  { label: "Количество мастеров", key: "masters", placeholder: "например, 5" },
+  { label: "Рабочих дней в месяц", key: "workDays", placeholder: "например, 22" },
+  { label: "Макс. клиентов в день на 1 мастера", key: "maxClients", placeholder: "например, 8" },
+  { label: "Факт. клиентов в день на 1 мастера", key: "factClients", placeholder: "например, 5" },
+  { label: "Средний чек (₽)", key: "avgCheck", placeholder: "например, 3500" },
+  { label: "Всего клиентов в месяц", key: "totalClients", placeholder: "например, 550" },
+  { label: "Процент возврата (%)", key: "returnRate", placeholder: "например, 40" },
+  { label: "Целевой средний чек (₽)", key: "targetCheck", placeholder: "например, 4500" },
+  { label: "Плановая загрузка (%)", key: "plannedLoad", placeholder: "например, 80" },
+  { label: "Новые мастера (+)", key: "newMasters", placeholder: "например, 2" },
+  { label: "Рост клиентов за счёт ускорения (%)", key: "clientGrowth", placeholder: "например, 15" },
+];
+
+type FormData = {
+  salonName: string;
+  city: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  [key: string]: string;
+};
+
+function AnalysisForm() {
+  const [form, setForm] = useState<FormData>({
+    salonName: "", city: "", contactName: "", phone: "", email: "",
+    masters: "", workDays: "", maxClients: "", factClients: "", avgCheck: "",
+    totalClients: "", returnRate: "", targetCheck: "", plannedLoad: "", newMasters: "", clientGrowth: "",
+  });
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm(prev => ({ ...prev, [key]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.salonName || !form.phone || !form.email) {
+      setError("Заполните название салона, телефон и email");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      await new Promise(res => setTimeout(res, 800));
+      setSent(true);
+    } catch {
+      setError("Ошибка отправки. Попробуйте ещё раз.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputCls = "w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors";
+
+  if (sent) {
+    return (
+      <div className="text-center py-12 px-4">
+        <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6">
+          <Icon name="Check" size={32} style={{ color: "hsl(220, 30%, 6%)" }} />
+        </div>
+        <h3 className="font-display text-3xl font-bold text-foreground mb-4">Заявка принята!</h3>
+        <p className="text-muted-foreground font-body text-sm leading-relaxed max-w-md mx-auto">
+          Мы бесплатно рассчитаем потенциал вашего салона и свяжемся с вами в течение рабочего дня.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Название салона *</label>
+          <input className={inputCls} placeholder="Студия красоты «...»" value={form.salonName} onChange={set("salonName")} />
+        </div>
+        <div>
+          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Город *</label>
+          <input className={inputCls} placeholder="Москва" value={form.city} onChange={set("city")} />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Контактное лицо</label>
+        <input className={inputCls} placeholder="Имя и фамилия" value={form.contactName} onChange={set("contactName")} />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Телефон *</label>
+          <input className={inputCls} placeholder="+7 (___) ___-__-__" value={form.phone} onChange={set("phone")} type="tel" />
+        </div>
+        <div>
+          <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">Email *</label>
+          <input className={inputCls} placeholder="salon@example.com" value={form.email} onChange={set("email")} type="email" />
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider">Показатели салона</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+        <p className="text-sm font-body text-muted-foreground mb-5 leading-relaxed">
+          Заполните те поля, которые знаете — мы <span className="text-primary font-semibold">бесплатно рассчитаем и проанализируем</span>, что можем вам предложить.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {METRICS.map(m => (
+            <div key={m.key}>
+              <label className="block text-xs font-body font-semibold text-muted-foreground uppercase tracking-wider mb-2">{m.label}</label>
+              <input className={inputCls} placeholder={m.placeholder} value={form[m.key]} onChange={set(m.key)} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {error && <p className="text-destructive text-sm font-body">{error}</p>}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full relative inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-8 py-4 text-base font-semibold transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+        style={{ color: "hsl(220, 30%, 6%)" }}
+      >
+        {loading ? "Отправляем..." : "Получить бесплатный расчёт"}
+        {!loading && <Icon name="ArrowRight" size={18} style={{ color: "hsl(220, 30%, 6%)" }} />}
+      </button>
+    </form>
+  );
+}
+
+export default function BasicPackage() {
+  return (
+    <SimpleLayout>
+      <div className="min-h-screen">
+        {/* Hero */}
+        <section className="relative py-20 md:py-28 overflow-hidden gradient-hero">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+          </div>
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
+            <FadeIn>
+              <div className="max-w-3xl mx-auto text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-body font-semibold uppercase tracking-widest mb-6">
+                  <Icon name="Package" size={14} />
+                  Пакет «Базовый»
+                </div>
+                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6">
+                  Старт за <span className="gradient-text">7 рабочих</span> дней
+                </h1>
+                <p className="text-muted-foreground font-body text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+                  Базовый пакет внедрения МассоПРО — всё необходимое для запуска профессионального массажа в вашем салоне. Быстро, чётко, без лишнего.
+                </p>
+                <a
+                  href="#form"
+                  className="inline-flex items-center gap-2 font-body gradient-bg rounded-full px-8 py-4 text-base font-semibold transition-all duration-300 hover:scale-105"
+                  style={{ color: "hsl(220, 30%, 6%)" }}
+                >
+                  Получить бесплатный расчёт
+                  <Icon name="ArrowDown" size={18} style={{ color: "hsl(220, 30%, 6%)" }} />
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* Launch timeline */}
+        <section className="py-16 md:py-20 gradient-section">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeIn className="text-center mb-12">
+              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Запуск</div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground">До 7 рабочих дней</h2>
+            </FadeIn>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {[
+                { day: "День 1–2", title: "Знакомство", desc: "Аудит текущей ситуации, знакомство с командой салона" },
+                { day: "День 3–5", title: "Обучение", desc: "Офлайн-тренинг мастеров, подключение к онлайн-платформе" },
+                { day: "День 6–7", title: "Запуск", desc: "Выдача протоколов, активация поддержки, старт работы по стандарту" },
+              ].map((step, i) => (
+                <FadeIn key={i} delay={i * 120}>
+                  <div className="gradient-card rounded-2xl p-6 glow-card text-center">
+                    <div className="inline-block gradient-bg rounded-full px-3 py-1 text-xs font-body font-bold mb-3" style={{ color: "hsl(220, 30%, 6%)" }}>{step.day}</div>
+                    <h3 className="font-display text-xl font-bold text-foreground mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground text-sm font-body leading-relaxed">{step.desc}</p>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="py-16 md:py-24">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeIn className="text-center mb-12">
+              <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Состав пакета</div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground">Что входит в Базовый</h2>
+            </FadeIn>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+              {FEATURES.map((f, i) => (
+                <FadeIn key={i} delay={i * 100}>
+                  <div className="gradient-card rounded-2xl p-6 md:p-8 glow-card h-full flex gap-5">
+                    <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center shrink-0">
+                      <Icon name={f.icon} fallback="Star" size={22} style={{ color: "hsl(220, 30%, 6%)" }} />
+                    </div>
+                    <div>
+                      <h3 className="font-body font-semibold text-foreground mb-2 text-base">{f.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Form section */}
+        <section id="form" className="py-16 md:py-24 gradient-section">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="max-w-2xl mx-auto">
+              <FadeIn className="text-center mb-10">
+                <div className="inline-block text-primary text-xs font-body font-semibold uppercase tracking-widest mb-3">Бесплатно</div>
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">Рассчитаем потенциал вашего салона</h2>
+                <p className="text-muted-foreground font-body text-sm leading-relaxed">
+                  Заполните форму — мы проанализируем показатели и покажем, что именно Базовый пакет даст конкретно вашему бизнесу.
+                </p>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <div className="gradient-card rounded-3xl p-6 md:p-10 glow-card">
+                  <AnalysisForm />
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+      </div>
+    </SimpleLayout>
+  );
+}
