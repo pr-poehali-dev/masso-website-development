@@ -12,6 +12,24 @@
       "path": "/",
       "body": {"message": "Привет"},
       "expectedStatus": 400
+    },
+    {
+      "name": "Valid lead from basic package",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "salonName": "Тест-салон",
+        "phone": "+79001234567",
+        "email": "test@example.com",
+        "package": "Базовый",
+        "city": "Москва",
+        "contactName": "Иван",
+        "masters": "5",
+        "avgCheck": "3500"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
     }
   ]
 }

@@ -58,6 +58,8 @@ const METRICS = [
   { label: "Рост клиентов от ускорения, %", key: "clientGrowth", placeholder: "15" },
 ];
 
+const SEND_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
+
 type FormData = { [key: string]: string };
 
 function AnalysisForm() {
@@ -67,6 +69,7 @@ function AnalysisForm() {
     masters: "", workDays: "", maxClients: "", factClients: "", avgCheck: "",
     totalClients: "", returnRate: "", targetCheck: "", plannedLoad: "", newMasters: "", clientGrowth: "",
   });
+  const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -77,9 +80,15 @@ function AnalysisForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.salonName || !form.phone || !form.email) { setError("Заполните название сети, телефон и email"); return; }
+    if (!agreed) { setError("Необходимо согласие на обработку данных"); return; }
     setLoading(true); setError("");
     try {
-      await new Promise(res => setTimeout(res, 800));
+      const res = await fetch(SEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, package: "Полный" }),
+      });
+      if (!res.ok) throw new Error();
       setSent(true);
     } catch { setError("Ошибка отправки. Попробуйте ещё раз."); }
     finally { setLoading(false); }
@@ -158,11 +167,24 @@ function AnalysisForm() {
         </div>
       </div>
 
+      <label className="flex items-start gap-3 cursor-pointer group">
+        <div
+          className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${agreed ? "gradient-bg border-transparent" : "border-border bg-secondary group-hover:border-primary/50"}`}
+          onClick={() => setAgreed(v => !v)}
+        >
+          {agreed && <Icon name="Check" size={12} style={{ color: "hsl(220, 30%, 6%)" }} />}
+        </div>
+        <span className="text-xs font-body text-muted-foreground leading-relaxed" onClick={() => setAgreed(v => !v)}>
+          Я согласен(-на) на обработку персональных данных в соответствии с{" "}
+          <a href="/privacy" className="text-primary hover:underline" onClick={e => e.stopPropagation()}>политикой конфиденциальности</a>
+        </span>
+      </label>
+
       {error && <p className="text-destructive text-sm font-body">{error}</p>}
       <button
         type="submit"
-        disabled={loading}
-        className="w-full inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+        disabled={loading || !agreed}
+        className="w-full inline-flex items-center justify-center gap-2 font-body gradient-bg rounded-full px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
         style={{ color: "hsl(220, 30%, 6%)" }}
       >
         {loading ? "Отправляем..." : "Рассчитать сроки и стоимость"}
