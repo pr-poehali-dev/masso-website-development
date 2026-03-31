@@ -232,11 +232,11 @@ export default function ExtendedPackage() {
                 { day: "День 6–8", title: "Продажи", desc: "Тренинг техник продаж для мастеров и администраторов" },
                 { day: "День 9–10", title: "Запуск", desc: "Протоколы, чат с экспертами, активация поддержки" },
               ].map((step, i) => (
-                <FadeIn key={i} delay={i * 100}>
-                  <div className="gradient-card rounded-2xl p-5 glow-card text-center">
+                <FadeIn key={i} delay={i * 100} className="h-full">
+                  <div className="gradient-card rounded-2xl p-5 glow-card text-center h-full flex flex-col">
                     <div className="inline-block gradient-bg rounded-full px-3 py-1 text-xs font-body font-bold mb-3" style={{ color: "hsl(220, 30%, 6%)" }}>{step.day}</div>
                     <h3 className="font-display text-xl font-bold text-foreground mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground text-sm font-body leading-relaxed">{step.desc}</p>
+                    <p className="text-muted-foreground text-sm font-body leading-relaxed flex-1">{step.desc}</p>
                   </div>
                 </FadeIn>
               ))}
