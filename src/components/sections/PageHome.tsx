@@ -314,6 +314,18 @@ export function PageHome({ onNavigate }: { onNavigate: (p: Page) => void }) {
               </AnimatedSection>
             ))}
           </div>
+          <AnimatedSection delay={500}>
+            <div className="text-center mt-10">
+              <a
+                href="/audit"
+                className="inline-flex items-center gap-2 font-body gradient-bg rounded-full overflow-hidden group transition-all duration-300 hover:scale-105 animate-pulse-glow px-10 py-4 text-base"
+                style={{ color: "hsl(220, 30%, 6%)", textDecoration: "none" }}
+              >
+                <span className="relative z-10 font-semibold">Заказать аудит салона</span>
+                <Icon name="ArrowRight" size={16} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 

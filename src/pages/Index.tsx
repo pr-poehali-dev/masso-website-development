@@ -14,21 +14,13 @@ export default function Index() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const EXTERNAL_ROUTES: Partial<Record<Page, string>> = {
-    audit: "/audit",
-  };
-
   const navigate = (page: Page) => {
-    if (EXTERNAL_ROUTES[page]) {
-      window.location.href = EXTERNAL_ROUTES[page]!;
-      return;
-    }
     setCurrentPage(page);
     setMobileOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const pages: Partial<Record<Page, React.ReactNode>> = {
+  const pages: Record<Page, React.ReactNode> = {
     home: <PageHome onNavigate={navigate} />,
     how: <PageHow onNavigate={navigate} />,
     salons: <PageSalons onNavigate={navigate} />,
@@ -48,7 +40,7 @@ export default function Index() {
         onNavigate={navigate}
         onToggleMobile={() => setMobileOpen(o => !o)}
       />
-      <main>{pages[currentPage] ?? null}</main>
+      <main>{pages[currentPage]}</main>
       <Footer onNavigate={navigate} />
     </div>
   );
