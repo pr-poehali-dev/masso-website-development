@@ -11,6 +11,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Tarify from "./pages/Tarify";
 import Partnery from "./pages/Partnery";
 import Kontakty from "./pages/Kontakty";
+import Audit from "./pages/Audit";
 import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
 import BasicPackage from "./pages/BasicPackage";
@@ -62,6 +63,7 @@ const App = () => (
           <Route path="/tarify" element={<Tarify />} />
           <Route path="/partnery" element={<Partnery />} />
           <Route path="/kontakty" element={<Kontakty />} />
+          <Route path="/audit" element={<Audit />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/offer" element={<Offer />} />
           <Route path="/basic-package" element={<BasicPackage />} />
