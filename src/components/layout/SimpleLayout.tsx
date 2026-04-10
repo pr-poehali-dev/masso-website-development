@@ -80,6 +80,7 @@ function SimpleNavbar() {
                 key={item.id}
                 href={PAGE_URLS[item.id] || "/"}
                 className="block w-full text-left px-4 py-3 rounded-xl font-body text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                onClick={() => setMobileOpen(false)}
               >
                 {item.label}
               </a>

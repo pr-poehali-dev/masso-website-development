@@ -1,12 +1,75 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import SimpleLayout from "@/components/layout/SimpleLayout";
+import Icon from "@/components/ui/icon";
 
-const ACCENT = "hsl(185, 85%, 45%)";
-const ACCENT_DARK = "hsl(185, 85%, 36%)";
+const ACCENT = "#0e7490";
+const ACCENT_LIGHT = "#ecfeff";
 const SEND_URL = "https://functions.poehali.dev/9d9058e7-5c92-49c1-ad75-68ed3ea30bb1";
 
+function useInView(threshold = 0.12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+function FadeIn({ children, delay = 0, style = {} }: { children: React.ReactNode; delay?: number; style?: React.CSSProperties }) {
+  const { ref, visible } = useInView();
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function CTAButton({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 8,
+        background: ACCENT, color: "#fff",
+        padding: "16px 32px", borderRadius: 14,
+        fontWeight: 700, fontSize: 16, textDecoration: "none",
+        boxShadow: "0 8px 32px rgba(14,116,144,0.35)",
+        transition: "transform 0.2s, box-shadow 0.2s",
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 14px 40px rgba(14,116,144,0.45)";
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(14,116,144,0.35)";
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
 function AuditForm() {
-  const [form, setForm] = useState({ name: "", phone: "", salon: "", city: "" });
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [salonName, setSalonName] = useState("");
+  const [city, setCity] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -14,278 +77,481 @@ function AuditForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!agreed) { setError("Необходимо дать согласие"); return; }
+    if (!name.trim() || !phone.trim() || !salonName.trim()) return;
+    if (!agreed) { setError("Необходимо дать согласие на обработку данных"); return; }
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(SEND_URL, {
+      await fetch(SEND_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          salonName: form.salon,
-          phone: form.phone,
-          package: "Аудит салона",
-          contactName: form.name,
-          city: form.city,
+          salonName: salonName.trim(),
+          phone: phone.trim(),
+          email: "audit@massopro.ru",
+          package: "Аудит массажных услуг",
+          contactName: name.trim(),
+          city: city.trim(),
         }),
       });
-      if (res.ok) setSent(true);
-      else setError("Не удалось отправить. Попробуйте ещё раз.");
+      setSent(true);
     } catch {
-      setError("Ошибка сети. Проверьте подключение.");
+      setError("Ошибка отправки. Попробуйте ещё раз или позвоните нам.");
     } finally {
       setLoading(false);
     }
   };
 
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "14px 16px",
+    border: "1.5px solid #e5e7eb", borderRadius: 12,
+    fontSize: 15, fontFamily: "Montserrat, sans-serif",
+    outline: "none", boxSizing: "border-box",
+    transition: "border-color 0.2s",
+    background: "#fff",
+  };
+
   if (sent) {
     return (
-      <div style={{ textAlign: "center", padding: "32px 16px" }}>
-        <div style={{ fontSize: 52, marginBottom: 16 }}>✅</div>
-        <div className="font-display" style={{ fontSize: "clamp(22px,5vw,28px)", fontWeight: 700, color: "hsl(210 40% 96%)", marginBottom: 12 }}>
+      <div style={{ textAlign: "center", padding: "48px 24px" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+        <div style={{ fontFamily: "Cormorant, serif", fontSize: 28, fontWeight: 700, color: "#1a1a1a", marginBottom: 12 }}>
           Заявка принята!
         </div>
-        <p style={{ fontSize: 15, color: "hsl(215 20% 55%)", lineHeight: 1.65 }}>
-          Свяжемся в течение 2 рабочих часов.
+        <p style={{ color: "#666", fontSize: 16, lineHeight: 1.6 }}>
+          Мы свяжемся с вами в течение 2 часов и договоримся о времени аудита.
         </p>
       </div>
     );
   }
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "12px 16px",
-    borderRadius: 10,
-    border: "1.5px solid hsl(220 20% 16%)",
-    fontSize: 15,
-    outline: "none",
-    boxSizing: "border-box",
-    fontFamily: "inherit",
-    background: "hsl(220 20% 14%)",
-    color: "hsl(210 40% 96%)",
-  };
-
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(210 40% 96%)", marginBottom: 6 }}>Ваше имя *</label>
-        <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Иван Петров" required
-          style={inputStyle}
-          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
-          onBlur={e => (e.currentTarget.style.borderColor = "hsl(220 20% 16%)")}
-        />
-      </div>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(210 40% 96%)", marginBottom: 6 }}>Телефон *</label>
-        <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="+7 (___) ___-__-__" required type="tel"
-          style={inputStyle}
-          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
-          onBlur={e => (e.currentTarget.style.borderColor = "hsl(220 20% 16%)")}
-        />
-      </div>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(210 40% 96%)", marginBottom: 6 }}>Название салона *</label>
-        <input value={form.salon} onChange={e => setForm({ ...form, salon: e.target.value })} placeholder="Студия релаксации" required
-          style={inputStyle}
-          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
-          onBlur={e => (e.currentTarget.style.borderColor = "hsl(220 20% 16%)")}
-        />
-      </div>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(210 40% 96%)", marginBottom: 6 }}>Город</label>
-        <input value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} placeholder="Москва"
-          style={inputStyle}
-          onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
-          onBlur={e => (e.currentTarget.style.borderColor = "hsl(220 20% 16%)")}
-        />
-      </div>
+      <input
+        style={inputStyle}
+        placeholder="Ваше имя *"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        required
+        onFocus={e => (e.target.style.borderColor = ACCENT)}
+        onBlur={e => (e.target.style.borderColor = "#e5e7eb")}
+      />
+      <input
+        style={inputStyle}
+        placeholder="Телефон *"
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        required
+        type="tel"
+        onFocus={e => (e.target.style.borderColor = ACCENT)}
+        onBlur={e => (e.target.style.borderColor = "#e5e7eb")}
+      />
+      <input
+        style={inputStyle}
+        placeholder="Название салона *"
+        value={salonName}
+        onChange={e => setSalonName(e.target.value)}
+        required
+        onFocus={e => (e.target.style.borderColor = ACCENT)}
+        onBlur={e => (e.target.style.borderColor = "#e5e7eb")}
+      />
+      <input
+        style={inputStyle}
+        placeholder="Город"
+        value={city}
+        onChange={e => setCity(e.target.value)}
+        onFocus={e => (e.target.style.borderColor = ACCENT)}
+        onBlur={e => (e.target.style.borderColor = "#e5e7eb")}
+      />
+      {error && <p style={{ color: "#dc2626", fontSize: 13 }}>{error}</p>}
       <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
-        <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
-          style={{ marginTop: 2, width: 16, height: 16, accentColor: ACCENT, flexShrink: 0, cursor: "pointer" }}
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={e => setAgreed(e.target.checked)}
+          style={{ marginTop: 2, accentColor: ACCENT, width: 16, height: 16 }}
         />
-        <span style={{ fontSize: 12, color: "hsl(215 20% 55%)", lineHeight: 1.6 }}>
-          Я согласен с{" "}
-          <a href="/privacy" style={{ color: ACCENT }} target="_blank">политикой конфиденциальности</a>
-          {" "}и{" "}
-          <a href="/offer" style={{ color: ACCENT }} target="_blank">офертой</a>
+        <span style={{ fontSize: 12, color: "#888", lineHeight: 1.5 }}>
+          Согласен с{" "}
+          <a href="/privacy" style={{ color: ACCENT, textDecoration: "none" }}>политикой конфиденциальности</a>
         </span>
       </label>
-      {error && <p style={{ margin: 0, fontSize: 13, color: "#f87171", textAlign: "center" }}>{error}</p>}
-      <button type="submit" disabled={loading}
-        style={{ background: ACCENT, color: "hsl(220 30% 6%)", padding: "15px 28px", borderRadius: 12, fontSize: 15, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}
-        onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLButtonElement).style.background = ACCENT_DARK; }}
-        onMouseLeave={e => { if (!loading) (e.currentTarget as HTMLButtonElement).style.background = ACCENT; }}
+      <button
+        type="submit"
+        disabled={loading}
+        style={{
+          background: loading ? "#9ca3af" : ACCENT,
+          color: "#fff", border: "none", padding: "16px",
+          borderRadius: 12, fontSize: 16, fontWeight: 700,
+          cursor: loading ? "default" : "pointer",
+          fontFamily: "Montserrat, sans-serif",
+          boxShadow: loading ? "none" : "0 8px 24px rgba(14,116,144,0.3)",
+          transition: "background 0.2s",
+        }}
       >
-        {loading ? "Отправляем..." : "Получить аудит"}
+        {loading ? "Отправка..." : "👉 Получить аудит"}
       </button>
     </form>
   );
 }
 
 export default function Audit() {
+  const steps = [
+    { icon: "Search", label: "Анализ работы с клиентом" },
+    { icon: "Users", label: "Оценка действий персонала" },
+    { icon: "AlertTriangle", label: "Выявление ошибок" },
+    { icon: "DollarSign", label: "Перевод потерь в деньги" },
+    { icon: "Lightbulb", label: "Конкретные рекомендации" },
+  ];
+
+  const results = [
+    "Где именно теряются деньги",
+    "Сколько теряется с каждого клиента",
+    "Оценка работы персонала",
+    "Потенциал роста выручки",
+    "Конкретные действия для изменений",
+  ];
+
+  const forWhom = [
+    "Салоны с массажными услугами",
+    "Есть клиенты, но выручка не растёт",
+    "Нет контроля продаж и допуслуг",
+    "Низкий средний чек",
+  ];
+
+  const afterAudit = [
+    "Увеличить средний чек",
+    "Внедрить новые техники продаж",
+    "Повысить конверсию записи",
+    "Вернуть клиентов, которые ушли",
+  ];
+
   return (
     <SimpleLayout>
-      <div className="font-body" style={{ color: "hsl(210 40% 96%)", minHeight: "100vh" }}>
+      <div style={{ background: "#f8f8f6", color: "#1a1a1a", fontFamily: "Montserrat, sans-serif" }}>
+        <style>{`
+          .audit-section { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+          .audit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+          .audit-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+          @media (max-width: 900px) {
+            .audit-steps { grid-template-columns: repeat(3, 1fr); }
+          }
+          @media (max-width: 640px) {
+            .audit-grid-2 { grid-template-columns: 1fr; }
+            .audit-steps { grid-template-columns: 1fr 1fr; }
+          }
+        `}</style>
 
         {/* HERO */}
-        <section className="gradient-section" style={{ padding: "80px 0 72px" }}>
-          <div className="container mx-auto px-4 sm:px-6">
-            <p style={{ color: ACCENT, fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>
-              Аудит массажного салона
-            </p>
-            <h1 className="font-display" style={{ fontSize: "clamp(28px,5vw,54px)", fontWeight: 700, lineHeight: 1.15, marginBottom: 20, maxWidth: 720 }}>
-              Сколько денег вы теряете каждый день — не замечая этого?
-            </h1>
-            <p style={{ fontSize: "clamp(15px,2.5vw,18px)", color: "hsl(215 20% 55%)", lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
-              За 1 час покажем скрытые потери в вашем салоне и дадим конкретный план роста выручки
-            </p>
-            <div style={{ marginBottom: 36 }}>
-              {["Анализ всей цепочки клиента", "Выявление потерь в рублях", "Конкретные решения для вашего салона"].map((b, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, color: "hsl(210 40% 85%)", fontSize: 15, marginBottom: 8 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: ACCENT, display: "inline-block", flexShrink: 0 }} />
-                  {b}
-                </div>
-              ))}
-            </div>
-            <a href="#audit-form"
-              className="inline-flex items-center h-11 px-6 rounded-xl text-sm font-semibold gradient-bg hover:opacity-90 transition-opacity"
-              style={{ color: "hsl(220, 30%, 6%)", textDecoration: "none", fontSize: 16, fontWeight: 700, height: "auto", padding: "15px 32px" }}>
-              Узнать потери →
-            </a>
+        <section style={{ paddingTop: 120, paddingBottom: 80, background: "linear-gradient(135deg, #0a1628 0%, #0e2a3a 60%, #0e7490 100%)" }}>
+          <div className="audit-section">
+            <FadeIn>
+              <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#67e8f9", marginBottom: 20 }}>
+                Аудит массажных услуг
+              </div>
+            </FadeIn>
+            <FadeIn delay={100}>
+              <h1 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(32px, 5vw, 60px)", fontWeight: 700, lineHeight: 1.1, color: "#fff", marginBottom: 20, maxWidth: 760 }}>
+                Сколько денег вы теряете на каждом клиенте — не замечая этого?
+              </h1>
+            </FadeIn>
+            <FadeIn delay={200}>
+              <p style={{ fontSize: "clamp(16px, 2.5vw, 20px)", color: "#94a3b8", lineHeight: 1.7, maxWidth: 560, marginBottom: 32 }}>
+                Покажем за 1 час скрытые потери в массажных услугах и точки роста выручки
+              </p>
+            </FadeIn>
+            <FadeIn delay={300}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 40 }}>
+                {["Анализ всей цепочки клиента", "Выявление потерь в рублях", "Конкретные решения"].map((b, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, color: "#e2e8f0", fontSize: 15 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#0e7490", flexShrink: 0 }} />
+                    {b}
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+            <FadeIn delay={400}>
+              <CTAButton href="#audit-form">👉 Узнать потери</CTAButton>
+            </FadeIn>
           </div>
         </section>
 
-        {/* ПРОБЛЕМЫ */}
-        <section style={{ padding: "72px 0" }}>
-          <div className="container mx-auto px-4 sm:px-6">
-            <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 700, marginBottom: 36, maxWidth: 580 }}>
-              Вы теряете деньги, даже если клиенты приходят
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 28 }}>
+        {/* БОЛЬ */}
+        <section style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 40, maxWidth: 640 }}>
+                Вы теряете деньги, даже если клиенты приходят
+              </h2>
+            </FadeIn>
+            <div className="audit-grid-2" style={{ gap: 16, marginBottom: 40 }}>
               {[
-                ["📵", "Клиентов не доводят до записи"],
-                ["🤷", "Мастера не выявляют потребности"],
-                ["🛒", "Никто не предлагает доп. услуги"],
-                ["👋", "Клиент уходит и не возвращается"],
-              ].map(([emoji, text], i) => (
-                <div key={i} style={{ background: "hsl(220 25% 9%)", border: "1px solid hsl(220 20% 16%)", borderRadius: 16, padding: "20px", display: "flex", alignItems: "center", gap: 14 }}>
-                  <span style={{ fontSize: 28 }}>{emoji}</span>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>{text}</span>
-                </div>
+                { icon: "PhoneMissed", text: "Клиентов не доводят до записи" },
+                { icon: "MessageSquareOff", text: "Не выявляют потребности клиента" },
+                { icon: "ShoppingCart", text: "Не предлагают дополнительные услуги" },
+                { icon: "UserX", text: "Клиент не возвращается повторно" },
+              ].map((item, i) => (
+                <FadeIn key={i} delay={i * 80}>
+                  <div style={{ background: "#fff", borderRadius: 16, padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: 16 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 12, background: "#fee2e2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon name={item.icon as "Search"} size={20} style={{ color: "#dc2626" }} />
+                    </div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a", lineHeight: 1.4, paddingTop: 10 }}>{item.text}</div>
+                  </div>
+                </FadeIn>
               ))}
             </div>
-            <div style={{ background: "hsl(40 60% 10%)", border: "1.5px solid hsl(40 70% 30%)", borderRadius: 12, padding: "18px 22px", fontWeight: 700, color: "hsl(40 80% 70%)" }}>
-              ⚠️ Эти потери происходят каждый день, но остаются незаметными
-            </div>
+            <FadeIn delay={300}>
+              <div style={{ background: "#fef9c3", border: "1.5px solid #fbbf24", borderRadius: 14, padding: "20px 24px", fontSize: 16, fontWeight: 700, color: "#78350f" }}>
+                👉 Потери происходят каждый день, но остаются незаметными
+              </div>
+            </FadeIn>
           </div>
         </section>
 
-        {/* ЦИФРЫ */}
-        <section className="gradient-section" style={{ padding: "72px 0" }}>
-          <div className="container mx-auto px-4 sm:px-6" style={{ textAlign: "center" }}>
-            <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 700, marginBottom: 12 }}>
-              Сколько это в деньгах
-            </h2>
-            <p style={{ color: "hsl(215 20% 55%)", marginBottom: 40 }}>
-              Если терять 3 000 ₽ с клиента при 10 посещениях в день:
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20, maxWidth: 640, margin: "0 auto 40px" }}>
-              <div style={{ background: "hsl(220 25% 9%)", border: "1.5px solid hsl(220 20% 16%)", borderRadius: 18, padding: "36px 24px" }}>
-                <div className="font-display" style={{ fontSize: "clamp(36px,6vw,60px)", fontWeight: 700, color: ACCENT }}>30 000 ₽</div>
-                <div style={{ color: "hsl(215 20% 55%)", marginTop: 8 }}>потери в день</div>
-              </div>
-              <div style={{ background: "hsl(0 30% 10%)", border: "1.5px solid hsl(0 40% 25%)", borderRadius: 18, padding: "36px 24px" }}>
-                <div className="font-display" style={{ fontSize: "clamp(36px,6vw,60px)", fontWeight: 700, color: "#f87171" }}>900 000 ₽</div>
-                <div style={{ color: "hsl(215 20% 55%)", marginTop: 8 }}>потери в месяц</div>
-              </div>
+        {/* МАСШТАБ ПОТЕРЬ */}
+        <section style={{ paddingTop: 80, paddingBottom: 80, background: "#0e2a3a" }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#fff", marginBottom: 16, textAlign: "center" }}>
+                Сколько это в деньгах
+              </h2>
+              <p style={{ color: "#94a3b8", fontSize: 16, textAlign: "center", marginBottom: 48 }}>
+                Если вы теряете 3 000 ₽ с одного клиента и в день проходит 10 человек:
+              </p>
+            </FadeIn>
+            <div className="audit-grid-2" style={{ gap: 20, marginBottom: 40 }}>
+              <FadeIn delay={100}>
+                <div style={{ background: "rgba(14,116,144,0.2)", border: "1.5px solid rgba(14,116,144,0.4)", borderRadius: 20, padding: "40px 32px", textAlign: "center" }}>
+                  <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(48px, 7vw, 80px)", fontWeight: 700, color: "#22d3ee", lineHeight: 1 }}>30 000 ₽</div>
+                  <div style={{ color: "#94a3b8", fontSize: 16, marginTop: 12 }}>потери в день</div>
+                </div>
+              </FadeIn>
+              <FadeIn delay={200}>
+                <div style={{ background: "rgba(220,38,38,0.15)", border: "1.5px solid rgba(220,38,38,0.35)", borderRadius: 20, padding: "40px 32px", textAlign: "center" }}>
+                  <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(48px, 7vw, 80px)", fontWeight: 700, color: "#f87171", lineHeight: 1 }}>900 000 ₽</div>
+                  <div style={{ color: "#94a3b8", fontSize: 16, marginTop: 12 }}>потери в месяц</div>
+                </div>
+              </FadeIn>
             </div>
-            <a href="#audit-form"
-              className="inline-flex items-center gradient-bg hover:opacity-90 transition-opacity"
-              style={{ color: "hsl(220, 30%, 6%)", textDecoration: "none", fontSize: 16, fontWeight: 700, padding: "15px 32px", borderRadius: 12 }}>
-              Проверить мой салон →
-            </a>
+            <FadeIn delay={300}>
+              <div style={{ textAlign: "center" }}>
+                <CTAButton href="#audit-form">👉 Проверить мой салон</CTAButton>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
-        {/* ЧТО ПОЛУЧИТЕ */}
-        <section style={{ padding: "72px 0" }}>
-          <div className="container mx-auto px-4 sm:px-6">
-            <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 700, marginBottom: 28 }}>
-              Что вы получите
-            </h2>
-            {[
-              "Где именно теряются деньги в вашем салоне",
-              "Сколько рублей уходит с каждого клиента",
-              "Оценку работы персонала по реальным критериям",
-              "Потенциал роста выручки в цифрах",
-              "Конкретные действия для изменений уже сегодня",
-            ].map((r, i) => (
-              <div key={i} style={{ background: "hsl(220 25% 9%)", border: "1px solid hsl(220 20% 16%)", borderRadius: 12, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16, marginBottom: 10 }}>
-                <span style={{ width: 32, height: 32, borderRadius: 8, background: "hsl(185 85% 8%)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: ACCENT, flexShrink: 0, fontSize: 14 }}>
-                  {i + 1}
-                </span>
-                <span style={{ fontWeight: 600 }}>{r}</span>
-              </div>
-            ))}
+        {/* РЕЗУЛЬТАТ АУДИТА */}
+        <section style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 40 }}>
+                Что вы получите
+              </h2>
+            </FadeIn>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {results.map((r, i) => (
+                <FadeIn key={i} delay={i * 70}>
+                  <div style={{ background: "#fff", borderRadius: 14, padding: "20px 24px", boxShadow: "0 4px 16px rgba(0,0,0,0.05)", display: "flex", alignItems: "center", gap: 16 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, background: ACCENT_LIGHT, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <span style={{ fontFamily: "Cormorant, serif", fontWeight: 700, color: ACCENT, fontSize: 18 }}>{i + 1}</span>
+                    </div>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a" }}>{r}</span>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* КАК ПРОХОДИТ */}
-        <section className="gradient-section" style={{ padding: "72px 0" }}>
-          <div className="container mx-auto px-4 sm:px-6">
-            <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 700, marginBottom: 40, textAlign: "center" }}>
-              Как проходит аудит
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 24 }}>
-              {[
-                ["🔍", "Анализ работы с клиентом"],
-                ["👥", "Оценка действий персонала"],
-                ["⚠️", "Выявление ошибок"],
-                ["💰", "Перевод потерь в деньги"],
-                ["💡", "Конкретные рекомендации"],
-              ].map(([emoji, text], i) => (
-                <div key={i} style={{ textAlign: "center" }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 14, background: "hsl(185 85% 8%)", border: "1px solid hsl(185 85% 20%)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontSize: 24 }}>
-                    {emoji}
+        <section style={{ paddingTop: 80, paddingBottom: 80, background: "#fff" }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 48, textAlign: "center" }}>
+                Как проходит аудит
+              </h2>
+            </FadeIn>
+            <div className="audit-steps">
+              {steps.map((step, i) => (
+                <FadeIn key={i} delay={i * 80}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ width: 64, height: 64, borderRadius: 18, background: ACCENT_LIGHT, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                      <Icon name={step.icon as "Search"} size={28} style={{ color: ACCENT }} />
+                    </div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: "0.1em", marginBottom: 6 }}>ШАГ {i + 1}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: "#1a1a1a", lineHeight: 1.4 }}>{step.label}</div>
                   </div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: ACCENT, letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 6 }}>
-                    ШАГ {i + 1}
-                  </div>
-                  <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.4, color: "hsl(210 40% 75%)" }}>{text}</div>
-                </div>
+                </FadeIn>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ФОРМА */}
-        <section id="audit-form" style={{ padding: "72px 0 96px" }}>
-          <div className="container mx-auto px-4 sm:px-6">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 48, alignItems: "start" }}>
-              <div>
-                <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 700, marginBottom: 16 }}>
-                  Получить аудит
+        {/* БЫСТРЫЙ РЕЗУЛЬТАТ */}
+        <section style={{ paddingTop: 80, paddingBottom: 80, background: ACCENT_LIGHT }}>
+          <div className="audit-section">
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+              <FadeIn>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>⏱</div>
+                <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 32 }}>
+                  Результат уже в течение 1 часа
                 </h2>
-                <p style={{ color: "hsl(215 20% 55%)", lineHeight: 1.7, marginBottom: 24 }}>
-                  Оставьте заявку — свяжемся в течение 2 часов и договоримся об удобном времени.
-                </p>
-                {[
-                  "Аудит проходит за 1 час",
-                  "Результат — конкретные цифры потерь",
-                  "Без скрытых обязательств",
-                ].map((t, i) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 14, color: "hsl(210 40% 85%)", marginBottom: 10 }}>
-                    <span style={{ color: ACCENT, fontWeight: 700 }}>✓</span> {t}
-                  </div>
+              </FadeIn>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
+                {["Без теории и лекций", "Без долгого внедрения", "Сразу цифры и понимание"].map((t, i) => (
+                  <FadeIn key={i} delay={i * 80}>
+                    <div style={{ background: "#fff", borderRadius: 12, padding: "14px 24px", fontWeight: 700, color: ACCENT, fontSize: 15, boxShadow: "0 4px 16px rgba(14,116,144,0.1)" }}>
+                      ✓ {t}
+                    </div>
+                  </FadeIn>
                 ))}
-              </div>
-              <div style={{ background: "hsl(220 25% 9%)", border: "1px solid hsl(220 20% 16%)", borderRadius: 20, padding: "36px" }}>
-                <AuditForm />
               </div>
             </div>
           </div>
         </section>
 
+        {/* ДО / ПОСЛЕ */}
+        <section style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 40, textAlign: "center" }}>
+                Пример результата
+              </h2>
+            </FadeIn>
+            <div className="audit-grid-2" style={{ gap: 20, maxWidth: 760, margin: "0 auto 40px" }}>
+              <FadeIn delay={100}>
+                <div style={{ background: "#f1f5f9", borderRadius: 20, padding: "36px 32px", textAlign: "center" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.15em", color: "#94a3b8", marginBottom: 16, textTransform: "uppercase" }}>До аудита</div>
+                  <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(36px, 5vw, 52px)", fontWeight: 700, color: "#64748b" }}>2 000 ₽</div>
+                  <div style={{ color: "#94a3b8", fontSize: 14, marginTop: 8 }}>средний чек</div>
+                </div>
+              </FadeIn>
+              <FadeIn delay={200}>
+                <div style={{ background: "linear-gradient(135deg, #ecfeff, #cffafe)", border: "2px solid " + ACCENT, borderRadius: 20, padding: "36px 32px", textAlign: "center" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.15em", color: ACCENT, marginBottom: 16, textTransform: "uppercase" }}>Потенциал</div>
+                  <div style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(36px, 5vw, 52px)", fontWeight: 700, color: ACCENT }}>6–8 000 ₽</div>
+                  <div style={{ color: "#0e7490", fontSize: 14, marginTop: 8 }}>средний чек</div>
+                  <div style={{ display: "inline-block", background: ACCENT, color: "#fff", fontWeight: 700, fontSize: 16, borderRadius: 8, padding: "8px 16px", marginTop: 16 }}>
+                    👉 Рост +200–300%
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ДЛЯ КОГО */}
+        <section style={{ paddingTop: 80, paddingBottom: 80, background: "#fff" }}>
+          <div className="audit-section">
+            <div className="audit-grid-2" style={{ alignItems: "center" }}>
+              <FadeIn>
+                <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>
+                  Для кого аудит
+                </h2>
+              </FadeIn>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {forWhom.map((item, i) => (
+                  <FadeIn key={i} delay={i * 70}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "#374151" }}>
+                      <Icon name="CheckCircle" size={20} style={{ color: ACCENT, flexShrink: 0 }} />
+                      {item}
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ПОСЛЕ АУДИТА */}
+        <section style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="audit-section">
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 40 }}>
+                Что вы сможете сделать
+              </h2>
+            </FadeIn>
+            <div className="audit-grid-2" style={{ gap: 16 }}>
+              {afterAudit.map((item, i) => (
+                <FadeIn key={i} delay={i * 70}>
+                  <div style={{ background: "#fff", borderRadius: 16, padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", display: "flex", alignItems: "center", gap: 14 }}>
+                    <Icon name="TrendingUp" size={22} style={{ color: ACCENT, flexShrink: 0 }} />
+                    <span style={{ fontSize: 15, fontWeight: 600, color: "#1a1a1a" }}>{item}</span>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* СТОИМОСТЬ */}
+        <section style={{ paddingTop: 80, paddingBottom: 80, background: "#0e2a3a" }}>
+          <div className="audit-section" style={{ textAlign: "center" }}>
+            <FadeIn>
+              <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#fff", marginBottom: 16 }}>
+                Стоимость
+              </h2>
+              <p style={{ color: "#94a3b8", fontSize: 18, marginBottom: 40 }}>
+                Рассчитывается индивидуально — под размер и специфику вашего салона
+              </p>
+              <CTAButton href="#audit-form">👉 Оставить заявку</CTAButton>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* ФОРМА */}
+        <section id="audit-form" style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="audit-section">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }} className="audit-grid-2">
+              <FadeIn>
+                <h2 style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: "#1a1a1a", marginBottom: 16 }}>
+                  Получить аудит
+                </h2>
+                <p style={{ color: "#666", fontSize: 16, lineHeight: 1.7, marginBottom: 24 }}>
+                  Оставьте заявку — свяжемся в течение 2 часов и договоримся об удобном времени.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {["Аудит длится 1 час", "Результат — конкретные цифры", "Без обязательств и доплат"].map((t, i) => (
+                    <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 14, color: "#374151" }}>
+                      <Icon name="Check" size={16} style={{ color: ACCENT }} />
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <div style={{ background: "#fff", borderRadius: 24, padding: "40px 36px", boxShadow: "0 8px 48px rgba(0,0,0,0.08)" }}>
+                  <AuditForm />
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ФИНАЛЬНЫЙ ДОЖИМ */}
+        <section style={{ paddingTop: 80, paddingBottom: 100, background: "#0a1628" }}>
+          <div className="audit-section" style={{ textAlign: "center" }}>
+            <FadeIn>
+              <p style={{ color: "#94a3b8", fontSize: 18, lineHeight: 1.8, marginBottom: 40 }}>
+                Вы можете продолжать работать как есть<br />
+                и терять деньги каждый день.<br /><br />
+                Или за 1 час увидеть реальную картину<br />
+                и начать зарабатывать больше.
+              </p>
+              <div style={{ border: "1.5px solid rgba(14,116,144,0.5)", borderRadius: 20, padding: "32px 40px", display: "inline-block", marginBottom: 48, maxWidth: 580 }}>
+                <p style={{ fontFamily: "Cormorant, serif", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "#fff", lineHeight: 1.5, margin: 0 }}>
+                  Деньги уже есть в вашем салоне.<br />
+                  <span style={{ color: "#22d3ee" }}>Вопрос — забираете вы их или нет.</span>
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={200}>
+              <CTAButton href="#audit-form">👉 Узнать потери бесплатно</CTAButton>
+            </FadeIn>
+          </div>
+        </section>
       </div>
     </SimpleLayout>
   );
