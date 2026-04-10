@@ -82,9 +82,9 @@ function AuditForm() {
   if (sent) {
     return (
       <div style={{ textAlign: "center", padding: "40px 16px" }}>
-        <div style={{ fontSize: 56, marginBottom: 16 }}>✅</div>
+        <div style={{ width: 56, height: 56, borderRadius: "50%", background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 24, color: ACCENT, fontWeight: 700 }}>✓</div>
         <div className="font-display" style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 700, color: "hsl(210, 40%, 96%)", marginBottom: 12 }}>
-          Заявка принята!
+          Заявка принята
         </div>
         <p style={{ fontSize: 16, color: "hsl(215, 20%, 60%)", lineHeight: 1.7 }}>
           Свяжемся в течение 2 рабочих часов<br />и договоримся об удобном времени.
@@ -156,7 +156,7 @@ function AuditForm() {
         className="gradient-bg hover:opacity-90 transition-opacity"
         style={{ padding: "16px 28px", borderRadius: 14, fontSize: 16, fontWeight: 700, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.65 : 1, fontFamily: "inherit", color: "hsl(220, 30%, 6%)" }}
       >
-        {loading ? "Отправляем..." : "👉 Получить аудит"}
+        {loading ? "Отправляем..." : "Получить аудит"}
       </button>
     </form>
   );
@@ -172,7 +172,6 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, borderRadius: 40, padding: "6px 16px", marginBottom: 24 }}>
-                <span style={{ fontSize: 14 }}>🔍</span>
                 <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT }}>Аудит массажного салона</span>
               </div>
             </FadeIn>
@@ -190,9 +189,9 @@ export default function Audit() {
             <FadeIn delay={240}>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 40, maxWidth: 380 }}>
                 {[
-                  "💼 Анализ всей цепочки клиента",
-                  "💰 Выявление потерь в рублях",
-                  "🎯 Конкретные решения",
+                  "Анализ всей цепочки клиента",
+                  "Выявление потерь в рублях",
+                  "Конкретные решения",
                 ].map((b, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "hsl(210, 40%, 85%)" }}>
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: ACCENT, display: "inline-block", flexShrink: 0 }} />
@@ -207,7 +206,7 @@ export default function Audit() {
                 className="gradient-bg hover:opacity-90 transition-opacity"
                 style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 36px", borderRadius: 50, fontWeight: 700, fontSize: 17, textDecoration: "none", color: "hsl(220, 30%, 6%)" }}
               >
-                👉 Узнать потери
+                Узнать потери
               </a>
             </FadeIn>
           </div>
@@ -218,29 +217,26 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 40, maxWidth: 600 }}>
-                ⚠️ Вы теряете деньги,<br />даже если клиенты приходят
+                Вы теряете деньги,<br />даже если клиенты приходят
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 32 }}>
               {[
-                ["📵", "Администратор не доводит до записи"],
-                ["🤷", "Мастера не выявляют потребности"],
-                ["🛒", "Никто не предлагает доп. услуги"],
-                ["👋", "Клиент уходит и не возвращается"],
-              ].map(([emoji, text], i) => (
+                "Администратор не доводит до записи",
+                "Мастера не выявляют потребности",
+                "Никто не предлагает дополнительные услуги",
+                "Клиент уходит и не возвращается",
+              ].map((text, i) => (
                 <FadeIn key={i} delay={i * 80}>
                   <div style={{ ...cardStyle, display: "flex", alignItems: "center", gap: 16, height: "100%" }}>
-                    <div style={{ width: 48, height: 48, borderRadius: 12, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-                      {emoji}
-                    </div>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "hsl(0, 60%, 50%)", flexShrink: 0 }} />
                     <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.4 }}>{text}</span>
                   </div>
                 </FadeIn>
               ))}
             </div>
             <FadeIn delay={200}>
-              <div style={{ background: "hsla(40,70%,30%,0.12)", border: "1.5px solid hsla(40,70%,45%,0.35)", borderRadius: 14, padding: "18px 24px", display: "flex", alignItems: "center", gap: 12, fontWeight: 700, color: "hsl(40, 80%, 70%)", fontSize: 15 }}>
-                <span style={{ fontSize: 20 }}>👉</span>
+              <div style={{ background: "hsla(40,70%,30%,0.10)", border: "1.5px solid hsla(40,70%,45%,0.28)", borderRadius: 14, padding: "18px 24px", fontWeight: 700, color: "hsl(40, 80%, 70%)", fontSize: 15 }}>
                 Потери происходят каждый день, но остаются незаметными
               </div>
             </FadeIn>
@@ -252,7 +248,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 14, textAlign: "center" }}>
-                💣 Сколько это в деньгах
+                Сколько это в деньгах
               </h2>
               <p style={{ color: "hsl(215, 20%, 55%)", textAlign: "center", marginBottom: 48, fontSize: 16 }}>
                 Если терять 3 000 ₽ с одного клиента и в день проходит 10 человек:
@@ -279,7 +275,7 @@ export default function Audit() {
                   className="gradient-bg hover:opacity-90 transition-opacity"
                   style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "15px 34px", borderRadius: 50, fontWeight: 700, fontSize: 16, textDecoration: "none", color: "hsl(220, 30%, 6%)" }}
                 >
-                  👉 Проверить мой салон
+                  Проверить мой салон
                 </a>
               </div>
             </FadeIn>
@@ -291,7 +287,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                📊 Что вы получите
+                Что вы получите
               </h2>
             </FadeIn>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 680 }}>
@@ -320,21 +316,21 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 48, textAlign: "center" }}>
-                🔍 Как проходит аудит
+                Как проходит аудит
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 24 }}>
               {[
-                ["🔍", "Анализ работы с клиентом"],
-                ["👥", "Оценка действий персонала"],
-                ["⚠️", "Выявление ошибок"],
-                ["💰", "Перевод в деньги"],
-                ["💡", "Рекомендации"],
-              ].map(([emoji, text], i) => (
+                "Анализ работы с клиентом",
+                "Оценка действий персонала",
+                "Выявление ошибок",
+                "Перевод в деньги",
+                "Рекомендации",
+              ].map((text, i) => (
                 <FadeIn key={i} delay={i * 80}>
                   <div style={{ textAlign: "center" }}>
-                    <div style={{ width: 64, height: 64, borderRadius: 18, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontSize: 28 }}>
-                      {emoji}
+                    <div style={{ width: 52, height: 52, borderRadius: 14, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontWeight: 800, color: ACCENT, fontSize: 20 }}>
+                      {i + 1}
                     </div>
                     <div style={{ fontSize: 10, fontWeight: 700, color: ACCENT, letterSpacing: "0.14em", textTransform: "uppercase" as const, marginBottom: 8 }}>
                       Шаг {i + 1}
@@ -353,17 +349,17 @@ export default function Audit() {
             <FadeIn>
               <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
                 <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                  ⏱ Результат уже в течение 1 часа
+                  Результат уже в течение 1 часа
                 </h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16 }}>
                   {[
-                    ["🚫", "Без теории"],
-                    ["🚀", "Без долгого внедрения"],
-                    ["📊", "Сразу цифры и понимание"],
-                  ].map(([emoji, text], i) => (
+                    "Без теории",
+                    "Без долгого внедрения",
+                    "Сразу цифры и понимание",
+                  ].map((text, i) => (
                     <FadeIn key={i} delay={i * 80}>
                       <div style={{ ...cardStyle, textAlign: "center", padding: "24px 16px" }}>
-                        <div style={{ fontSize: 30, marginBottom: 10 }}>{emoji}</div>
+                        <div style={{ width: 36, height: 2, background: ACCENT, borderRadius: 2, margin: "0 auto 16px" }} />
                         <div style={{ fontWeight: 700, fontSize: 14 }}>{text}</div>
                       </div>
                     </FadeIn>
@@ -379,7 +375,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 48, textAlign: "center" }}>
-                📈 Пример результата
+                Пример результата
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 20, maxWidth: 760, margin: "0 auto", alignItems: "center" }}>
@@ -391,15 +387,15 @@ export default function Audit() {
                 </div>
               </FadeIn>
               <FadeIn delay={200}>
-                <div style={{ fontSize: 36, fontWeight: 700, color: ACCENT, textAlign: "center", padding: "0 8px" }}>→</div>
+                <div style={{ fontSize: 28, fontWeight: 300, color: "hsl(215, 20%, 40%)", textAlign: "center", padding: "0 8px" }}>→</div>
               </FadeIn>
               <FadeIn delay={300}>
                 <div style={{ ...cardStyle, textAlign: "center", border: `1px solid ${ACCENT_BORDER}`, padding: "36px 28px" }}>
                   <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16 }}>После аудита</div>
                   <div className="font-display gradient-text" style={{ fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 700, lineHeight: 1 }}>6 000 – 8 000 ₽</div>
                   <div style={{ marginTop: 12, fontSize: 14, color: "hsl(215, 20%, 50%)" }}>потенциал чека</div>
-                  <div style={{ marginTop: 14, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, borderRadius: 30, padding: "6px 16px", display: "inline-block", fontWeight: 800, color: ACCENT, fontSize: 14 }}>
-                    👉 Рост +200–300%
+                  <div style={{ marginTop: 14, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, borderRadius: 30, padding: "6px 16px", display: "inline-block", fontWeight: 700, color: ACCENT, fontSize: 13 }}>
+                    Рост +200–300%
                   </div>
                 </div>
               </FadeIn>
@@ -412,19 +408,19 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                🧠 Для кого этот аудит
+                Для кого этот аудит
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, maxWidth: 760 }}>
               {[
-                ["💆", "Салоны и студии с массажем"],
-                ["📈", "Есть клиенты, но нет роста"],
-                ["📉", "Нет контроля продаж персонала"],
-                ["💸", "Низкий средний чек"],
-              ].map(([emoji, text], i) => (
+                "Салоны и студии с массажем",
+                "Есть клиенты, но нет роста",
+                "Нет контроля продаж персонала",
+                "Низкий средний чек",
+              ].map((text, i) => (
                 <FadeIn key={i} delay={i * 70}>
                   <div style={{ ...cardStyle, display: "flex", alignItems: "center", gap: 14, padding: "18px 20px" }}>
-                    <span style={{ fontSize: 22 }}>{emoji}</span>
+                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: ACCENT, flexShrink: 0, display: "inline-block" }} />
                     <span style={{ fontWeight: 600, fontSize: 14 }}>{text}</span>
                   </div>
                 </FadeIn>
@@ -438,7 +434,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                🛠 Что вы сможете сделать
+                Что вы сможете сделать
               </h2>
             </FadeIn>
             <div style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 560 }}>
@@ -450,7 +446,7 @@ export default function Audit() {
               ].map((r, i) => (
                 <FadeIn key={i} delay={i * 70}>
                   <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 16, color: "hsl(210, 40%, 88%)" }}>
-                    <span style={{ width: 28, height: 28, borderRadius: 8, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", color: ACCENT, fontWeight: 800, fontSize: 13, flexShrink: 0 }}>✓</span>
+                    <span style={{ width: 24, height: 24, borderRadius: 6, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", color: ACCENT, fontWeight: 700, fontSize: 12, flexShrink: 0 }}>✓</span>
                     {r}
                   </div>
                 </FadeIn>
@@ -467,7 +463,7 @@ export default function Audit() {
                 <div style={{ ...cardStyle, border: `1px solid ${ACCENT_BORDER}`, padding: "48px 36px" }}>
                   <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16 }}>Стоимость</div>
                   <div className="font-display" style={{ fontSize: "clamp(20px, 3.5vw, 30px)", fontWeight: 700, marginBottom: 14 }}>
-                    💬 Рассчитывается индивидуально
+                    Рассчитывается индивидуально
                   </div>
                   <p style={{ color: "hsl(215, 20%, 55%)", lineHeight: 1.7, marginBottom: 28, fontSize: 15 }}>
                     Зависит от размера салона, количества мастеров и задач.<br />Оставьте заявку — обсудим и назовём точную цену.
@@ -477,7 +473,7 @@ export default function Audit() {
                     className="gradient-bg hover:opacity-90 transition-opacity"
                     style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "15px 32px", borderRadius: 50, fontWeight: 700, fontSize: 16, textDecoration: "none", color: "hsl(220, 30%, 6%)" }}
                   >
-                    👉 Оставить заявку
+                    Оставить заявку
                   </a>
                 </div>
               </div>
@@ -492,7 +488,7 @@ export default function Audit() {
               <FadeIn>
                 <div>
                   <h2 className="font-display" style={{ fontSize: "clamp(26px, 4vw, 42px)", fontWeight: 700, marginBottom: 18 }}>
-                    📩 Получить аудит
+                    Получить аудит
                   </h2>
                   <p style={{ color: "hsl(215, 20%, 55%)", lineHeight: 1.75, marginBottom: 28, fontSize: 16 }}>
                     Оставьте заявку — свяжемся в течение 2 часов и договоримся об удобном времени.
@@ -503,7 +499,7 @@ export default function Audit() {
                     "Без скрытых обязательств",
                   ].map((t, i) => (
                     <div key={i} style={{ display: "flex", gap: 12, alignItems: "center", fontSize: 15, color: "hsl(210, 40%, 82%)", marginBottom: 12 }}>
-                      <span style={{ color: ACCENT, fontWeight: 800, fontSize: 16 }}>✓</span> {t}
+                      <span style={{ color: ACCENT, fontWeight: 700, fontSize: 14 }}>✓</span> {t}
                     </div>
                   ))}
                 </div>
@@ -531,7 +527,7 @@ export default function Audit() {
                 </div>
                 <div style={{ ...cardStyle, border: `1px solid ${ACCENT_BORDER}`, padding: "28px 32px", marginBottom: 36 }}>
                   <p style={{ fontSize: "clamp(17px, 2.5vw, 22px)", fontWeight: 700, color: "hsl(210, 40%, 96%)", lineHeight: 1.6, margin: 0 }}>
-                    🔥 Деньги уже есть в вашем салоне.<br />
+                    Деньги уже есть в вашем салоне.<br />
                     <span className="gradient-text">Вопрос — забираете вы их или нет.</span>
                   </p>
                 </div>
@@ -540,7 +536,7 @@ export default function Audit() {
                   className="gradient-bg hover:opacity-90 transition-opacity animate-pulse-glow"
                   style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "18px 40px", borderRadius: 50, fontWeight: 700, fontSize: 18, textDecoration: "none", color: "hsl(220, 30%, 6%)" }}
                 >
-                  👉 Получить аудит сейчас
+                  Получить аудит сейчас
                 </a>
               </div>
             </FadeIn>
