@@ -172,6 +172,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: ACCENT_GLOW, border: `1px solid ${ACCENT_BORDER}`, borderRadius: 40, padding: "6px 16px", marginBottom: 24 }}>
+                <span style={{ color: ACCENT, fontSize: 10 }}>◆</span>
                 <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT }}>Аудит массажного салона</span>
               </div>
             </FadeIn>
@@ -217,7 +218,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 40, maxWidth: 600 }}>
-                Вы теряете деньги,<br />даже если клиенты приходят
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Вы теряете деньги,<br />даже если клиенты приходят
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 32 }}>
@@ -248,7 +249,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 14, textAlign: "center" }}>
-                Сколько это в деньгах
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Сколько это в деньгах
               </h2>
               <p style={{ color: "hsl(215, 20%, 55%)", textAlign: "center", marginBottom: 48, fontSize: 16 }}>
                 Если терять 3 000 ₽ с одного клиента и в день проходит 10 человек:
@@ -287,7 +288,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                Что вы получите
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Что вы получите
               </h2>
             </FadeIn>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 680 }}>
@@ -316,7 +317,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 48, textAlign: "center" }}>
-                Как проходит аудит
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Как проходит аудит
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 24 }}>
@@ -349,7 +350,7 @@ export default function Audit() {
             <FadeIn>
               <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
                 <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                  Результат уже в течение 1 часа
+                  <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Результат уже в течение 1 часа
                 </h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16 }}>
                   {[
@@ -375,7 +376,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 48, textAlign: "center" }}>
-                Пример результата
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Пример результата
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 20, maxWidth: 760, margin: "0 auto", alignItems: "center" }}>
@@ -408,7 +409,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                Для кого этот аудит
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Для кого этот аудит
               </h2>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, maxWidth: 760 }}>
@@ -434,7 +435,7 @@ export default function Audit() {
           <div className="container mx-auto px-4 sm:px-6">
             <FadeIn>
               <h2 className="font-display" style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, marginBottom: 36 }}>
-                Что вы сможете сделать
+                <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Что вы сможете сделать
               </h2>
             </FadeIn>
             <div style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 560 }}>
@@ -461,7 +462,9 @@ export default function Audit() {
             <FadeIn>
               <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
                 <div style={{ ...cardStyle, border: `1px solid ${ACCENT_BORDER}`, padding: "48px 36px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16 }}>Стоимость</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: ACCENT, marginBottom: 16 }}>
+                    <span style={{ marginRight: 6 }}>◆</span>Стоимость
+                  </div>
                   <div className="font-display" style={{ fontSize: "clamp(20px, 3.5vw, 30px)", fontWeight: 700, marginBottom: 14 }}>
                     Рассчитывается индивидуально
                   </div>
@@ -488,7 +491,7 @@ export default function Audit() {
               <FadeIn>
                 <div>
                   <h2 className="font-display" style={{ fontSize: "clamp(26px, 4vw, 42px)", fontWeight: 700, marginBottom: 18 }}>
-                    Получить аудит
+                    <span style={{ color: ACCENT, marginRight: 12, fontSize: "0.6em", verticalAlign: "middle" }}>◆</span>Получить аудит
                   </h2>
                   <p style={{ color: "hsl(215, 20%, 55%)", lineHeight: 1.75, marginBottom: 28, fontSize: 16 }}>
                     Оставьте заявку — свяжемся в течение 2 часов и договоримся об удобном времени.
