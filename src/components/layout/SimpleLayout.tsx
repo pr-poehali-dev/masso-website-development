@@ -8,6 +8,7 @@ const PAGE_URLS: Record<string, string> = {
   salons: "/#salons",
   catalog: "/#catalog",
   about: "/#about",
+  audit: "/audit",
   contacts: "/kontakty",
   privacy: "/privacy",
   offer: "/offer",

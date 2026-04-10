@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-export type Page = "home" | "how" | "salons" | "catalog" | "about" | "contacts" | "privacy" | "offer";
+export type Page = "home" | "how" | "salons" | "catalog" | "about" | "audit" | "contacts" | "privacy" | "offer";
 
 export const NAV_ITEMS: { id: Page; label: string }[] = [
   { id: "home", label: "Главная" },
@@ -9,6 +9,7 @@ export const NAV_ITEMS: { id: Page; label: string }[] = [
   { id: "salons", label: "Для салонов" },
   { id: "catalog", label: "Каталог студий" },
   { id: "about", label: "О проекте" },
+  { id: "audit", label: "Аудит салона" },
   { id: "contacts", label: "Контакты" },
 ];
 
