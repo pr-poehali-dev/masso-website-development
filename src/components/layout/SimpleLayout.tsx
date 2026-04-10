@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { NAV_ITEMS } from "@/components/ui/shared";
 
@@ -39,13 +40,13 @@ function SimpleNavbar() {
 
           <div className="hidden lg:flex items-center gap-7">
             {NAV_ITEMS.map(item => (
-              <a
+              <Link
                 key={item.id}
-                href={PAGE_URLS[item.id] || "/"}
+                to={PAGE_URLS[item.id] || "/"}
                 className="nav-link font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -76,14 +77,14 @@ function SimpleNavbar() {
         <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border py-4">
           <div className="container mx-auto px-4 sm:px-6 space-y-1">
             {NAV_ITEMS.map(item => (
-              <a
+              <Link
                 key={item.id}
-                href={PAGE_URLS[item.id] || "/"}
+                to={PAGE_URLS[item.id] || "/"}
                 className="block w-full text-left px-4 py-3 rounded-xl font-body text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <a
               href="/cabinet/login"
